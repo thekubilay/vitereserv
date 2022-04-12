@@ -10,10 +10,11 @@ export interface Form {
 export interface FormItem{
   id: number,
   label: string,
-  titel: string,
+  title: string,
   required: boolean,
   type: string,
   hint: null | string,
+  placeholder: null | string,
   row: number,
   column: number,
   width: null | string | number,

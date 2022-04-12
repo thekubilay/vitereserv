@@ -1,0 +1,54 @@
+/*default transition*/
+.transition {
+  transition: .3s ease;
+}
+
+
+/* fade enter and leave transition*/
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity .5s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+
+/* slide down transition */
+.slideDown-enter-active,
+.slideDown-leave-active {
+  transition: max-height 0.3s ease-in-out;
+}
+
+.slideDown-enter-to,
+.slideDown-leave-from {
+  overflow: hidden;
+  max-height: 400px;
+}
+
+.slideDown-enter-from,
+.slideDown-leave-to {
+  overflow: hidden;
+  max-height: 0;
+}
+
+
+/* slide right small transition */
+.slideRight-enter-active,
+.slideRight-leave-active {
+  transition: max-height 0.3s ease-in-out;
+}
+
+.slideRight-enter-to,
+.slideRight-leave-from {
+  overflow: hidden;
+  max-width: 100px;
+}
+
+.slideRight-enter-from,
+.slideRight-leave-to {
+  overflow: hidden;
+  max-height: 0;
+}

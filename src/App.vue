@@ -1,12 +1,17 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" />
+  <main id="main" class="relative">
+    <Room></Room>
+    <Forms></Forms>
+  </main>
 </template>
-<script lang="ts">
 
+<script lang="ts">
 import { defineComponent } from 'vue';
+import Forms from "./views/Forms.vue"
+import Room from "./views/Room.vue"
 
 export default defineComponent({
-  components: {},
+  components: {Forms, Room},
   setup(){
 
     return {}
@@ -22,6 +27,5 @@ export default defineComponent({
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
 </style>

@@ -1,0 +1,151 @@
+
+
+.fixed {
+  position: fixed;
+}
+.absolute {
+  position: absolute;
+}
+.relative {
+  position: relative;
+}
+
+.block {
+  display: block;
+}
+.none {
+  display: none;
+}
+
+.default {
+  cursor: default;
+}
+.pointer {
+  cursor: pointer;
+}
+.disabled {
+  opacity: .5;
+  pointer-events: none;
+}
+
+.soft-opacity {
+  opacity: .5;
+}
+.transparent {
+  opacity: 0;
+}
+
+.text-left {
+  text-align: left;
+}
+.text-center {
+  text-align: center;
+}
+.text-right {
+  text-align: right;
+}
+
+.capitalize {
+  text-transform: capitalize;
+}
+.uppercase {
+  text-transform: uppercase;
+}
+.lowercase {
+  text-transform: lowercase;
+}
+
+.overflow-x-hidden {
+  overflow-x: hidden;
+}
+.overflow-y-hidden {
+  overflow-y: hidden;
+}
+.overflow-y {
+  overflow-y: scroll;
+}
+.overflow-x {
+  overflow-x: scroll;
+}
+
+.no-select {
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Old versions of Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently */
+}
+
+/* Track */
+.no-bar::-webkit-scrollbar {
+  display: none;
+}
+.custom-sb::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+.custom-sb.low-bar::-webkit-scrollbar {
+  height: 8px !important;
+  -webkit-overflow-scrolling: touch
+}
+.custom-sb::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  -webkit-overflow-scrolling: touch
+}
+/* Handle */
+.custom-sb::-webkit-scrollbar-thumb {
+  background: #555555;
+  -webkit-overflow-scrolling: touch
+}
+/* Handle on hover */
+.custom-sb::-webkit-scrollbar-thumb:hover {
+  background: #555555;
+}
+
+.custom-sb.thin::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.custom-sb.thin::-webkit-scrollbar-thumb {
+  /* background: #5f7d9b; */
+  background: rgb(139 , 155, 164);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
