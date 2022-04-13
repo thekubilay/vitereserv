@@ -4,7 +4,7 @@ import {createPinia} from 'pinia'
 import App from './App.vue';
 import PrimeVue from 'primevue/config';
 import Dropdown from 'primevue/dropdown';
-// import router from './router'
+import router from './router'
 
 
 import 'primevue/resources/themes/saga-blue/theme.css';
@@ -33,6 +33,6 @@ const primeOptions = {
 
 app.use(pinia)
 app.use(PrimeVue,primeOptions)
-// app.use(router)
+app.use(router)
 app.component('Dropdown', Dropdown)
 app.mount('#app')

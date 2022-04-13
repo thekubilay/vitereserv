@@ -1,7 +1,6 @@
 <template>
   <main id="main" class="relative">
-    <!-- <Room></Room> -->
-    <Forms></Forms>
+    <router-view />
   </main>
 </template>
 

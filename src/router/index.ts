@@ -2,9 +2,14 @@ import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router"
 
 let routes: Array<RouteRecordRaw> = [
   {
-    path: '/', 
+    path: '/:rid', 
     name: 'Room',
     component: () => import('../views/Room.vue')
+  },
+  {
+    path: '/:rid/:fid', 
+    name: 'Form',
+    component: () => import('../views/Forms.vue')
   },
   {
     path: '/404', 
@@ -22,3 +27,5 @@ const router = createRouter({
 router.beforeEach((to,from) => {
 
 })
+
+export default router;
