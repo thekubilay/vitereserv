@@ -1,0 +1,100 @@
+{
+    "id": 4250296260,
+    "form_items": [
+        {
+        "id": 2099918841,
+        "label": "name1",
+        "title": "お名前（姓）",
+        "required": true,
+        "type": "text",
+        "hint": null,
+        "placeholder": "青　空",
+        "row": 1,
+        "column": 1,
+        "width": null,
+        "form": 4250296260
+      },
+      {
+        "id": 2099918841,
+        "label": "name2",
+        "title": "お名前（名）",
+        "required": true,
+        "type": "text",
+        "hint": null,
+        "placeholder": "花　子",
+        "row": 1,
+        "column": 1,
+        "width": null,
+        "form": 4250296261
+      },
+      {
+        "id": 2099918841,
+        "label": "fname1",
+        "title": "フリガナ（セイ）",
+        "required": true,
+        "type": "text",
+        "hint": "（全角カタカナ）",
+        "placeholder": "アオゾラ",
+        "row": 1,
+        "column": 1,
+        "width": null,
+        "form": 4250296262
+      },
+      {
+        "id": 2099918841,
+        "label": "fname2",
+        "title": "フリガナ（メイ）",
+        "required": true,
+        "type": "text",
+        "hint": "（全角カタカナ）",
+        "placeholder": "ハナコ",
+        "row": 1,
+        "column": 1,
+        "width": null,
+        "form": 4250296262
+      },
+      {
+        "id": 2099918841,
+        "label": "email",
+        "title": "メールアドレス",
+        "required": true,
+        "type": "text",
+        "hint": "（全角カタカナ）",
+        "placeholder": "Taro@aozora.com",
+        "row": 1,
+        "column": 1,
+        "width": "40%",
+        "form": 4250296263
+      },
+      {
+        "id": 2099918842,
+        "label": "tel",
+        "title": "電話番号",
+        "required": true,
+        "type": "text",
+        "hint": "（半角数字/ハイフンなし）",
+        "placeholder": "090-1234-5678",
+        "row": 1,
+        "column": 1,
+        "width": null,
+        "form": 4250296263
+      },
+      {
+        "id": 2099918843,
+        "label": "address1",
+        "title": "郵便番号",
+        "required": true,
+        "type": "text",
+        "hint": "（半角数字/ハイフンなし）",
+        "placeholder": "1006640",
+        "row": 1,
+        "column": 1,
+        "width": null,
+        "form": 4250296263
+      }
+    ],
+    "title": "sample form",
+    "sub_title": "some sample context about the form",
+    "company": 7504030267,
+    "user": 9906613168
+}

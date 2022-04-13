@@ -5,9 +5,16 @@ import path from 'path'
 
 export default defineConfig({
   plugins: [vue()],
-  // server: {
-
-  // },
+  server: {
+    host: true,
+    // host: "localhost", // local
+    port: 3000,
+    open: false,
+    watch: {
+      usePolling: true,
+      disableGlobbing: false,
+    },
+  },
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),

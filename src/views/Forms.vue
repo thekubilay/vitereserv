@@ -728,112 +728,20 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, shallowRef } from "vue";
+import { defineComponent, computed, shallowRef, onMounted, ref } from "vue";
 import { FormItem } from "@/types/Form";
 import DynamicInput from "../components/DynamicInput.vue";
 import Dropdown from "primevue/dropdown";
+import axios from "axios";
+import ENV from "../config"
+
 export default defineComponent({
   components: {
     DynamicInput
   },
   setup(){
     const componentBasePath = "../components/"
-    // const componentLookup: any = {
-    //   "text": "DynamicInput"
-    // }
-    const myform: FormItem[] = [
-      {
-        "id": 2099918841,
-        "label": "name1",
-        "title": "お名前（姓）",
-        "required": true,
-        "type": "text",
-        "hint": null,
-        "placeholder": "青　空",
-        "row": 1,
-        "column": 1,
-        "width": null,
-        "form": 4250296260
-      },
-      {
-        "id": 2099918841,
-        "label": "name2",
-        "title": "お名前（名）",
-        "required": true,
-        "type": "text",
-        "hint": null,
-        "placeholder": "花　子",
-        "row": 1,
-        "column": 1,
-        "width": null,
-        "form": 4250296261
-      },
-      {
-        "id": 2099918841,
-        "label": "fname1",
-        "title": "フリガナ（セイ）",
-        "required": true,
-        "type": "text",
-        "hint": "（全角カタカナ）",
-        "placeholder": "アオゾラ",
-        "row": 1,
-        "column": 1,
-        "width": null,
-        "form": 4250296262
-      },
-      {
-        "id": 2099918841,
-        "label": "fname2",
-        "title": "フリガナ（メイ）",
-        "required": true,
-        "type": "text",
-        "hint": "（全角カタカナ）",
-        "placeholder": "ハナコ",
-        "row": 1,
-        "column": 1,
-        "width": null,
-        "form": 4250296262
-      },
-      {
-        "id": 2099918841,
-        "label": "email",
-        "title": "メールアドレス",
-        "required": true,
-        "type": "text",
-        "hint": "（全角カタカナ）",
-        "placeholder": "Taro@aozora.com",
-        "row": 1,
-        "column": 1,
-        "width": "40%",
-        "form": 4250296263
-      },
-      {
-        "id": 2099918842,
-        "label": "tel",
-        "title": "電話番号",
-        "required": true,
-        "type": "text",
-        "hint": "（半角数字/ハイフンなし）",
-        "placeholder": "090-1234-5678",
-        "row": 1,
-        "column": 1,
-        "width": null,
-        "form": 4250296263
-      },
-      {
-        "id": 2099918843,
-        "label": "address1",
-        "title": "郵便番号",
-        "required": true,
-        "type": "text",
-        "hint": "（半角数字/ハイフンなし）",
-        "placeholder": "1006640",
-        "row": 1,
-        "column": 1,
-        "width": null,
-        "form": 4250296263
-      },
-    ]
+    const myform = ref<FormItem[]>([])
     const textComp = shallowRef<object | null>(null)
     const selectComp = shallowRef<object | null>(null)
     const checkComp = shallowRef<object | null>(null)
@@ -854,6 +762,22 @@ export default defineComponent({
         return textComp.value
       }
     }
+
+    function init(){
+        axios.get<FormItem[]>(ENV.API + "/forms.json")
+        .then((response) => {
+            const data = JSON.parse(JSON.stringify(response.data))
+            myform.value = data.form_items
+        })
+        .catch((error) => {
+            console.log(error)
+        })
+    }
+
+    onMounted(() => {
+        init()
+    })
+
     return {
       myform,
       getComp
