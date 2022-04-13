@@ -333,12 +333,12 @@ index
     background-color: rgba(255, 255, 255, 0.3);
 }
 
-#index .template__Wrapper {
+/* #index .template__Wrapper {
     display: none;
 }
 #index .template__Wrapper.active {
     display: block;
-}
+} */
 
 
 #index .calendar__header {

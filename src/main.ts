@@ -20,7 +20,7 @@ import './assets/css/transitions.css';
 // import './assets/css/primevue.css';
 // import './assets/css/pin.css';
 // import './assets/css/pin-searched.css';
-
+import './assets/css/formstyle.css';
 
 const app = createApp(App);
 const pinia = createPinia();
