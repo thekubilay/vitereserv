@@ -25,5 +25,5 @@ export interface FormItem{
 export interface Option{
   label: string,
   value: string,
-  extra: string,
+  extra?: string,
 }

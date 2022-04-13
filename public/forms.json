@@ -91,6 +91,23 @@
         "column": 1,
         "width": null,
         "form": 4250296263
+      },
+      {
+        "id": 2099918844,
+        "label": "mailmagazine",
+        "title": "メールマガジンを<br>購読する",
+        "required": true,
+        "type": "radio",
+        "hint": null,
+        "placeholder": null,
+        "options": [
+          {"label": "希望する", "value": "希望する"},
+          {"label": "希望しない", "value": "希望しない"}
+        ],
+        "row": 1,
+        "column": 1,
+        "width": null,
+        "form": 4250296263
       }
     ],
     "title": "sample form",

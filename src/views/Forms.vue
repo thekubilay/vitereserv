@@ -1,5 +1,5 @@
 <template>
-  <div id="request">
+  <div id="request" class="form_page">
 
     <div class="template__Wrapper ">
       <div class="container">
@@ -19,47 +19,9 @@
           <table class="formTable">
           <tbody>
             <component v-for="(comp , idx) in myform" :key="idx" :is="getComp(comp.type)" :form="myform[idx]"></component>
-          <!-- <tr class="tr flex align-center">
-            <th class="th"><label for="name1">名前（姓）</label><span class="hissu">必須</span></th>
-            <td class="td"><input type="text" name="姓" id="name1" class="w40 validate[required] center" data-prompt-position="topLeft:40" placeholder="青 空"></td>
-          </tr> -->
 
+<!-- HERE -->
           <!-- <tr class="tr flex align-center">
-            <th class="th"><label for="name2">名前（名）</label><span class="hissu">必須</span></th>
-            <td class="td"><input type="text" name="名" id="name2" class=" validate[required] center" data-prompt-position="topLeft:40" placeholder="太 郎"></td>
-          </tr> -->
-
-          <!-- <tr class="tr flex align-center">
-            <th class="th"><label for="fname1">フリガナ（セイ）</label><span class="hissu">必須</span></th>
-            <td class="td"><input type="text" name="セイ" id="fname1" class=" validate[required,custom[kana]] center" data-prompt-position="topLeft:40" placeholder="アオゾラ"></td>
-            <td class="td2">（全角カタカナ）</td>
-          </tr> -->
-
-          <!-- <tr class="tr flex align-center">
-            <th class="th"><label for="fname2">フリガナ（メイ）</label><span class="hissu">必須</span></th>
-            <td class="td"><input type="text" name="メイ" id="fname2" class=" validate[required,custom[kana]]" data-prompt-position="topLeft:40" placeholder="タロウ"></td>
-            <td class="td2">（全角カタカナ）</td>
-          </tr> -->
-
-          <!-- <tr class="tr flex align-center">
-            <th class="th"><label for="email">メールアドレス</label><span class="hissu">必須</span></th>
-            <td class="td long"><input type="text" name="Email" id="email" class="validate[required,custom[email]]" data-prompt-position="topLeft:40" placeholder="Taro@aozora.com"></td>
-            <td class="td2">（半角英数字または記号）</td>
-          </tr> -->
-
-          <!-- <tr class="tr flex align-center">
-            <th class="th"><label for="tel">電話番号</label><span class="hissu">必須</span></th>
-            <td class="td"><input type="text" name="電話番号" id="tel" class="validate[required,custom[onlyNumberSp]]" data-prompt-position="topLeft:40" placeholder="Taro@aozora.com"></td>
-            <td class="td2">（半角数字/ハイフンなし）</td>
-          </tr> -->
-
-          <!-- <tr class="tr flex align-center">
-            <th class="th"><label for="address1">郵便番号</label><span class="hissu">必須</span></th>
-            <td class="td"><input type="text" name="郵便番号" id="address1" class="validate[required,custom[onlyNumberSp]]" data-prompt-position="topLeft:40" placeholder="1006640"></td>
-            <td class="td2">（半角数字/ハイフンなし）</td>
-          </tr> -->
-
-          <tr class="tr flex align-center">
             <th class="th"><label for="address2">都道府県</label><span class="hissu">必須</span></th>
             <td class="td select">
               <select name="都道府県" id="address2" class="validate[required]"  data-prompt-position="topLeft:40">
@@ -114,39 +76,7 @@
             </select>
             <span class="select-icon"><i class="fas fa-caret-down"></i></span>
             </td>
-          </tr>
-
-          <tr class="tr flex align-center">
-            <th class="th"><label for="address3">市区町村</label><span class="hissu">必須</span></th>
-            <td class="td long"><input type="text" name="市区町村" id="address3" class="validate[required]" data-prompt-position="topLeft:40" placeholder=""></td>
-          </tr>
-
-          <tr class="tr flex align-center">
-            <th class="th"><label for="address4">丁目番地</label><span class="hissu">必須</span></th>
-            <td class="td long"><input type="text" name="丁目番地" id="address4" class="validate[required]" data-prompt-position="topLeft:40" placeholder=""></td>
-          </tr>
-
-          <tr class="tr flex align-center">
-            <th class="th"><label for="address5">建物名部屋番号</label><span class="hissu">必須</span></th>
-            <td class="td long"><input type="text" name="建物名部屋番号" id="address5" class="validate[required]" data-prompt-position="topLeft:40" placeholder=""></td>
-          </tr>
-
-          <tr class="tr flex align-center">
-            <th class="th"><label for="mailmagazine">メールマガジンを<br>購読する<span class="hissu">必須</span></label></th>
-            <td class="td radio">
-              <ul class="flex justify-between">
-                <li>
-                  <input type="radio" name="mailmagazine" value="希望する" class="radio-input validate[required]" id="radio01" data-prompt-position="topLeft:40">
-                  <label for="radio01">希望する</label>
-                </li>
-                <li>
-                  <input type="radio" name="mailmagazine" value="希望しない" class="radio-input" id="radio02">
-                  <label for="radio02">希望しない</label>
-                </li>
-              </ul>
-            </td>
-          </tr>
-
+          </tr> -->
 
           </tbody>
           </table>
@@ -719,10 +649,8 @@
           </ul>
 
           </form>
-        </div>
-      
+        </div> 
       </div>
-      
     </div>
   </div>
 </template>
@@ -745,19 +673,24 @@ export default defineComponent({
     const textComp = shallowRef<object | null>(null)
     const selectComp = shallowRef<object | null>(null)
     const checkComp = shallowRef<object | null>(null)
+    const radioComp = shallowRef<object | null>(null)
 
-    import(componentBasePath+"DynamicInput.vue").then(val => {
+    import("../components/DynamicInput.vue").then(val => {
       textComp.value = val.default;
     })
-    selectComp.value = Dropdown //already imported
-    // import(componentBasePath+"DynamicInput.vue").then(val => {
-    //   textComp.value = val.default;
-    // })
+    import("../components/DynamicSelect.vue").then(val => {
+      selectComp.value = val.default;
+    })
+    import("../components/DynamicRadio.vue").then(val => {
+      radioComp.value = val.default;
+    })
     const getComp = (name: string) => {
       if (name === 'text'){
         return textComp.value
       }else if (name === 'select'){
         return selectComp.value
+      }else if (name === 'radio'){
+        return radioComp.value
       }else{
         return textComp.value
       }
