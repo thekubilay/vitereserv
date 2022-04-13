@@ -1,5 +1,5 @@
 <template>
-  <div id="request">
+  <div id="request" class="form_page">
 
     <div class="template__Wrapper ">
       <div class="container">
