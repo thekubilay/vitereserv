@@ -17,12 +17,12 @@
 
             <table class="formTable">
             <tbody>
-              <component v-for="(comp , idx) in myform" :key="idx" :is="getComp(comp.type)" :form="myform[idx]"></component>
+              <component v-for="(comp , idx) in myform" :key="idx" :is="getComp(comp.type)" :form="myform[idx]" v-model="myform[idx]['model']" :error="myform[idx]['error']"></component>
 
             </tbody>
             </table>
 
-            <p id="anquate" class="anquate">よろしければアンケートにお答えください。<span class="hissu">アンケートに答える</span></p>
+            <p id="anquate" class="anquate">よろしければアンケートにお答えください。<span class="hissu" @click="validate()">アンケートに答える</span></p>
 
             <p class="bottom_note">個人情報の取扱いについて<br>
               当サイトより取得した個人情報はプレサンスグループの<a href="https://">個人情報保護方針</a>に従い、適切な取扱いに努めてまいります。<br>
@@ -32,10 +32,10 @@
 
             <ul class="submit__Wrapper flex align-center justify-center">
               <li>
-                <button type="submit" id="submit_button" >上記に同意の上、送信</button>
+                <button type="submit" id="submit_button" pr>上記に同意の上、送信</button>
               </li>
             </ul>
-
+{{myform}}
           </form>
         </div> 
       </div>
@@ -48,12 +48,14 @@ import { defineComponent, computed, shallowRef, onMounted, ref } from "vue";
 import { FormItem } from "@/types/Form";
 import axios from "axios";
 import ENV from "../config"
+import useValidation from "@/utils/useValidation";
 
 export default defineComponent({
   components: {
   },
   setup(){
     const myform = ref<FormItem[]>([])
+    const formModel = ref<Array<String|Object|Array<String>>>([])
     const textComp = shallowRef<object | null>(null)
     const selectComp = shallowRef<object | null>(null)
     const checkComp = shallowRef<object | null>(null)
@@ -86,24 +88,57 @@ export default defineComponent({
       }
     }
 
+
     function init(){
         axios.get<FormItem[]>(ENV.API + "/forms.json")
         .then((response) => {
             const data = JSON.parse(JSON.stringify(response.data))
             myform.value = data.form_items
+            //@ts-ignore
+            myform.value['model'] = ''
+            //@ts-ignore
+            myform.value['error'] = ''
+            // for(const data of myform.value){
+            //   formModel.value.push("")
+            // }
         })
         .catch((error) => {
             console.log(error)
         })
     }
 
+    const validationSchema = {
+      userName: (name: string) => {
+        const min = useValidation.minLength(2,name)
+        if(min !== true) return min
+        const kana = useValidation.hankakuCheck(name)
+        if(kana !== true) return kana
+        return true
+      },
+      email: (val: string) => {
+        const mail = useValidation.mailCheck(val)
+        if(mail !== true) return mail
+        return true
+      }
+    }
+
+    const validate = () => {
+      for(const f of myform.value){
+        if(f.type==="text"){
+          const e =  validationSchema.userName(f.model as string)
+          //@ts-ignore
+          f['error'] = e
+        }
+      }
+    }
     onMounted(() => {
         init()
     })
 
     return {
-      myform,
-      getComp
+      myform, formModel,
+      getComp,
+      validate
     }
   }
 

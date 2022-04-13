@@ -19,7 +19,8 @@ export interface FormItem{
   row: number,
   column: number,
   width: null | string | number,
-  form: number
+  form: number,
+  model: string | object | string[]
 }
 
 export interface Option{
