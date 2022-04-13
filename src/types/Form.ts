@@ -15,8 +15,15 @@ export interface FormItem{
   type: string,
   hint: null | string,
   placeholder: null | string,
+  options? : Array<Option>,
   row: number,
   column: number,
   width: null | string | number,
   form: number
+}
+
+export interface Option{
+  label: string,
+  value: string,
+  extra: string,
 }

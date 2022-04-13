@@ -1,6 +1,6 @@
 <template>
   <main id="main" class="relative">
-    <Room></Room>
+    <!-- <Room></Room> -->
     <Forms></Forms>
   </main>
 </template>

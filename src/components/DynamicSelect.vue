@@ -2,7 +2,14 @@
 
   <tr class="tr flex align-center">
     <th class="th"><label :for="form?.label">{{form?.title}}</label><span v-if="form?.required" class="hissu">必須</span></th>
-    <td class="td" :class="{long: form?.width}"><input type="text" :name="form?.label" :id="form?.label" class="w40 validate[required] center" data-prompt-position="topLeft:40" :placeholder="form?.placeholder||''"></td>
+    <td class="td select">
+      <select :name="form?.label" :id="form?.label" class="validate[required]" data-prompt-position="topLeft:40">
+        <option value="">{{form?.placeholder}}</option>
+        <option v-for="(o, idx) in form.options" :key="idx" :value="o.value">{{o.label}}</option>
+      </select>
+      <span class="select-icon"><i class="fas fa-caret-down"></i></span>
+      <!-- <Dropdown></Dropdown> -->
+    </td>
     <td v-if="form?.hint" class="td2">{{form.hint}}</td>
   </tr>
 
@@ -11,8 +18,9 @@
 import { defineComponent, PropType } from "vue";
 import { FormItem } from "@/types/Form";
 
+
 export default defineComponent({
-  name: "DynamicInput",
+  name: "DynamicSelect",
   props: {
     form: Object as PropType<FormItem>
   },

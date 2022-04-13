@@ -18,47 +18,46 @@
 
           <table class="formTable">
           <tbody>
-            <DynamicInput :form="myform">
-            </DynamicInput>
+            <component v-for="(comp , idx) in myform" :key="idx" :is="getComp(comp.type)" :form="myform[idx]"></component>
           <!-- <tr class="tr flex align-center">
             <th class="th"><label for="name1">名前（姓）</label><span class="hissu">必須</span></th>
             <td class="td"><input type="text" name="姓" id="name1" class="w40 validate[required] center" data-prompt-position="topLeft:40" placeholder="青 空"></td>
           </tr> -->
 
-          <tr class="tr flex align-center">
+          <!-- <tr class="tr flex align-center">
             <th class="th"><label for="name2">名前（名）</label><span class="hissu">必須</span></th>
             <td class="td"><input type="text" name="名" id="name2" class=" validate[required] center" data-prompt-position="topLeft:40" placeholder="太 郎"></td>
-          </tr>
+          </tr> -->
 
-          <tr class="tr flex align-center">
+          <!-- <tr class="tr flex align-center">
             <th class="th"><label for="fname1">フリガナ（セイ）</label><span class="hissu">必須</span></th>
             <td class="td"><input type="text" name="セイ" id="fname1" class=" validate[required,custom[kana]] center" data-prompt-position="topLeft:40" placeholder="アオゾラ"></td>
             <td class="td2">（全角カタカナ）</td>
-          </tr>
+          </tr> -->
 
-          <tr class="tr flex align-center">
+          <!-- <tr class="tr flex align-center">
             <th class="th"><label for="fname2">フリガナ（メイ）</label><span class="hissu">必須</span></th>
             <td class="td"><input type="text" name="メイ" id="fname2" class=" validate[required,custom[kana]]" data-prompt-position="topLeft:40" placeholder="タロウ"></td>
             <td class="td2">（全角カタカナ）</td>
-          </tr>
+          </tr> -->
 
-          <tr class="tr flex align-center">
+          <!-- <tr class="tr flex align-center">
             <th class="th"><label for="email">メールアドレス</label><span class="hissu">必須</span></th>
             <td class="td long"><input type="text" name="Email" id="email" class="validate[required,custom[email]]" data-prompt-position="topLeft:40" placeholder="Taro@aozora.com"></td>
             <td class="td2">（半角英数字または記号）</td>
-          </tr>
+          </tr> -->
 
-          <tr class="tr flex align-center">
+          <!-- <tr class="tr flex align-center">
             <th class="th"><label for="tel">電話番号</label><span class="hissu">必須</span></th>
             <td class="td"><input type="text" name="電話番号" id="tel" class="validate[required,custom[onlyNumberSp]]" data-prompt-position="topLeft:40" placeholder="Taro@aozora.com"></td>
             <td class="td2">（半角数字/ハイフンなし）</td>
-          </tr>
+          </tr> -->
 
-          <tr class="tr flex align-center">
+          <!-- <tr class="tr flex align-center">
             <th class="th"><label for="address1">郵便番号</label><span class="hissu">必須</span></th>
             <td class="td"><input type="text" name="郵便番号" id="address1" class="validate[required,custom[onlyNumberSp]]" data-prompt-position="topLeft:40" placeholder="1006640"></td>
             <td class="td2">（半角数字/ハイフンなし）</td>
-          </tr>
+          </tr> -->
 
           <tr class="tr flex align-center">
             <th class="th"><label for="address2">都道府県</label><span class="hissu">必須</span></th>
@@ -729,29 +728,135 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, computed, shallowRef } from "vue";
 import { FormItem } from "@/types/Form";
 import DynamicInput from "../components/DynamicInput.vue";
+import Dropdown from "primevue/dropdown";
 export default defineComponent({
   components: {
     DynamicInput
   },
   setup(){
-    const myform: FormItem = {
-      "id": 2099918841,
-      "label": "name",
-      "title": "お名前（姓）",
-      "required": true,
-      "type": "text",
-      "hint": null,
-      "placeholder": "青　空",
-      "row": 1,
-      "column": 1,
-      "width": null,
-      "form": 4250296260
+    const componentBasePath = "../components/"
+    // const componentLookup: any = {
+    //   "text": "DynamicInput"
+    // }
+    const myform: FormItem[] = [
+      {
+        "id": 2099918841,
+        "label": "name1",
+        "title": "お名前（姓）",
+        "required": true,
+        "type": "text",
+        "hint": null,
+        "placeholder": "青　空",
+        "row": 1,
+        "column": 1,
+        "width": null,
+        "form": 4250296260
+      },
+      {
+        "id": 2099918841,
+        "label": "name2",
+        "title": "お名前（名）",
+        "required": true,
+        "type": "text",
+        "hint": null,
+        "placeholder": "花　子",
+        "row": 1,
+        "column": 1,
+        "width": null,
+        "form": 4250296261
+      },
+      {
+        "id": 2099918841,
+        "label": "fname1",
+        "title": "フリガナ（セイ）",
+        "required": true,
+        "type": "text",
+        "hint": "（全角カタカナ）",
+        "placeholder": "アオゾラ",
+        "row": 1,
+        "column": 1,
+        "width": null,
+        "form": 4250296262
+      },
+      {
+        "id": 2099918841,
+        "label": "fname2",
+        "title": "フリガナ（メイ）",
+        "required": true,
+        "type": "text",
+        "hint": "（全角カタカナ）",
+        "placeholder": "ハナコ",
+        "row": 1,
+        "column": 1,
+        "width": null,
+        "form": 4250296262
+      },
+      {
+        "id": 2099918841,
+        "label": "email",
+        "title": "メールアドレス",
+        "required": true,
+        "type": "text",
+        "hint": "（全角カタカナ）",
+        "placeholder": "Taro@aozora.com",
+        "row": 1,
+        "column": 1,
+        "width": "40%",
+        "form": 4250296263
+      },
+      {
+        "id": 2099918842,
+        "label": "tel",
+        "title": "電話番号",
+        "required": true,
+        "type": "text",
+        "hint": "（半角数字/ハイフンなし）",
+        "placeholder": "090-1234-5678",
+        "row": 1,
+        "column": 1,
+        "width": null,
+        "form": 4250296263
+      },
+      {
+        "id": 2099918843,
+        "label": "address1",
+        "title": "郵便番号",
+        "required": true,
+        "type": "text",
+        "hint": "（半角数字/ハイフンなし）",
+        "placeholder": "1006640",
+        "row": 1,
+        "column": 1,
+        "width": null,
+        "form": 4250296263
+      },
+    ]
+    const textComp = shallowRef<object | null>(null)
+    const selectComp = shallowRef<object | null>(null)
+    const checkComp = shallowRef<object | null>(null)
+
+    import(componentBasePath+"DynamicInput.vue").then(val => {
+      textComp.value = val.default;
+    })
+    selectComp.value = Dropdown //already imported
+    // import(componentBasePath+"DynamicInput.vue").then(val => {
+    //   textComp.value = val.default;
+    // })
+    const getComp = (name: string) => {
+      if (name === 'text'){
+        return textComp.value
+      }else if (name === 'select'){
+        return selectComp.value
+      }else{
+        return textComp.value
+      }
     }
     return {
-      myform
+      myform,
+      getComp
     }
   }
 

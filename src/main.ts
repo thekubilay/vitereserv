@@ -34,4 +34,5 @@ const primeOptions = {
 app.use(pinia)
 app.use(PrimeVue,primeOptions)
 // app.use(router)
+app.component('Dropdown', Dropdown)
 app.mount('#app')
