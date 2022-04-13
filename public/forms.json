@@ -93,6 +93,75 @@
         "form": 4250296263
       },
       {
+        "id": 2099918843,
+        "label": "address2",
+        "title": "郵便番号",
+        "required": true,
+        "type": "text",
+        "hint": "（半角数字/ハイフンなし）",
+        "placeholder": "1006640",
+        "row": 1,
+        "column": 1,
+        "width": null,
+        "form": 4250296263
+      },
+      {
+        "id": 2099918844,
+        "label": "address2",
+        "title": "都道府県",
+        "required": true,
+        "type": "select",
+        "hint": null,
+        "placeholder": "選択して下さい",
+        "options": [
+          {"label": "大阪", "value": "大阪"},
+          {"label": "北海道", "value": "北海道"}
+        ],
+        "row": 1,
+        "column": 1,
+        "width": null,
+        "form": 4250296263
+      },
+      {
+        "id": 2099918843,
+        "label": "address3",
+        "title": "市区町村",
+        "required": true,
+        "type": "text",
+        "hint": null,
+        "placeholder": null,
+        "row": 1,
+        "column": 1,
+        "width": "40%",
+        "form": 4250296263
+      },
+      {
+        "id": 2099918843,
+        "label": "address4",
+        "title": "丁目番地",
+        "required": true,
+        "type": "text",
+        "hint": null,
+        "placeholder": null,
+        "row": 1,
+        "column": 1,
+        "width": "40%",
+        "form": 4250296263
+      },
+      {
+        "id": 2099918843,
+        "label": "address5",
+        "title": "建物名部屋番号",
+        "required": true,
+        "type": "text",
+        "hint": null,
+        "placeholder": null,
+        "row": 1,
+        "column": 1,
+        "width": "40%",
+        "form": 4250296263
+      },
+      {
         "id": 2099918844,
         "label": "mailmagazine",
         "title": "メールマガジンを<br>購読する",
