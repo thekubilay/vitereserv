@@ -8,26 +8,40 @@
         <option v-for="(o, idx) in form.options" :key="idx" :value="o.value">{{o.label}}</option>
       </select>
       <span class="select-icon"><i class="fas fa-caret-down"></i></span> -->
-      <Dropdown v-model="selectedItem" :options="form?.options" optionLabel="label" :placeholder="(form?.placeholder?.toString())"></Dropdown>
+      <Dropdown v-model="localModel" :options="form?.options" optionLabel="label" :placeholder="(form?.placeholder?.toString())"></Dropdown>
     </td>
+    <span v-if="error&&error!==true" class="is-danger">
+      {{error}}
+    </span>
     <td v-if="form?.hint" class="td2">{{form.hint}}</td>
   </tr>
 
 </template>
 <script lang="ts">
-import { defineComponent, PropType,ref } from "vue";
+import { defineComponent, PropType, watch, ref } from "vue";
 import { FormItem } from "@/types/Form";
 
 
 export default defineComponent({
   name: "DynamicSelect",
   props: {
-    form: Object as PropType<FormItem>
+    form: Object as PropType<FormItem>,
+    modelValue: [String, Object],
+    error: {
+      type: [String,Boolean],
+      default: ""
+    }
   },
-  setup(){
-    const selectedItem = ref<string>("")
+  setup(props,{emit}){
+    const localModel = ref<Array<any>>([])
+    // if(props.modelValue){
+    //   localModel.value = props.modelValue;
+    // }
+    watch(() => localModel.value, (val) => {
+      emit('update:modelValue', val)
+    })
     return {
-      selectedItem
+      localModel
     }
   }
 })

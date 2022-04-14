@@ -4,6 +4,45 @@
     "header": "header of the room",
     "body": "some context",
     "company": 7504030267,
+    "times": [
+        {
+            "id": 4453,
+            "time": "11:00"
+        }
+    ],
+    "separated_holidays": [
+        {
+            "id": 28426987,
+            "date": "2022-04-12"
+        }
+    ],
+    "vacancies": [
+        {
+            "id": 154561351,
+            "date": "2022-04-18",
+            "limit": 10,
+            "status_triangle": 3,
+            "tel"?: false,
+            "time": "11:00",
+            "applicants": [16561635,165468,164867,569456,68465465]
+        },
+        {
+            "id": 154561352,
+            "date": "2022-04-18",
+            "left": 5,
+            "limit": 10,
+            "tel": false,
+            "time": "13:00"
+        },
+        {
+            "id": 154561352,
+            "date": "2022-04-19",
+            "left": 5,
+            "limit": 10,
+            "tel": false,
+            "time": "13:00"
+        }
+    ],
     "salon": null,
     "form": 4250296260,
     "user": [

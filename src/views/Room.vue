@@ -1,5 +1,6 @@
 <template>
     <div id="index" class="main">
+      <div id="overlay" ref="overlay"></div>
       <div class="template__Wrapper">
         <div class="container">
           <h2 class="h2">ご予約内容の選択</h2>
@@ -45,7 +46,7 @@
                   <div class="flex justify-center align-center arrow prev" @click="changeWeek(-1)">
                     <img src="/arrow.svg" />
                   </div>
-                  <span v-if="weekDates"> {{weekDates[0]}}（日） 〜 {{weekDates[6]}}（土） </span>
+                  <span v-if="weekDatesObjs"> {{ weekDatesObjs[0].date }}（日） 〜 {{ weekDatesObjs[6].date }}（土） </span>
                   <div class="flex justify-center align-center arrow next" @click="changeWeek(1)">
                     <img src="/arrow.svg" />
                   </div>
@@ -54,17 +55,12 @@
               <div class="calendar__contents">
                 <ul class="ul flex">
                   <template v-if="calendarService">
-                    <li v-for="(item, idx) in calendarService.weekdaysShort" :key="idx" class="week-cell__Wrapper" >
-                    <!-- ここでv-forする -->
-                    <div
-                      class="week-cell__header flex column justify-center align-center"
-                    >
-                      <div class="day">{{item}}</div>
-                      <div class="date">{{weekDates[idx].slice(5, weekDates[idx].length)}}</div>
-                    </div>
-                    <div
-                      class="week-cell__contents flex column justify-center align-center"
-                    >
+                    <li v-for="(item, idx) in weekDatesObjs" :key="idx" class="week-cell__Wrapper" >
+                      <div class="week-cell__header flex column justify-center align-center">
+                        <div class="day">{{ item.day }}</div>
+                        <div class="date">{{ item.date.slice(5, item.date.length) }}</div>
+                      </div>
+                      <div class="week-cell__contents flex column justify-center align-center">
                       <!-- 休日の場合 -->
                       <!-- <div class="sec">
                   <div class="btn_select disable">
@@ -401,28 +397,42 @@
 
 <script lang="ts">
 import { computed, defineComponent, onMounted, ref } from "vue";
+import axios from "axios";
+import ENV from "../config"
 import calendarServiceClass from "../helpers/CalendarService";
 
 export default defineComponent({
   components: {},
   setup() {
+    const overlay = ref<HTMLElement | null>(null)
     const calendarService = ref()
     const currentWeek = ref<number | null>(null);
-    const weekDates = ref<string[] | null>(null);
+    const weekDatesObjs = ref<string[] | null>(null);
 
     const formatDate = (val:string) => {
       return val.replaceAll("-", "/")
     }
 
     const changeWeek = (num:number) => {
+      overlay.value?.classList.add('active')
       currentWeek.value = currentWeek.value + num
-      weekDates.value = calendarService.value.getWeekDates(currentWeek.value)
+      weekDatesObjs.value = calendarService.value.getWeekDatesAsObject(currentWeek.value)
+      setTimeout(() => {
+        overlay.value?.classList.remove('active')
+      }, 100);
     }
 
     function init() {
+      axios.get<FormItem[]>(ENV.API + "/rooms.json")
+      .then((response) => {
+        const data = JSON.parse(JSON.stringify(response.data))
+      })
+      .catch((eroor) => {
+        console.log(eroor)
+      })
       calendarService.value = new calendarServiceClass();
       currentWeek.value = calendarService.value.currentWeek
-      weekDates.value = calendarService.value.getWeekDates(currentWeek.value)
+      weekDatesObjs.value = calendarService.value.getWeekDatesAsObject(currentWeek.value)
     }
 
     onMounted(() => {
@@ -430,7 +440,7 @@ export default defineComponent({
     })
 
     return {
-      calendarService, currentWeek, weekDates,
+      overlay, calendarService, currentWeek, weekDatesObjs,
       formatDate, changeWeek,
     };
   },

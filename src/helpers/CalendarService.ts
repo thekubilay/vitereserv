@@ -129,4 +129,15 @@ export default class CalendarService {
     return dates
   }
 
+  getWeekDatesAsObject(week_num: number): DateObject[] {
+    return this.getWeekDates(week_num).map(date => {
+      return {
+        date: moment(date).format('YYYY/MM/DD'),
+        day: moment(date).format('ddd'),
+        week: moment(date, "YYYY-MM-DD").week() - 1,
+        month: (moment(new Date()).month() + 1) + "月"
+      }
+    })
+  }
+
 }
