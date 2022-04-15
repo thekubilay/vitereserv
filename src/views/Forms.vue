@@ -271,7 +271,7 @@ export default defineComponent({
 })
 </script>
 
-<style scoped>
+<style>
 
 /* ADDED */
 #request span.is-danger {

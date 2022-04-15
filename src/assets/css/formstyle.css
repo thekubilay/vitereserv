@@ -426,7 +426,7 @@ index
 
 
 
-#index .calendar__contents {}
+/* #index .calendar__contents {} */
 #index .calendar__contents .ul {
     border: 1px solid #ddd;
     border-right: none;
