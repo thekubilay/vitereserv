@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "axios": "^0.26.1",
+    "moment": "^2.29.2",
     "pinia": "^2.0.13",
     "primevue": "^3.12.4",
     "vue": "^3.2.25",

@@ -1,9 +1,60 @@
 {
     "id": 6999744364,
-    "name": "room 1",
-    "header": "header of the room",
-    "body": "some context",
+    "name": "デモ面接予約表",
+    "header": "ここにテキストを入力できます。",
+    "body": "定休日：毎週火曜、水曜。",
     "company": 7504030267,
+    "times": [
+        {
+            "id": 4453,
+            "time": "11:00"
+        },
+        {
+            "id": 44531,
+            "time": "13:00"
+        },
+        {
+            "id": 44531,
+            "time": "15:00"
+        }
+    ],
+    "holidays": "日,月",
+    "separated_holidays": [
+        {
+            "id": 28426987,
+            "date": "2022-04-12",
+            "room": 156456156
+        }
+    ],
+    "vacancies": [
+        {
+            "id": 154561351,
+            "date": "2022-04-14",
+            "limit": 10,
+            "status_triangle": 3,
+            "tel": false,
+            "time": "11:00",
+            "applicants": [16561635,165468,164867,569456,68465465]
+        },
+        {
+            "id": 154561351,
+            "date": "2022-04-15",
+            "limit": 7,
+            "status_triangle": 3,
+            "tel": false,
+            "time": "15:00",
+            "applicants": [16561635,165468,164867,569456,68465465]
+        },
+        {
+            "id": 154561351,
+            "date": "2022-04-16",
+            "limit": 5,
+            "status_triangle": 3,
+            "tel": false,
+            "time": "13:00",
+            "applicants": [16561635,165468,164867,569456,68465465]
+        }
+    ],
     "salon": null,
     "form": 4250296260,
     "user": [
