@@ -1,9 +1,9 @@
-import { Room } from "@/types/Room";
+import { Vacancy } from "@/types/Room"
 // import {ImageProject, Project, ProjectGallery} from "@/types/Project";
 // import {Salon} from "@/types/Salon";
 
 export interface State {
-  room: Room | null,
+  vacancy: Vacancy | null,
   // project: Project | null,
   // salon: Salon | ProjectGallery[] | null
   // appLoading: boolean,
@@ -16,7 +16,7 @@ export interface State {
 
 export function state(): State {
   return {
-    room: null
+    vacancy: null
     // project: null,
     // salon: null,
     // appLoading: false as boolean,

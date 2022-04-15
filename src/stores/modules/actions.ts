@@ -1,8 +1,11 @@
-// import { Room } from "@/types/Building";
+import { Vacancy } from "@/types/Room"
 
 
 export function actions() {
   return {
+    SET_VACANCY(this: any, payload: Vacancy): void {
+      this.vacancy = payload
+    }
 
     // SET_APP_LOADING(this: any, payload: boolean): void {
     //   this.appLoading = payload;

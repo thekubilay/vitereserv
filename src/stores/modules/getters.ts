@@ -1,8 +1,9 @@
+import { Vacancy } from "@/types/Room"
+
 export function getters(){
   return {
-
-    GET_NANCHARA(){
-      return "asdasd"
+    GET_VACANCY():Vacancy{
+      return this.vacancy
     }
 
   }

@@ -118,7 +118,7 @@
                         <!-- v-for -->
                           <div v-for="(time, index) in room.times" :key="index" class="sec">
                             <!-- マル -->
-                            <div v-if="vacanciesCheck(item.date, time.time)==='circle'" class="btn_select">
+                            <div v-if="vacanciesCheck(item.date, time.time)==='circle'" class="btn_select" @click="goToForm(item.date, time.time, room.form)">
                               <div class="icon__Wrapper">
                                 <figure class="icon circle">
                                   <svg fill="#00adef" viewBox="0 0 512 512">
@@ -133,7 +133,7 @@
                               </p>
                             </div>
                             <!-- 三角 -->
-                            <div v-else-if="vacanciesCheck(item.date, time.time)==='triangle'" class="btn_select">
+                            <div v-else-if="vacanciesCheck(item.date, time.time)==='triangle'" class="btn_select" @click="goToForm(item.date, time.time, room.form)">
                               <div class="icon__Wrapper">
                                 <figure class="icon triangle">
                                   <svg fill="#00adef" viewBox="0 0 512 512">
@@ -399,6 +399,8 @@
 
 <script lang="ts">
 import { computed, defineComponent, onMounted, ref } from "vue";
+import useStore from "@/helpers/useStore"
+import {useRouter, useRoute} from "vue-router";
 import { Room, SeparatedHoliday, Vacancy } from "@/types/Room"
 import axios from "axios";
 import ENV from "../config"
@@ -407,6 +409,9 @@ import calendarServiceClass from "../helpers/CalendarService";
 export default defineComponent({
   components: {},
   setup() {
+    const route = useRoute()
+    const router = useRouter()
+    const {store} = useStore()
     const overlay = ref<HTMLElement | null>(null)
     const calendarService = ref()
     const currentWeek = ref<number | null>(null);
@@ -455,6 +460,19 @@ export default defineComponent({
       }
     }
 
+    const goToForm = (date:string, time:string, form:number) => {
+      const obj = vacancies.value.find(element => {
+        return (formatDate(element.date) === date) && (element.time === time)
+      })
+      if(obj){
+        store.SET_VACANCY(obj)
+      }
+      router.push({
+        name: "Form",
+        params: {rid:route.params.rid, fid:form}
+      })
+    }
+
     function getRooms(){
       axios.get<Room[]>(ENV.API + "/rooms.json?week=" + currentWeek.value)
       .then((response) => {
@@ -481,7 +499,7 @@ export default defineComponent({
 
     return {
       overlay, calendarService, currentWeek, weekDatesObjs, room, holidays, vacancies,
-      formatDate, changeWeek, separatedHolidaysCheck, vacanciesCheck,
+      formatDate, changeWeek, separatedHolidaysCheck, vacanciesCheck, goToForm,
     };
   },
 });
