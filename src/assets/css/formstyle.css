@@ -694,6 +694,7 @@ tbody {
 .formTable .tr {
     padding: 10px 0 10px;
     line-height: 1.5;
+    position: relative;
 }
 @media screen and (max-width: 767px) {
     .formTable .tr {

@@ -16,11 +16,13 @@ export interface FormItem{
   hint: null | string,
   placeholder: null | string,
   options? : Array<Option>,
+  rules?: string,
   row: number,
   column: number,
   width: null | string | number,
   form: number,
-  model: string | object | string[]
+  error?: string
+  // model: string | object | string[]
 }
 
 export interface Option{

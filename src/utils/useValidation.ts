@@ -1,3 +1,16 @@
+function required(val: string|Array<string>|Object){
+  if(Array.isArray(val)){
+    if(val.length>0)
+      return true
+    return "情報を入力してください。"
+  }
+  if(typeof val === "string" && val.length>0)
+    return true
+  if(typeof val === "object" && val!==null)//null is considered an object
+    return true
+  return "情報を入力してください。"
+}
+
 function hankakuCheck(val: string) {
   if (!val || val.match(/^[0-9a-zA-Z]*$/)) {
       return true
@@ -27,6 +40,7 @@ function kanaCheck(val: string) {
 }
 
 function zipCodeCheck(val:string) {
+  console.log("zip")
   if (!val || val.match(/^\d{3}-*\d{4}$/ )) {
       return true
   }
@@ -65,6 +79,7 @@ function phoneNumberCheck(val: string) {
 }
 
 export default {
+  required,
   hankakuCheck,
   hankakukigouCheck,
   mailCheck,
