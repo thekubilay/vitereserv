@@ -5,11 +5,11 @@
         <div class="container">
           <h2 class="h2">ご予約内容の選択</h2>
           <div class="">
-            <section v-if="rooms" class="menu__Wrapper">
-              <h3 class="h3">{{ rooms.name }}</h3>
+            <section v-if="room" class="menu__Wrapper">
+              <h3 class="h3">{{ room.name }}</h3>
               <div class="menu__contents">
                 <p class="p1">
-                  <span class="list-item">{{ rooms.header }}</span>
+                  <span class="list-item">{{ room.header }}</span>
                 </p>
               </div>
             </section>
@@ -74,7 +74,7 @@
                         </div>
                       </div>
                       <!-- 休日以外の場合 -->
-                      <template v-else-if="rooms && rooms.times && rooms.times.length > 0">
+                      <template v-else-if="room && room.times && room.times.length > 0">
                         <!-- telの場合 -->
                         <!-- <div class="sec">
                           <a class="btn_select">
@@ -116,7 +116,7 @@
                           </a>
                         </div> -->
                         <!-- v-for -->
-                          <div v-for="(time, index) in rooms.times" :key="index" class="sec">
+                          <div v-for="(time, index) in room.times" :key="index" class="sec">
                             <!-- マル -->
                             <div v-if="vacanciesCheck(item.date, time.time)==='circle'" class="btn_select">
                               <div class="icon__Wrapper">
@@ -269,8 +269,8 @@
                   </li>
                   <li><p class="p1">{{period_description}}</p></li>
                 </ul> -->
-                <p v-if="rooms" class="p1 left">
-                  <span class="list-item">{{ rooms.body }}</span>
+                <p v-if="room" class="p1 left">
+                  <span class="list-item">{{ room.body }}</span>
                 </p>
               </div>
             </section>
@@ -410,8 +410,8 @@ export default defineComponent({
     const overlay = ref<HTMLElement | null>(null)
     const calendarService = ref()
     const currentWeek = ref<number | null>(null);
-    const weekDatesObjs = ref<string[] | null>(null);
-    const rooms = ref<Room[] | null>(null)
+    const weekDatesObjs = ref<any[] | null>(null);
+    const room = ref<Room | null>(null)
     const holidays = ref<string[] | []>([])
     const vacancies = ref<Vacancy[] | []>([])
 
@@ -421,7 +421,8 @@ export default defineComponent({
 
     const changeWeek = (num:number) => {
       overlay.value?.classList.add('active')
-      currentWeek.value = currentWeek.value + num
+      if(currentWeek.value)
+        currentWeek.value = currentWeek.value + num
       weekDatesObjs.value = calendarService.value.getWeekDatesAsObject(currentWeek.value)
       // getRooms();
       setTimeout(() => {
@@ -429,8 +430,11 @@ export default defineComponent({
       }, 100);
     }
 
-    const separatedHolidaysCheck = (date:string) => {
-      return rooms.value?.separated_holidays.some(element => formatDate(element.date) === date)
+    const separatedHolidaysCheck = (date:string):Boolean => {
+      if(room.value){
+        return room.value.seperated_holidays.some((element: SeparatedHoliday) => formatDate(element.date.toString()) === date) 
+      }
+      return false
     }
 
     const vacanciesCheck = (date:string, time:string) => {
@@ -455,7 +459,7 @@ export default defineComponent({
       axios.get<Room[]>(ENV.API + "/rooms.json?week=" + currentWeek.value)
       .then((response) => {
         const data = JSON.parse(JSON.stringify(response.data))
-        rooms.value = data
+        room.value = data
         holidays.value = data.holidays.split(",")
         vacancies.value = data.vacancies
       })
@@ -476,7 +480,7 @@ export default defineComponent({
     })
 
     return {
-      overlay, calendarService, currentWeek, weekDatesObjs, rooms, holidays, vacancies,
+      overlay, calendarService, currentWeek, weekDatesObjs, room, holidays, vacancies,
       formatDate, changeWeek, separatedHolidaysCheck, vacanciesCheck,
     };
   },
