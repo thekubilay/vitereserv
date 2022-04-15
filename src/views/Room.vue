@@ -431,8 +431,8 @@ export default defineComponent({
     }
 
     const separatedHolidaysCheck = (date:string):Boolean => {
-      if(room.value){
-        return room.value.seperated_holidays.some((element: SeparatedHoliday) => formatDate(element.date.toString()) === date) 
+      if(room.value && room.value.seperated_holidays){
+        return room.value.seperated_holidays.some((element: SeparatedHoliday) => formatDate(String(element.date)) === date) 
       }
       return false
     }
