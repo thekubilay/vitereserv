@@ -1,11 +1,13 @@
 <template>
     <div id="index" class="main">
-
-      <div id="notification" class="notification">
-        <span class="close">×</span>
-        <h3 class="title">タイトル</h3>
-        <p class="body-text">テキストテキストテキスト</p>
-      </div>
+      <transition name="slide-fade" appear>
+        <div v-if="isActiveNotification"
+              id="notification" class="notification">
+          <span class="close" @click="isActiveNotification=!isActiveNotification">×</span>
+          <h3 class="title">タイトル</h3>
+          <p class="body-text">テキストテキストテキスト</p>
+        </div>
+      </transition>
 
       <div id="overlay" ref="overlay"></div>
       <div class="template__Wrapper">
@@ -70,7 +72,7 @@
                       </div>
                       <div class="week-cell__contents flex column justify-center align-center">
                       <!-- 休日の場合 -->
-                      <div v-if="holidays.includes(item.day) || separatedHolidaysCheck(item.date) " class="sec">
+                      <div v-if="holidays.includes(item.day) || separatedHolidaysCheck(item.date) || pastTimeCheck(item.timestamp)" class="sec">
                         <div class="btn_select disable">
                           <div class="icon__Wrapper noflame">
                             <figure class="icon bar" >
@@ -404,6 +406,7 @@
         </div>
       </div>
     </div>
+    <button @click="isActiveNotification=!isActiveNotification">ここをクリック</button>
 </template>
 
 <script lang="ts">
@@ -426,6 +429,7 @@ export default defineComponent({
     const room = ref<Room | null>(null)
     const holidays = ref<string[] | []>([])
     const vacancies = ref<Vacancy[] | []>([])
+    const isActiveNotification = ref<boolean>(false)
 
     const formatDate = (val:string) => {
       return val.replaceAll("-", "/")
@@ -465,6 +469,14 @@ export default defineComponent({
       }else{
         return false
       }
+    }
+
+    const pastTimeCheck = (timestamp:number):boolean => {
+      const todayTimestamp = new Date().getTime()
+      if(todayTimestamp >= timestamp) {
+        return true
+      }
+      return false
     }
 
     const goToForm = (date:string, time:string, form:number) => {
@@ -508,7 +520,9 @@ export default defineComponent({
       currentWeek.value = calendarService.value.currentWeek
       weekDatesObjs.value = calendarService.value.getWeekDatesAsObject(currentWeek.value)
       getRooms();
-      console.log(new Date)
+      // setTimeout(() => {
+      //   isActiveNotification.value = true
+      // }, 1000)
     }
 
     onMounted(() => {
@@ -516,8 +530,8 @@ export default defineComponent({
     })
 
     return {
-      overlay, calendarService, currentWeek, weekDatesObjs, room, holidays, vacancies,
-      formatDate, changeWeek, separatedHolidaysCheck, vacanciesCheck, goToForm,
+      overlay, calendarService, currentWeek, weekDatesObjs, room, holidays, vacancies, isActiveNotification,
+      formatDate, changeWeek, separatedHolidaysCheck, vacanciesCheck, goToForm, pastTimeCheck,
     };
   },
 });
@@ -526,11 +540,20 @@ export default defineComponent({
 <style scoped>
 .notification {
   position: fixed;
-  top: 10px;
-  right: 50px;
-  width: 50%;
+  top: 20px;
+  right: 20px;
   height: auto;
-  max-width: 300px;
+  width: 350px;
+  background-color: #e4e5ff;
+}
+.notification .title {
+  padding: 7px 15px;
+  color: aliceblue;
+  background-color: #6366F1;
+}
+.notification .body-text {
+  padding: 7px 15px;
+  min-height: 80px;
 }
 .notification > .close {
   z-index: 20;
@@ -538,7 +561,7 @@ export default defineComponent({
   top: 0;
   right: 0;
   width: 35px;
-  color: #95979c!important;
+  color: #e6e6e6;
   font-size: 20px;
   font-weight: 700;
   line-height: 35px;
@@ -548,6 +571,19 @@ export default defineComponent({
 }
 
 .notification > .close:hover {
-  color: #2b2e38!important
+  color: #b5c4f7;
+}
+
+/* アニメーション */
+.slide-fade-enter-active {
+  transition: all .3s ease;
+}
+.slide-fade-leave-active {
+  transition: all .6s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+.slide-fade-enter, .slide-fade-leave-to
+/* .slide-fade-leave-active below version 2.1.8 */ {
+  transform: translateX(10px);
+  opacity: 0;
 }
 </style>
