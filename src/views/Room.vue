@@ -1,5 +1,12 @@
 <template>
     <div id="index" class="main">
+
+      <div id="notification" class="notification">
+        <span class="close">×</span>
+        <h3 class="title">タイトル</h3>
+        <p class="body-text">テキストテキストテキスト</p>
+      </div>
+
       <div id="overlay" ref="overlay"></div>
       <div class="template__Wrapper">
         <div class="container">
@@ -70,7 +77,9 @@
                               <svg fill="#c2c2c2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 3.92"><defs></defs><rect class="cls-1" width="32" height="3.92"/></svg>
                             </figure>
                           </div>
-                          <p class="time">定休日</p>
+                          <p v-if="holidays.includes(item.day) || separatedHolidaysCheck(item.date) " class="time">
+                            定休日
+                          </p>
                         </div>
                       </div>
                       <!-- 休日以外の場合 -->
@@ -399,8 +408,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, onMounted, ref } from "vue";
-import useStore from "@/helpers/useStore"
-import { useRouter, useRoute } from "vue-router";
+import {useRouter, useRoute} from "vue-router";
 import { Room, SeparatedHoliday, Vacancy } from "@/types/Room"
 import { WeekDatesAsObject } from "@/types/Calendar";
 import axios from "axios";
@@ -412,7 +420,6 @@ export default defineComponent({
   setup() {
     const route = useRoute()
     const router = useRouter()
-    const {store} = useStore()
     const overlay = ref<HTMLElement | null>(null)
     const calendarService = ref()
     const currentWeek = ref<number | null>(null);
@@ -464,7 +471,6 @@ export default defineComponent({
     const goToForm = (date:string, time:string, formId:number) => {
       const vacancy = findVacancy(date, time)
       if(vacancy){
-        store.SET_VACANCY(vacancy)
         router.push({
           name: "Form",
           params: {rid:route.params.rid, fid:formId}
@@ -491,11 +497,22 @@ export default defineComponent({
       })
     }
 
+    function deleteQuery(){
+      if(route.query){
+        router.push({
+          name: "Room",
+          params: {rid:route.params.rid},
+        })
+      }
+    }
+
     function init() {
+      deleteQuery()
       calendarService.value = new calendarServiceClass();
       currentWeek.value = calendarService.value.currentWeek
       weekDatesObjs.value = calendarService.value.getWeekDatesAsObject(currentWeek.value)
       getRooms();
+      console.log(new Date)
     }
 
     onMounted(() => {
@@ -511,5 +528,30 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.notification {
+  position: fixed;
+  top: 10px;
+  right: 50px;
+  width: 50%;
+  height: auto;
+  max-width: 300px;
+}
+.notification > .close {
+  z-index: 20;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 35px;
+  color: #95979c!important;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 35px;
+  text-align: center;
+  text-decoration: none;
+  text-indent: 0
+}
 
+.notification > .close:hover {
+  color: #2b2e38!important
+}
 </style>
