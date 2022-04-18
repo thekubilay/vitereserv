@@ -24,6 +24,7 @@
                   :form="myform[idx]" 
                   :modelValue="formModel[idx]"
                   @updateModel="updateModel"
+                  @cVal="saveForm()"
                   :error="myform[idx]['error']"
                   :showErrors="showErrors"
               />
@@ -58,21 +59,31 @@ import { FormItem } from "@/types/Form";
 import axios from "axios";
 import ENV from "../config"
 import useValidation from "@/utils/useValidation";
+import FormsFunc from "./Forms"
 
 export default defineComponent({
   components: {
   },
   setup(){
-    const myform = ref<FormItem[]>([])
-    const formElem = ref<any>(null)
-    const formModel = ref<Array<string|object|string[]>>([])
+    interface RadioData {
+      name: String,
+      value: String
+    }
+    const myform = ref<FormItem[]>([]);
+    const formElem = ref<any>(null);
+    const formModel = ref<Array<string|RadioData|string[]>>([]);
     const formRules: { (data: any): boolean|string}[][] = []; //Array of functions
-    const textComp = shallowRef<object | null>(null)
-    const selectComp = shallowRef<object | null>(null)
-    const checkComp = shallowRef<object | null>(null)
-    const radioComp = shallowRef<object | null>(null)
-    const showErrors = ref(false)
-
+    const textComp = shallowRef<object | null>(null);
+    const selectComp = shallowRef<object | null>(null);
+    const checkComp = shallowRef<object | null>(null);
+    const radioComp = shallowRef<object | null>(null);
+    const showErrors = ref(false);
+    const {vacancyID, 
+      hasSessionData,
+      getSessionData,
+      saveSessionData,
+      checkVacancy
+      } = FormsFunc()
 
     import("../components/DynamicInput.vue").then(val => {
       textComp.value = val.default;
@@ -100,18 +111,30 @@ export default defineComponent({
       }
     }
 
-
     function init(){
-        axios.get<FormItem[]>(ENV.API + "/forms.json")
-        .then((response) => {
-            const data = JSON.parse(JSON.stringify(response.data))
-            setupForm(data.form_items)
+      // 1. Check vacancy
+      checkVacancy()
 
-        })
-        .catch((error) => {
-            console.log(error)
-        })
+      // 2. Request form data
+      axios.get<FormItem[]>(ENV.API + "/forms.json")
+      .then((response) => {
+          const data = JSON.parse(JSON.stringify(response.data))
+          setupForm(data.form_items)
+
+          //3. Check for session data
+          if(hasSessionData()){
+            let d = getSessionData()
+            console.log("load session data ",d)
+            // TODO add savechecks
+            formModel.value = JSON.parse(d)
+          }
+      })
+      .catch((error) => {
+          console.log(error)
+      })
+
     }
+
     function setupForm(f:FormItem[]):void{
       myform.value = f
       myform.value.forEach((data,idx)=>{
@@ -120,9 +143,14 @@ export default defineComponent({
         formRules[idx] = rules
         //@ts-ignore
         data['error'] = ''
-
       })
     }
+
+    function saveForm(){
+      console.log("saving from to session")
+      saveSessionData(JSON.stringify(formModel.value))
+    }
+
     function getRuleFunctions(data:FormItem):{ (data: any): boolean|string}[]{
       const res:{ (data: any): boolean|string}[] = []
       if(data.required){
@@ -179,12 +207,12 @@ export default defineComponent({
       return []
     }
 
-    const updateModel = (val: string|string[]|object, idx: number) => {
+    const updateModel = (val: string|string[]|RadioData, idx: number) => {
       formModel.value[idx] = val;
       validateField(val,idx)
     }
 
-    const validateField = (val: string|string[]|object,index: number):void => {
+    const validateField = (val: string|string[]|RadioData,index: number):void => {
       const f = myform.value[index]
       for(let i = 0; i<formRules[index].length; i++){
         const rule = formRules[index][i]
@@ -209,7 +237,6 @@ export default defineComponent({
             res = false
           }
         }
-        
       }
       console.log(res)
       return res
@@ -224,28 +251,39 @@ export default defineComponent({
       }
       if(checkAllErrors()){
         const requestData:FormData = new FormData();
+        requestData.append("vacancyID",vacancyID.value.toString())
         // Fill the requestData with key-value pairs
         formModel.value.forEach((val,idx)=>{
           if(typeof val === "string"){
             // console.log("appending"+myform.value[idx].label+val)
             requestData.append(myform.value[idx].label,val)
+          }else if(Array.isArray(val)){
+            let res = ""
+            for(let v of val){
+              res += v+","
+            }
+            requestData.append(myform.value[idx].label,res)
+          }else if(typeof val === "object" && val!==null){
+            if(val.value){
+              requestData.append(myform.value[idx].label,val.value as string)
+            }
           }
         })
         console.log("ready to send")
         for (var [key, value] of requestData.entries()) { 
           console.log(key, value);
         }
-        axios.request({
-          method: "post",
-          // baseURL: ENV.API,
-          baseURL: "http://192.168.100.29:8000/api/v1/",
-          url: "applicants/",
-          data: requestData,
-        }).then((response: any) => {
-          console.log(response)
-        }).catch((error: Error) => {
-          console.error("Server could not accept response"+error)
-        })
+        // axios.request({
+        //   method: "post",
+        //   // baseURL: ENV.API,
+        //   baseURL: "http://192.168.100.29:8000/api/v1/",
+        //   url: "applicants/",
+        //   data: requestData,
+        // }).then((response: any) => {
+        //   console.log(response)
+        // }).catch((error: Error) => {
+        //   console.error("Server could not accept response"+error)
+        // })
         // document.querySelector("#theForm").submit()
       }
     }
@@ -262,7 +300,7 @@ export default defineComponent({
       showErrors,
       myform, formModel,
       getComp, updateModel,
-      checkForm,
+      checkForm, saveForm,
       formElem,
       // validate
     }

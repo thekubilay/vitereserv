@@ -8,7 +8,7 @@
         <option v-for="(o, idx) in form.options" :key="idx" :value="o.value">{{o.label}}</option>
       </select>
       <span class="select-icon"><i class="fas fa-caret-down"></i></span> -->
-      <Dropdown v-model="localModel" :options="form?.options" optionLabel="label" :placeholder="(form?.placeholder?.toString())"></Dropdown>
+      <Dropdown @change="$emit('cVal')" v-model="localModel" :options="form?.options" optionLabel="label" :placeholder="(form?.placeholder?.toString())"></Dropdown>
     </td>
     <span v-if="error&&error!==true&&showErrors" class="is-danger">
       {{error}}
@@ -23,7 +23,7 @@ import { FormItem } from "@/types/Form";
 
 export default defineComponent({
   name: "DynamicSelect",
-  emits: ['updateModel'],
+  emits: ['updateModel','cVal'],
   props: {
     form: Object as PropType<FormItem>,
     index: Number,
@@ -36,9 +36,9 @@ export default defineComponent({
   },
   setup(props,{emit}){
     const localModel = ref<Array<any>>([])
-    // if(props.modelValue){
-    //   localModel.value = props.modelValue;
-    // }
+    if(props.modelValue){
+      localModel.value = props.modelValue as any;
+    }
     watch(() => localModel.value, (val) => {
       emit('updateModel', val, props.index)
     })

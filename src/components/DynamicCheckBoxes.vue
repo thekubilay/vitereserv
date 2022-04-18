@@ -11,6 +11,7 @@
             :value="o.value" 
             :id="form.label+'check'+idx" 
             class="HopeTypeExample form-control"
+            @change="$emit('cVal')"
             v-model="localModel"
         >
         {{o.label}}
@@ -30,7 +31,7 @@ import { FormItem } from "@/types/Form";
 
 export default defineComponent({
   name: "DynamicCheckBoxes",
-  emits: ['updateModel'],
+  emits: ['updateModel','cVal'],
   props: {
     form: Object as PropType<FormItem>,
     index: Number,

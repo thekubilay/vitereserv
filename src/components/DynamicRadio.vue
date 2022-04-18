@@ -11,6 +11,7 @@
               :value="form.options[idx].value" 
               class="radio-input" 
               :class="{'validate[required]':form?.required}" 
+              @change="$emit('cVal')"
               v-model="localModel"
           >
           <label :for="form.label+'radio'+idx">{{form.options[idx].value}}</label>
@@ -31,7 +32,7 @@ import { FormItem } from "@/types/Form";
 
 export default defineComponent({
   name: "DynamicRadio",
-  emits: ['updateModel'],
+  emits: ['updateModel','cVal'],
   props: {
     form: Object as PropType<FormItem>,
     index: Number,
@@ -44,9 +45,9 @@ export default defineComponent({
   },
   setup(props,{emit}){
     const localModel = ref<String|Array<String>>("")
-    // if(props.modelValue){
-    //   localModel.value = props.modelValue as any;
-    // }
+    if(props.modelValue){
+      localModel.value = props.modelValue as any;
+    }
     watch(() => localModel.value, (val) => {
       emit('updateModel', val, props.index)
     })

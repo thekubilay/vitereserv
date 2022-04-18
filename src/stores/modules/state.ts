@@ -1,9 +1,11 @@
+import { FormItem } from "@/types/Form"
 import { Vacancy } from "@/types/Room"
 // import {ImageProject, Project, ProjectGallery} from "@/types/Project";
 // import {Salon} from "@/types/Salon";
 
 export interface State {
   vacancy: Vacancy | null,
+  formdata: FormItem | null,
   // project: Project | null,
   // salon: Salon | ProjectGallery[] | null
   // appLoading: boolean,
@@ -16,7 +18,8 @@ export interface State {
 
 export function state(): State {
   return {
-    vacancy: null
+    vacancy: null,
+    formdata: null,
     // project: null,
     // salon: null,
     // appLoading: false as boolean,

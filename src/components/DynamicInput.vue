@@ -11,6 +11,7 @@
           data-prompt-position="topLeft:40" 
           :placeholder="form?.placeholder||''"
           :required="form?.required"
+          @change="$emit('cVal')"
           v-model="localModel"
       >
     </td>
@@ -27,6 +28,7 @@ import { FormItem } from "@/types/Form";
 
 export default defineComponent({
   name: "DynamicInput",
+  emit: ['updateModel','cVal'],
   props: {
     form: Object as PropType<FormItem>,
     index: Number,
