@@ -400,8 +400,9 @@
 <script lang="ts">
 import { computed, defineComponent, onMounted, ref } from "vue";
 import useStore from "@/helpers/useStore"
-import {useRouter, useRoute} from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 import { Room, SeparatedHoliday, Vacancy } from "@/types/Room"
+import { WeekDatesAsObject } from "@/types/Calendar";
 import axios from "axios";
 import ENV from "../config"
 import calendarServiceClass from "../helpers/CalendarService";
@@ -415,7 +416,7 @@ export default defineComponent({
     const overlay = ref<HTMLElement | null>(null)
     const calendarService = ref()
     const currentWeek = ref<number | null>(null);
-    const weekDatesObjs = ref<any[] | null>(null);
+    const weekDatesObjs = ref<WeekDatesAsObject[] | null>(null);
     const room = ref<Room | null>(null)
     const holidays = ref<string[] | []>([])
     const vacancies = ref<Vacancy[] | []>([])
@@ -426,8 +427,9 @@ export default defineComponent({
 
     const changeWeek = (num:number) => {
       overlay.value?.classList.add('active')
-      if(currentWeek.value)
-        currentWeek.value = currentWeek.value + num
+      if(currentWeek.value){
+        currentWeek.value += num
+      }
       weekDatesObjs.value = calendarService.value.getWeekDatesAsObject(currentWeek.value)
       // getRooms();
       setTimeout(() => {
@@ -437,20 +439,19 @@ export default defineComponent({
 
     const separatedHolidaysCheck = (date:string):Boolean => {
       if(room.value && room.value.seperated_holidays){
-        return room.value.seperated_holidays.some((element: SeparatedHoliday) => formatDate(String(element.date)) === date) 
+        return room.value.seperated_holidays.some((element: SeparatedHoliday) => formatDate(String(element.date)) === date)
       }
       return false
     }
 
+
     const vacanciesCheck = (date:string, time:string) => {
-      const obj = vacancies.value.find(element => {
-        return (formatDate(element.date) === date) && (element.time === time)
-      })
-      if(obj) {
-        const left:number = obj.limit - obj.applicants.length;
-        if(left > obj.status_triangle){
+      const vacancy = findVacancy(date, time)
+      if(vacancy) {
+        const left:number = vacancy.limit - vacancy.applicants.length;
+        if(left > vacancy.status_triangle){
           return "circle"
-        }else if(left <= obj.status_triangle && left !== 0){
+        }else if(left <= vacancy.status_triangle && left !== 0){
           return "triangle"
         }else if(left  === 0) {
           return "batu"
@@ -460,16 +461,20 @@ export default defineComponent({
       }
     }
 
-    const goToForm = (date:string, time:string, form:number) => {
-      const obj = vacancies.value.find(element => {
-        return (formatDate(element.date) === date) && (element.time === time)
-      })
-      if(obj){
-        store.SET_VACANCY(obj)
+    const goToForm = (date:string, time:string, formId:number) => {
+      const vacancy = findVacancy(date, time)
+      if(vacancy){
+        store.SET_VACANCY(vacancy)
+        router.push({
+          name: "Form",
+          params: {rid:route.params.rid, fid:formId}
+        })
       }
-      router.push({
-        name: "Form",
-        params: {rid:route.params.rid, fid:form}
+    }
+
+    function findVacancy(date:string, time:string):any{
+      return vacancies.value.find((element:Vacancy) => {
+        return (formatDate(element.date) === date) && (element.time === time)
       })
     }
 

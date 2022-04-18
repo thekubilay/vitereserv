@@ -1,5 +1,5 @@
 import moment from "moment";
-import {DateObject, Month} from "@/types/Calendar";
+import {DateObject, Month, WeekDatesAsObject} from "@/types/Calendar";
 
 moment.locale("ja", {
   weekdays: ["日曜日", "月曜日", "火曜日", "水曜日", "木曜日", "金曜日", "土曜日"],
@@ -129,7 +129,7 @@ export default class CalendarService {
     return dates
   }
 
-  getWeekDatesAsObject(week_num: number): DateObject[] {
+  getWeekDatesAsObject(week_num: number): WeekDatesAsObject[] {
     return this.getWeekDates(week_num).map(date => {
       return {
         date: moment(date).format('YYYY/MM/DD'),
