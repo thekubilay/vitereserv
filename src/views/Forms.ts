@@ -12,9 +12,9 @@ export default function() {
 
 
   const checkVacancy = ():void => {
-    if(route.query.hasOwnProperty("vacancyID") && route.query.vacancyID)
+    if(route.query.hasOwnProperty("vacancy") && route.query.vacancy)
     {
-      vacancyID.value = parseInt(route.query.vacancyID.toString(),10)
+      vacancyID.value = parseInt(route.query.vacancy.toString(),10)
       roomID.value = parseInt(route.params.rid as string)
       formID.value = parseInt(route.params.fid as string)
       console.log(vacancyID.value, roomID.value, formID.value)
