@@ -1,10 +1,13 @@
-import { Vacancy } from "@/types/Room"
-
+// import { Vacancy } from "@/types/Room"
+interface Error {
+  title: string,
+  text: string
+}
 
 export function actions() {
   return {
-    SET_VACANCY(this: any, payload: Vacancy): void {
-      this.vacancy = payload
+    SET_ERROR(this: any, payload: Error): void {
+      this.error = payload
     }
 
     // SET_APP_LOADING(this: any, payload: boolean): void {

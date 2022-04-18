@@ -22,5 +22,6 @@ export interface WeekDatesAsObject {
   date: string,
   day: string,
   month: string,
-  week: number
+  week: number,
+  timestamp: number
 }

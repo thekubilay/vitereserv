@@ -1,9 +1,13 @@
-import { Vacancy } from "@/types/Room"
+// import { Vacancy } from "@/types/Room"
 // import {ImageProject, Project, ProjectGallery} from "@/types/Project";
 // import {Salon} from "@/types/Salon";
+interface Error {
+  title: string,
+  text: string
+}
 
 export interface State {
-  vacancy: Vacancy | null,
+  error: Error | null,
   // project: Project | null,
   // salon: Salon | ProjectGallery[] | null
   // appLoading: boolean,
@@ -16,7 +20,7 @@ export interface State {
 
 export function state(): State {
   return {
-    vacancy: null
+    error: null
     // project: null,
     // salon: null,
     // appLoading: false as boolean,

@@ -411,6 +411,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, onMounted, ref } from "vue";
+import useStore from "@/helpers/useStore"
 import {useRouter, useRoute} from "vue-router";
 import { Room, SeparatedHoliday, Vacancy } from "@/types/Room"
 import { WeekDatesAsObject } from "@/types/Calendar";
@@ -423,6 +424,7 @@ export default defineComponent({
   setup() {
     const route = useRoute()
     const router = useRouter()
+    const {error} = useStore()
     const overlay = ref<HTMLElement | null>(null)
     const calendarService = ref()
     const currentWeek = ref<number | null>(null);
@@ -525,6 +527,9 @@ export default defineComponent({
       currentWeek.value = calendarService.value.currentWeek
       weekDatesObjs.value = calendarService.value.getWeekDatesAsObject(currentWeek.value)
       getRooms();
+      if(error){
+        console.log(error)
+      }
       // setTimeout(() => {
       //   isActiveNotification.value = true
       // }, 1000)
