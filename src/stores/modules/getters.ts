@@ -2,8 +2,8 @@
 
 export function getters(){
   return {
-    GET_ERROR: (state:any) => {
-      return state.error
-    },
+    // GET_ERROR: (state:any) => {
+    //   return state.error
+    // },
   }
 }
