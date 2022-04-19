@@ -480,7 +480,8 @@ export default defineComponent({
 
     const pastTimeCheck = (timestamp:number):boolean => {
       const todayTimestamp = new Date().getTime()
-      if(todayTimestamp >= timestamp) {
+      // ＊Added one day's time to the timestamp
+      if(todayTimestamp >= (timestamp + 86400000)) {
         return true
       }
       return false
