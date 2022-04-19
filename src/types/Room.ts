@@ -30,3 +30,8 @@ export interface Time {
   id: number,
   time: string,
 }
+
+export interface Error {
+  title: string,
+  text: string
+}

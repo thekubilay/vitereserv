@@ -3,9 +3,9 @@
       <transition name="slide-fade" appear>
         <div v-if="isActiveNotification"
               id="notification" class="notification">
-          <span class="close" @click="isActiveNotification=!isActiveNotification">×</span>
-          <h3 class="title">タイトル</h3>
-          <p class="body-text">テキストテキストテキスト</p>
+          <span class="close" @click="closeNotification()">×</span>
+          <h3 class="title">{{errorMessage.title}}</h3>
+          <p class="body-text">{{errorMessage.text}}</p>
         </div>
       </transition>
 
@@ -410,10 +410,10 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted, ref } from "vue";
+import { reactive, defineComponent, onMounted, ref } from "vue";
 import useStore from "@/helpers/useStore"
 import {useRouter, useRoute} from "vue-router";
-import { Room, SeparatedHoliday, Vacancy } from "@/types/Room"
+import { Room, SeparatedHoliday, Vacancy, Error } from "@/types/Room"
 import { WeekDatesAsObject } from "@/types/Calendar";
 import axios from "axios";
 import ENV from "../config"
@@ -424,7 +424,7 @@ export default defineComponent({
   setup() {
     const route = useRoute()
     const router = useRouter()
-    const {error} = useStore()
+    const {store} = useStore()
     const overlay = ref<HTMLElement | null>(null)
     const calendarService = ref()
     const currentWeek = ref<number | null>(null);
@@ -432,6 +432,10 @@ export default defineComponent({
     const room = ref<Room | null>(null)
     const holidays = ref<string[] | []>([])
     const vacancies = ref<Vacancy[] | []>([])
+    const errorMessage = reactive<Error>({
+      title: "",
+      text: ""
+    })
     const isActiveNotification = ref<boolean>(false)
 
     const formatDate = (val:string) => {
@@ -499,6 +503,11 @@ export default defineComponent({
       }
     }
 
+    const closeNotification = () => {
+      isActiveNotification.value =! isActiveNotification.value
+      store.SET_ERROR(null)
+    }
+
     function findVacancy(date:string, time:string):any{
       return vacancies.value.find((element:Vacancy) => {
         return (formatDate(element.date) === date) && (formatTime(element.time) === time)
@@ -539,8 +548,9 @@ export default defineComponent({
       currentWeek.value = calendarService.value.currentWeek
       weekDatesObjs.value = calendarService.value.getWeekDatesAsObject(currentWeek.value)
       getRooms();
-      if(error){
-        console.log(error)
+      if(store.error){
+        Object.assign(errorMessage, store.error)
+        isActiveNotification.value = true
       }
       // setTimeout(() => {
       //   isActiveNotification.value = true
@@ -552,8 +562,8 @@ export default defineComponent({
     })
 
     return {
-      overlay, calendarService, currentWeek, weekDatesObjs, room, holidays, vacancies, isActiveNotification,
-      formatDate, changeWeek, separatedHolidaysCheck, vacanciesCheck, goToForm, pastTimeCheck,
+      overlay, calendarService, currentWeek, weekDatesObjs, room, holidays, vacancies, isActiveNotification, errorMessage,
+      formatDate, changeWeek, separatedHolidaysCheck, vacanciesCheck, goToForm, pastTimeCheck, closeNotification,
     };
   },
 });
@@ -567,6 +577,7 @@ export default defineComponent({
   height: auto;
   width: 350px;
   background-color: #e4e5ff;
+  box-shadow: rgb(149 157 165 / 20%) 0px 8px 24px;
 }
 .notification .title {
   padding: 7px 15px;
@@ -589,7 +600,8 @@ export default defineComponent({
   line-height: 35px;
   text-align: center;
   text-decoration: none;
-  text-indent: 0
+  text-indent: 0;
+  cursor: pointer;
 }
 
 .notification > .close:hover {
