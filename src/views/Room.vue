@@ -442,7 +442,7 @@ export default defineComponent({
         currentWeek.value += num
       }
       weekDatesObjs.value = calendarService.value.getWeekDatesAsObject(currentWeek.value)
-      // getRooms();
+      getRooms();
       setTimeout(() => {
         overlay.value?.classList.remove('active')
       }, 100);
@@ -498,7 +498,13 @@ export default defineComponent({
     }
 
     function getRooms(){
-      axios.get<Room[]>(ENV.API + "/rooms.json?week=" + currentWeek.value)
+      axios.request({
+        method: "get",
+        // baseURL: ENV.API,
+        baseURL: "http://viterve-env.eba-pwmisykt.ap-northeast-1.elasticbeanstalk.com/api/v1/",
+        url: "rooms/" + route.params.rid + "/",
+        params: {week: currentWeek.value}
+      })
       .then((response) => {
         const data = JSON.parse(JSON.stringify(response.data))
         room.value = data
