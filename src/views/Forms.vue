@@ -17,7 +17,9 @@
 
             <table class="formTable">
             <tbody>
-              <tr v-for="(row, rowIdx) in formRows" :key="rowIdx">
+              <tr v-for="(row, rowIdx) in formRows" :key="rowIdx"
+                class="tr flex"
+              >
                 <component v-for="(comp , idx) in row.form_items" 
                     :key="idx" 
                     :index="{one:rowIdx, two:idx}"
@@ -34,20 +36,17 @@
             </tbody>
             </table>
 
-            <p id="anquate" class="anquate">よろしければアンケートにお答えください。<span class="hissu">アンケートに答える</span></p>
-
-            <p class="bottom_note">個人情報の取扱いについて<br>
+            <!-- <p class="bottom_note">個人情報の取扱いについて<br>
               当サイトより取得した個人情報はプレサンスグループの<a href="https://">個人情報保護方針</a>に従い、適切な取扱いに努めてまいります。<br>
               個人情報保護法に定める例外事項を除き、ご本人の同意を得ることなく第三者に提供、開示いたしません。<br>
               ※このページはSSLを使った暗号化モードで表示されています。
-            </p>
+            </p> -->
 
             <ul class="submit__Wrapper flex align-center justify-center">
               <li>
-                <button type="button" @click="checkForm" id="submit_button" pr>上記に同意の上、送信</button>
+                <button type="button" @click="checkForm" id="submit_button" pr>送信する</button>
               </li>
             </ul>
-{{formModel}}
           </form>
         </div> 
       </div>
@@ -62,6 +61,7 @@ import axios from "axios";
 import ENV from "../config"
 import useValidation from "@/utils/useValidation";
 import FormsFunc from "./Forms"
+import useStore from "../helpers/useStore"
 interface Indeces {
   one: number,
   two: number,
@@ -74,6 +74,7 @@ export default defineComponent({
       name: String,
       value: String
     }
+    const {store} = useStore()
     const formRows = ref<FormRow[]>([]);
     const formElem = ref<any>(null);
     const formModel = ref<Array<Array<string|RadioData|string[]>>>([]);
@@ -82,7 +83,9 @@ export default defineComponent({
     const selectComp = shallowRef<object | null>(null);
     const checkComp = shallowRef<object | null>(null);
     const radioComp = shallowRef<object | null>(null);
-    const showErrors = ref(false);
+    const showErrors = ref<boolean>(false);
+    const time = ref<string>("");
+    const date = ref<string>("");
     const {vacancyID,
       formID,
       roomID, 
@@ -139,8 +142,19 @@ export default defineComponent({
             // TODO add savechecks
             formModel.value = JSON.parse(d)
           }
+          //4. Get vacancy data
+          axios.get<any>(ENV.API+"vacancies/"+vacancyID.value+"/")
+          .then((response2) => {
+            console.log("vacancy:",response2)
+            date.value = response2.data.date
+            time.value = response2.data.time
+          })
+          .catch((error2)=>{
+            store.SET_ERROR({title: "エラー", text:"サーバーのエラーが発生しました。"})
+          })
       })
       .catch((error) => {
+        store.SET_ERROR({title: "エラー", text:"サーバーのエラーが発生しました。"})
           console.log(error)
       })
 
@@ -270,8 +284,13 @@ export default defineComponent({
         })
       }
       if(checkAllErrors()){
+
         const requestData:FormData = new FormData();
-        requestData.append("vacancyID",vacancyID.value.toString())
+        // requestData.append("vacancy",vacancyID.value.toString())
+        requestData.append("vacancy","444")
+        requestData.append("date",date.value.toString())
+        requestData.append("time",time.value.toString())
+        requestData.append("room",roomID.value.toString())
         // Fill the requestData with key-value pairs
         formModel.value.forEach((row,rowIdx)=>{
           row.forEach((val,idx)=>{
@@ -299,33 +318,37 @@ export default defineComponent({
         }
         axios.request({
           method: "post",
-          // baseURL: ENV.API,
+          baseURL: ENV.API,
           url: "applicants/",
           data: requestData,
         }).then((response: any) => {
           console.log(response)
+          if(response.data && response.data.status){
+            const status = response.data.status.toString()
+            if(status === "OK"){
+
+            }else if(status.toLowerCase() === "refused"){
+
+            }
+          }
         }).catch((error: Error) => {
-          console.error("Server could not accept response"+error)
+          console.error("Server could not accept response:"+error)
+          store.SET_ERROR({title: "エラー", text:"サーバーのエラーが発生しました。"})
         })
         // document.querySelector("#theForm").submit()
       }
     }
-    // const validate = () => {
-    //   for(const f of formRows.value){
 
-    //   }
-    // }
     onMounted(() => {
         init()
     })
 
     return {
       showErrors,
+      formElem,
       formRows, formModel,
       getComp, updateModel,
       checkForm, saveForm,
-      formElem,
-      // validate
     }
   }
 
