@@ -129,7 +129,7 @@
                         <!-- v-for -->
                           <div v-for="(time, index) in room.times" :key="index" class="sec">
                             <!-- マル -->
-                            <div v-if="vacanciesCheck(item.date, time.time)==='circle'" class="btn_select" @click="goToForm(item.date, time.time, room.form)">
+                            <div v-if="vacanciesCheck(item.date, time.time).mark==='circle'" class="btn_select" @click="goToForm(item.date, time.time, room.form)">
                               <div class="icon__Wrapper">
                                 <figure class="icon circle">
                                   <svg fill="#00adef" viewBox="0 0 512 512">
@@ -144,7 +144,7 @@
                               </p>
                             </div>
                             <!-- 三角 -->
-                            <div v-else-if="vacanciesCheck(item.date, time.time)==='triangle'" class="btn_select" @click="goToForm(item.date, time.time, room.form)">
+                            <div v-else-if="vacanciesCheck(item.date, time.time).mark==='triangle'" class="btn_select" @click="goToForm(item.date, time.time, room.form)">
                               <div class="icon__Wrapper">
                                 <figure class="icon triangle">
                                   <svg fill="#00adef" viewBox="0 0 512 512">
@@ -159,7 +159,7 @@
                               </p>
                             </div>
                             <!-- 残席ゼロ -->
-                            <div v-else-if="vacanciesCheck(item.date, time.time)==='batu'" class="btn_select disable">
+                            <div v-else-if="vacanciesCheck(item.date, time.time).mark==='batu'" class="btn_select disable">
                               <div class="icon__Wrapper noflame">
                                 <figure class="icon cross">
                                   <svg fill="#c2c2c2" viewBox="0 0 512 512">
@@ -462,16 +462,16 @@ export default defineComponent({
     }
 
 
-    const vacanciesCheck = (date:string, time:string) => {
+    const vacanciesCheck = (date:string, time:string):any => {
       const vacancy = findVacancy(date, time)
       if(vacancy) {
         const left:number = vacancy.limit - vacancy.applicants.length;
         if(left > vacancy.status_triangle){
-          return "circle"
+          return {id: vacancy.id, mark: "circle"}
         }else if(left <= vacancy.status_triangle && left !== 0){
-          return "triangle"
+          return {id: vacancy.id, mark: "triangle"}
         }else if(left  === 0) {
-          return "batu"
+          return {id: vacancy.id, mark: "batu"}
         }
       }else{
         return false
@@ -493,7 +493,8 @@ export default defineComponent({
       if(vacancy){
         router.push({
           name: "Form",
-          params: {rid:route.params.rid, fid:formId}
+          params: {rid:route.params.rid, fid:formId},
+          query: {vacancy: vacancy.id}
         })
       }
     }
