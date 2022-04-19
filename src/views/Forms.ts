@@ -39,6 +39,8 @@ export default function() {
 
   return {
     vacancyID,
+    formID,
+    roomID,
     checkVacancy,
     hasSessionData,
     saveSessionData,

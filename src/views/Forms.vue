@@ -78,7 +78,9 @@ export default defineComponent({
     const checkComp = shallowRef<object | null>(null);
     const radioComp = shallowRef<object | null>(null);
     const showErrors = ref(false);
-    const {vacancyID, 
+    const {vacancyID,
+      formID,
+      roomID, 
       hasSessionData,
       getSessionData,
       saveSessionData,
@@ -116,18 +118,20 @@ export default defineComponent({
       checkVacancy()
 
       // 2. Request form data
-      axios.get<FormItem[]>(ENV.API + "/forms.json")
+      console.log(ENV.API)
+      axios.get<FormItem[]>(ENV.API + "/forms/"+formID+"/")
       .then((response) => {
           const data = JSON.parse(JSON.stringify(response.data))
-          setupForm(data.form_items)
+          console.log(data)
+          // setupForm(data.form_items)
 
-          //3. Check for session data
-          if(hasSessionData()){
-            let d = getSessionData()
-            console.log("load session data ",d)
-            // TODO add savechecks
-            formModel.value = JSON.parse(d)
-          }
+          // //3. Check for session data
+          // if(hasSessionData()){
+          //   let d = getSessionData()
+          //   console.log("load session data ",d)
+          //   // TODO add savechecks
+          //   formModel.value = JSON.parse(d)
+          // }
       })
       .catch((error) => {
           console.log(error)
