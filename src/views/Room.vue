@@ -438,6 +438,10 @@ export default defineComponent({
       return val.replaceAll("-", "/")
     }
 
+    const formatTime = (val:string) => {
+      return val.slice( 0, -3 )
+    }
+
     const changeWeek = (num:number) => {
       overlay.value?.classList.add('active')
       if(currentWeek.value){
@@ -495,7 +499,7 @@ export default defineComponent({
 
     function findVacancy(date:string, time:string):any{
       return vacancies.value.find((element:Vacancy) => {
-        return (formatDate(element.date) === date) && (element.time === time)
+        return (formatDate(element.date) === date) && (formatTime(element.time) === time)
       })
     }
 
@@ -505,7 +509,7 @@ export default defineComponent({
         // baseURL: ENV.API,
         baseURL: "http://viterve-env.eba-pwmisykt.ap-northeast-1.elasticbeanstalk.com/api/v1/",
         url: "rooms/" + route.params.rid + "/",
-        params: {week: currentWeek.value}
+        params: {week: currentWeek.value? currentWeek.value : 0}
       })
       .then((response) => {
         const data = JSON.parse(JSON.stringify(response.data))
