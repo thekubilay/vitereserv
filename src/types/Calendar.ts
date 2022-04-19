@@ -13,6 +13,15 @@ export interface Month {
   year: number
 
 }
+
 export interface Calendar {
 
+}
+
+export interface WeekDatesAsObject {
+  date: string,
+  day: string,
+  month: string,
+  week: number,
+  timestamp: number
 }

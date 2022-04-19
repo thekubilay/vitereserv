@@ -1,10 +1,11 @@
-import { Vacancy } from "@/types/Room"
+// import { Vacancy } from "@/types/Room"
 
 export function getters(){
   return {
 
-    GET_ERROR: (state:any) => {
-      return state
-    },
+    // GET_ERROR: (state:any) => {
+    //   return state.error
+    // },
+
   }
 }
