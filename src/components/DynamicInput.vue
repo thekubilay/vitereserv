@@ -25,13 +25,16 @@
 <script lang="ts">
 import { defineComponent, PropType, watch, ref } from "vue";
 import { FormItem } from "@/types/Form";
-
+interface Indeces {
+  one: number,
+  two: number,
+}
 export default defineComponent({
   name: "DynamicInput",
   emit: ['updateModel','cVal'],
   props: {
     form: Object as PropType<FormItem>,
-    index: Number,
+    index: Object as PropType<Indeces>,
     modelValue: String,
     error: {
       type: [String,Boolean],

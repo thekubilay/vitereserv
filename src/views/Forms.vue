@@ -17,17 +17,19 @@
 
             <table class="formTable">
             <tbody>
-              <component v-for="(comp , idx) in myform" 
-                  :key="idx" 
-                  :index="idx"
-                  :is="getComp(comp.type)" 
-                  :form="myform[idx]" 
-                  :modelValue="formModel[idx]"
-                  @updateModel="updateModel"
-                  @cVal="saveForm()"
-                  :error="myform[idx]['error']"
-                  :showErrors="showErrors"
-              />
+              <tr v-for="(row, rowIdx) in formRows" :key="rowIdx">
+                <component v-for="(comp , idx) in row.form_items" 
+                    :key="idx" 
+                    :index="{one:rowIdx, two:idx}"
+                    :is="getComp(comp.type)" 
+                    :form="formRows[rowIdx].form_items[idx]" 
+                    :modelValue="formModel[rowIdx][idx]"
+                    @updateModel="updateModel"
+                    @cVal="saveForm()"
+                    :error="formRows[rowIdx].form_items[idx]['error']"
+                    :showErrors="showErrors"
+                />
+              </tr>
 
             </tbody>
             </table>
@@ -55,12 +57,15 @@
 
 <script lang="ts">
 import { defineComponent, computed, shallowRef, onMounted, ref } from "vue";
-import { FormItem } from "@/types/Form";
+import { FormItem, FormRow } from "@/types/Form";
 import axios from "axios";
 import ENV from "../config"
 import useValidation from "@/utils/useValidation";
 import FormsFunc from "./Forms"
-
+interface Indeces {
+  one: number,
+  two: number,
+}
 export default defineComponent({
   components: {
   },
@@ -69,10 +74,10 @@ export default defineComponent({
       name: String,
       value: String
     }
-    const myform = ref<FormItem[]>([]);
+    const formRows = ref<FormRow[]>([]);
     const formElem = ref<any>(null);
-    const formModel = ref<Array<string|RadioData|string[]>>([]);
-    const formRules: { (data: any): boolean|string}[][] = []; //Array of functions
+    const formModel = ref<Array<Array<string|RadioData|string[]>>>([]);
+    const formRules: { (data: any): boolean|string}[][][] = []; //Array of functions
     const textComp = shallowRef<object | null>(null);
     const selectComp = shallowRef<object | null>(null);
     const checkComp = shallowRef<object | null>(null);
@@ -118,20 +123,22 @@ export default defineComponent({
       checkVacancy()
 
       // 2. Request form data
-      console.log(ENV.API)
-      axios.get<FormItem[]>(ENV.API + "/forms/"+formID+"/")
+      const path = ENV.API + "forms/"+formID.value+"/"
+      console.log(path)
+      axios.get<FormItem[]>(path)
       .then((response) => {
           const data = JSON.parse(JSON.stringify(response.data))
           console.log(data)
-          // setupForm(data.form_items)
+          setupForm(data.form_rows)
 
-          // //3. Check for session data
-          // if(hasSessionData()){
-          //   let d = getSessionData()
-          //   console.log("load session data ",d)
-          //   // TODO add savechecks
-          //   formModel.value = JSON.parse(d)
-          // }
+          //3. Check for session data
+          // console.log("session:",getSessionData())
+          if(hasSessionData()){
+            let d = getSessionData()
+            // console.log("load session data ",d)
+            // TODO add savechecks
+            formModel.value = JSON.parse(d)
+          }
       })
       .catch((error) => {
           console.log(error)
@@ -139,19 +146,24 @@ export default defineComponent({
 
     }
 
-    function setupForm(f:FormItem[]):void{
-      myform.value = f
-      myform.value.forEach((data,idx)=>{
-        formModel.value.push("")
-        let rules = getRuleFunctions(data)
-        formRules[idx] = rules
+    function setupForm(f:FormRow[]):void{
+      formRows.value = f
+      formRows.value.forEach((row,idx)=>{
+        formModel.value.push([]) //TODO How to structure model?
+        formRules.push([])
+        row.form_items.forEach((item,itemIdx) => {
+          formModel.value[idx].push("")
+          let rules = getRuleFunctions(item)
+          formRules[idx][itemIdx] = rules //TODO How to structure rules?
+        })
+        
         //@ts-ignore
-        data['error'] = ''
+        row['error'] = ''
       })
     }
 
     function saveForm(){
-      console.log("saving from to session")
+      // console.log("saving from to session")
       saveSessionData(JSON.stringify(formModel.value))
     }
 
@@ -211,15 +223,15 @@ export default defineComponent({
       return []
     }
 
-    const updateModel = (val: string|string[]|RadioData, idx: number) => {
-      formModel.value[idx] = val;
-      validateField(val,idx)
+    const updateModel = (val: string|string[]|RadioData, indeces: Indeces) => {
+      formModel.value[indeces.one][indeces.two] = val;
+      validateField(val,indeces)
     }
 
-    const validateField = (val: string|string[]|RadioData,index: number):void => {
-      const f = myform.value[index]
-      for(let i = 0; i<formRules[index].length; i++){
-        const rule = formRules[index][i]
+    const validateField = (val: string|string[]|RadioData,indeces: Indeces):void => {
+      const f = formRows.value[indeces.one].form_items[indeces.two]
+      for(let i = 0; i<formRules[indeces.one][indeces.two].length; i++){
+        const rule = formRules[indeces.one][indeces.two][i]
         let res = rule(val);
         // console.log(res)
         if(typeof res!=="boolean"){
@@ -234,11 +246,13 @@ export default defineComponent({
 
     function checkAllErrors():boolean{
       let res = true
-      for(const item of myform.value){
-        if(item.hasOwnProperty('error')){
-          console.log(item.error)
-          if(typeof item.error === "string" && item.error.length>0){
-            res = false
+      for(const row of formRows.value){
+        for(const item of row.form_items){
+          if(item.hasOwnProperty('error')){
+            console.log(item.error)
+            if(typeof item.error === "string" && item.error.length>0){
+              res = false
+            }
           }
         }
       }
@@ -249,50 +263,55 @@ export default defineComponent({
     const checkForm = () => {
       if(!showErrors.value){//actively validate
         showErrors.value = true;
-        formModel.value.forEach((val,idx)=>{
-          validateField(val,idx)
+        formModel.value.forEach((row,idx)=>{
+          row.forEach((val, rowIdx) => {
+            validateField(val,{one: idx, two: rowIdx})
+          })
         })
       }
       if(checkAllErrors()){
         const requestData:FormData = new FormData();
         requestData.append("vacancyID",vacancyID.value.toString())
         // Fill the requestData with key-value pairs
-        formModel.value.forEach((val,idx)=>{
-          if(typeof val === "string"){
-            // console.log("appending"+myform.value[idx].label+val)
-            requestData.append(myform.value[idx].label,val)
-          }else if(Array.isArray(val)){
-            let res = ""
-            for(let v of val){
-              res += v+","
+        formModel.value.forEach((row,rowIdx)=>{
+          row.forEach((val,idx)=>{
+            if(typeof val === "string"){
+              // console.log("appending"+formRows.value[idx].label+val)
+              requestData.append(formRows.value[rowIdx].form_items[idx].label,val)
+            }else if(Array.isArray(val)){
+              let res = ""
+              for(let v of val){
+                res += v+","
+              }
+              requestData.append(formRows.value[rowIdx].form_items[idx].label,res)
+            }else if(typeof val === "object" && val!==null){
+              if(val.value){
+                requestData.append(formRows.value[rowIdx].form_items[idx].label,val.value as string)
+              }
             }
-            requestData.append(myform.value[idx].label,res)
-          }else if(typeof val === "object" && val!==null){
-            if(val.value){
-              requestData.append(myform.value[idx].label,val.value as string)
-            }
-          }
+
+          })
+
         })
         console.log("ready to send")
         for (var [key, value] of requestData.entries()) { 
           console.log(key, value);
         }
-        // axios.request({
-        //   method: "post",
-        //   // baseURL: ENV.API,
-        //   baseURL: "http://192.168.100.29:8000/api/v1/",
-        //   url: "applicants/",
-        //   data: requestData,
-        // }).then((response: any) => {
-        //   console.log(response)
-        // }).catch((error: Error) => {
-        //   console.error("Server could not accept response"+error)
-        // })
+        axios.request({
+          method: "post",
+          // baseURL: ENV.API,
+          url: "applicants/",
+          data: requestData,
+        }).then((response: any) => {
+          console.log(response)
+        }).catch((error: Error) => {
+          console.error("Server could not accept response"+error)
+        })
         // document.querySelector("#theForm").submit()
       }
     }
     // const validate = () => {
-    //   for(const f of myform.value){
+    //   for(const f of formRows.value){
 
     //   }
     // }
@@ -302,7 +321,7 @@ export default defineComponent({
 
     return {
       showErrors,
-      myform, formModel,
+      formRows, formModel,
       getComp, updateModel,
       checkForm, saveForm,
       formElem,

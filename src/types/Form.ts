@@ -6,22 +6,33 @@ export interface Form {
   company: number,
   user: number,
 }
+export interface FormRow{
+  classes: string | null,
+  column: number,
+  form: number,
+  form_items: FormItem[],
+  id: number,
+  order_id: number,
+  title: string,
+}
 
 export interface FormItem{
+  column: number,
+  form_row: number,
+  hint: null | string,
   id: number,
   label: string,
-  title: string,
-  required: boolean,
-  type: string,
-  hint: null | string,
-  placeholder: null | string,
   options? : Array<Option>,
+  order_od: number,
+  placeholder: null | string,
+  required: boolean,
+  row: number | null,
   rules?: string,
-  row: number,
-  column: number,
+  title: string,
+  type: string,
   width: null | string | number,
-  form: number,
-  error?: string
+  error?: string,
+  rulefunctions?: any
   // model: string | object | string[]
 }
 
