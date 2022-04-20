@@ -28,11 +28,14 @@ export default function() {
     return sessionStorage.getItem(dataName)!==null
   }
   const saveSessionData = (data: any) => {
+    // console.log(data)
     sessionStorage.setItem(dataName, data)
     sessionStorage.setItem("form", formID.value.toString())
   }
   const getSessionData = (): any => {
-    return sessionStorage.getItem(dataName)
+    const data = sessionStorage.getItem(dataName)
+    // console.log(data)
+    return data
   }
   const getSessionForm = () => {
     return sessionStorage.getItem("form")

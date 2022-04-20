@@ -82,6 +82,10 @@ export default defineComponent({
     watch(() => localModel.value, (val) => {
       emit('updateModel', val, props.index)
     })
+    watch(() => props.modelValue, (val) => {
+      if(typeof val=== "string" || Array.isArray(val))
+        localModel.value = val as string|string[]
+    })
     return {
       localModel
     }

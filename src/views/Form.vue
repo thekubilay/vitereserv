@@ -60,6 +60,7 @@
               </li>
             </ul>
           </form>
+          <button class="return-btn" @click="clearModel()">フォームクリア</button>
         </div> 
       </div>
     </div>
@@ -214,16 +215,16 @@ export default defineComponent({
         formRules.push([])
         row.form_items.forEach((item,itemIdx) => {
           if(item.type === "text"){
-            item.model = ""
+            item.model = null
             // formModel.value[idx].push("_")
           }else if (item.type === "select"){
-            item.model = {name: "", value: ""}
+            item.model = {label: "", value: ""}
             // formModel.value[idx].push({name: "", value: ""})
           }else if (item.type === "number"){
             item.model = null
             // formModel.value[idx].push({name: "", value: ""})
           }else {
-            item.model = ""
+            item.model = null
             // formModel.value[idx].push("_")
           }
 
@@ -237,16 +238,18 @@ export default defineComponent({
     }
 
     function saveForm(){
-      // console.log("saving from to session")
-      let data:any = []
-      formRows.value.forEach((row,idx) => {
-        data.push([])
-        row.form_items.forEach((item, itemIdx) => {
-          data[idx].push(item.model)
+      setTimeout(() => {//wait a bit so model is updated first
+        // console.log("saving from to session")
+        let data:any = []
+        formRows.value.forEach((row,idx) => {
+          data.push([])
+          row.form_items.forEach((item, itemIdx) => {
+            data[idx].push(item.model)
+          })
         })
-      })
-      saveSessionData(JSON.stringify(data))
-      // console.log(data)
+        saveSessionData(JSON.stringify(data))
+        // console.log(data)
+      },400)
     }
 
     function getRuleFunctions(data:FormItem):{ (data: any): boolean|string}[]{
@@ -301,9 +304,26 @@ export default defineComponent({
       return []
     }
 
-
+    const clearModel = () => {
+      formRows.value.forEach((row,rowIdx)=>{
+        row.form_items.forEach((item,itemIdx)=>{
+          if(item.model){
+            if(typeof item.model === "string"){
+              formRows.value[rowIdx].form_items[itemIdx].model = ""
+            }else if(typeof item.model === "number"){
+              formRows.value[rowIdx].form_items[itemIdx].model = null
+            }else if (item.type === "select"){
+              formRows.value[rowIdx].form_items[itemIdx].model = {label: "", value: ""}
+            }
+          }
+        })
+      })
+      saveForm()
+      // console.log(formRows.value)
+    }
 
     const updateModel = (val: string|string[]|RadioData, indeces: Indeces) => {
+      // console.log("update model")
       formRows.value[indeces.one].form_items[indeces.two].model = val;
       validateField(val,indeces)
     }
@@ -353,6 +373,9 @@ export default defineComponent({
             if(typeof val.model === "string"){
               // console.log("appending"+formRows.value[idx].label+val)
               requestData.append(formRows.value[rowIdx].form_items[idx].label,val.model)
+            }else if(typeof val.model === "number"){
+              // console.log("appending"+formRows.value[idx].label+val)
+              requestData.append(formRows.value[rowIdx].form_items[idx].label,val.model.toString())
             }else if(Array.isArray(val.model)){
               let res = ""
               for(let v of val.model){
@@ -384,35 +407,35 @@ export default defineComponent({
       if(checkAllErrors()){
         const requestData = buildRequestData()
 
-        // console.log("ready to send")
-        // for (var [key, value] of requestData.entries()) { 
-        //   console.log(key, value);
-        // }
-        isLoading.value = true;
-        axios.request({
-          method: "post",
-          baseURL: ENV.API,
-          url: "applicants/",
-          data: requestData,
-        }).then((response: any) => {
-          isLoading.value = false;
-          // console.log(response)
-          if(response.data && response.data.status){
-            // console.log(response.data.status)
-            const status = response.data.status.toString()
-            if(status === "OK"){
-              removeSessionData()
-              goTo('Thanks')
-            }else if(status.toLowerCase() === "refused"){
+        console.log("ready to send")
+        for (var [key, value] of requestData.entries()) { 
+          console.log(key, value);
+        }
+        // isLoading.value = true;
+        // axios.request({
+        //   method: "post",
+        //   baseURL: ENV.API,
+        //   url: "applicants/",
+        //   data: requestData,
+        // }).then((response: any) => {
+        //   isLoading.value = false;
+        //   // console.log(response)
+        //   if(response.data && response.data.status){
+        //     // console.log(response.data.status)
+        //     const status = response.data.status.toString()
+        //     if(status === "OK"){
+        //       removeSessionData()
+        //       goTo('Thanks')
+        //     }else if(status.toLowerCase() === "refused"){
 
-            }
-          }
-        }).catch((error: Error) => {
-          isLoading.value = false;
-          console.error("Server could not accept response:"+error)
-          store.SET_ERROR({title: "エラー", text:"サーバーのエラーが発生しました。"})
-          goTo("Room")
-        })
+        //     }
+        //   }
+        // }).catch((error: Error) => {
+        //   isLoading.value = false;
+        //   console.error("Server could not accept response:"+error)
+        //   store.SET_ERROR({title: "エラー", text:"サーバーのエラーが発生しました。"})
+        //   goTo("Room")
+        // })
         
         // document.querySelector("#theForm").submit()
       }
@@ -449,7 +472,7 @@ export default defineComponent({
       formElem, date, time, pageTitle,
       formRows, dateAndTime,
       getComp, updateModel, 
-      checkForm, saveForm,
+      checkForm, saveForm, clearModel,
       goTo,
     }
   }

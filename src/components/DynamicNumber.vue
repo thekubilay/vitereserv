@@ -5,18 +5,17 @@
       <span v-if="form?.hint" class="td2">({{form.hint}})</span>
 
     </label>
-    <input 
-      type="number" 
+    <InputNumber 
       :name="form?.label" 
       :id="form?.label" 
       class="w40 center"
-      :class="{'validate[required]':form?.required}" 
-      data-prompt-position="topLeft:40" 
       :placeholder="form?.placeholder||''"
       :required="form?.required"
-      @change="$emit('cVal')"
+      :maxFractionDigits="0"
+      :useGrouping="false"
+      @input="$emit('cVal')"
       v-model="localModel"
-    >
+    />
     <span v-if="error&&error!==true&&showErrors" class="is-danger">
     {{error}}
     </span>
@@ -36,6 +35,7 @@
 <script lang="ts">
 import { defineComponent, PropType, watch, ref } from "vue";
 import { FormItem } from "@/types/Form";
+import InputNumber from "primevue/inputnumber"
 interface Indeces {
   one: number,
   two: number,
@@ -43,6 +43,9 @@ interface Indeces {
 export default defineComponent({
   name: "DynamicInput",
   emit: ['updateModel','cVal'],
+  components: {
+    InputNumber
+  },
   props: {
     form: Object as PropType<FormItem>,
     index: Object as PropType<Indeces>,
@@ -59,7 +62,11 @@ export default defineComponent({
       localModel.value = props.modelValue;
     }
     watch(() => localModel.value, (val) => {
+      // console.log("number changes")
       emit('updateModel', val, props.index)
+    })
+    watch(() => props.modelValue, (val) => {
+      localModel.value = val
     })
     return {
       localModel
@@ -67,5 +74,15 @@ export default defineComponent({
   }
 })
 </script>
-<style scoped>
+<style>
+.formTable input.p-inputnumber-input {
+    padding: 8px;
+    width: 100%;
+    font: inherit;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+span.p-inputnumber.p-component {
+  font: inherit;
+}
 </style>

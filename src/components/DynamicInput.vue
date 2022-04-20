@@ -5,17 +5,16 @@
       <span v-if="form?.hint" class="td2">({{form.hint}})</span>
 
     </label>
-    <input type="text" 
+    <InputText type="text" 
       :name="form?.label" 
       :id="form?.label" 
       class="w40 center"
       :class="{'validate[required]':form?.required}" 
-      data-prompt-position="topLeft:40" 
       :placeholder="form?.placeholder||''"
       :required="form?.required"
       @change="$emit('cVal')"
       v-model="localModel"
-    >
+    />
     <span v-if="error&&error!==true&&showErrors" class="is-danger">
     {{error}}
     </span>
@@ -35,6 +34,7 @@
 <script lang="ts">
 import { defineComponent, PropType, watch, ref } from "vue";
 import { FormItem } from "@/types/Form";
+import InputText from 'primevue/inputtext';
 interface Indeces {
   one: number,
   two: number,
@@ -52,6 +52,9 @@ export default defineComponent({
     },
     showErrors: Boolean
   },
+  components: {
+    InputText
+  },
   setup(props,{emit}){
     const localModel = ref<string>("")
     if(props.modelValue){
@@ -59,6 +62,10 @@ export default defineComponent({
     }
     watch(() => localModel.value, (val) => {
       emit('updateModel', val, props.index)
+    })
+    watch(() => props.modelValue, (val) => {
+      if(typeof val === "string")
+        localModel.value = val
     })
     return {
       localModel

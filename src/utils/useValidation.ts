@@ -1,4 +1,4 @@
-function required(val: string|Array<string>|Object){
+function required(val: string|number|Array<string>|any){
   if(Array.isArray(val)){
     if(val.length>0)
       return true
@@ -8,7 +8,9 @@ function required(val: string|Array<string>|Object){
     return true;
   if(typeof val === "string" && val.length>0)
     return true
-  if(typeof val === "object" && val!==null)//null is considered an object
+  if(typeof val === "object" && val!==null && val.hasOwnProperty("value") && val.value.toString().length>0)//null is considered an object
+    return true
+  if(Array.isArray(val) && val.length>0)
     return true
   return "情報を入力してください。"
 }

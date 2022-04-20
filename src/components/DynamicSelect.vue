@@ -75,6 +75,9 @@ export default defineComponent({
     watch(() => localModel.value, (val) => {
       emit('updateModel', val, props.index)
     })
+    watch(() => props.modelValue, (val) => {
+      localModel.value = val as any[]
+    })
     return {
       localModel
     }
