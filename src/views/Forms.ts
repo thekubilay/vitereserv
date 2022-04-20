@@ -17,14 +17,14 @@ export default function() {
       vacancyID.value = parseInt(route.query.vacancy.toString(),10)
       roomID.value = parseInt(route.params.rid as string)
       formID.value = parseInt(route.params.fid as string)
-      console.log(vacancyID.value, roomID.value, formID.value)
+      // console.log(vacancyID.value, roomID.value, formID.value)
     }else{
       router.push({path: '/'+route.params.rid+'/'})
     }
   }
 
   const hasSessionData = () => {
-    console.log("checkfor session",sessionStorage.getItem(dataName))
+    // console.log("checkfor session",sessionStorage.getItem(dataName))
     return sessionStorage.getItem(dataName)!==null
   }
   const saveSessionData = (data: any) => {
@@ -41,6 +41,18 @@ export default function() {
     sessionStorage.removeItem(dataName)
   }
 
+  function setupYubinBango(){
+    const zip = document.querySelector("#zip")
+    const add1 = document.querySelector("#address1")
+    // console.log("yubin",zip,add1)
+    if(zip){
+      zip.classList.add("p-postal-code")
+    }
+    if(add1){
+      add1.classList.add("p-region")
+    }
+  }
+
   return {
     vacancyID,
     formID,
@@ -51,5 +63,6 @@ export default function() {
     getSessionData,
     getSessionForm,
     removeSessionData,
+    setupYubinBango,
   }
 }

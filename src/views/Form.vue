@@ -39,7 +39,7 @@
                         :index="{one:rowIdx, two:idx}"
                         :is="getComp(comp.type)" 
                         :form="formRows[rowIdx].form_items[idx]" 
-                        :modelValue="formModel[rowIdx][idx]"
+                        :modelValue="formRows[rowIdx].form_items[idx].model"
                         @updateModel="updateModel"
                         @cVal="saveForm()"
                         :error="formRows[rowIdx].form_items[idx]['error']"
@@ -52,13 +52,6 @@
 
             </tbody>
             </table>
-
-            <!-- <p class="bottom_note">個人情報の取扱いについて<br>
-              当サイトより取得した個人情報はプレサンスグループの<a href="https://">個人情報保護方針</a>に従い、適切な取扱いに努めてまいります。<br>
-              個人情報保護法に定める例外事項を除き、ご本人の同意を得ることなく第三者に提供、開示いたしません。<br>
-              ※このページはSSLを使った暗号化モードで表示されています。
-            </p> -->
-
             <ul class="submit__Wrapper flex align-center justify-center">
               <li>
                 <button type="button" @click="checkForm" id="submit_button" pr  :disabled="isLoading">送信する</button>
@@ -97,9 +90,10 @@ export default defineComponent({
     const {store} = useStore()
     const formRows = ref<FormRow[]>([]);
     const formElem = ref<any>(null);
-    const formModel = ref<Array<Array<string|RadioData|string[]>>>([]);
+    // const formModel = ref<Array<Array<string|RadioData|string[]>>>([]);
     const formRules: { (data: any): boolean|string}[][][] = []; //Array of functions
     const textComp = shallowRef<object | null>(null);
+    const numberComp = shallowRef<object | null>(null);
     const selectComp = shallowRef<object | null>(null);
     const checkComp = shallowRef<object | null>(null);
     const radioComp = shallowRef<object | null>(null);
@@ -116,6 +110,7 @@ export default defineComponent({
       saveSessionData,
       getSessionForm,
       checkVacancy,
+      setupYubinBango,
       } = FormsFunc()
 
     import("../components/DynamicInput.vue").then(val => {
@@ -130,6 +125,9 @@ export default defineComponent({
     import("../components/DynamicRadio.vue").then(val => {
       radioComp.value = val.default;
     })
+    import("../components/DynamicNumber.vue").then(val => {
+      numberComp.value = val.default;
+    })
     const getComp = (name: string) => {
       if (name === 'text'){
         return textComp.value
@@ -139,6 +137,8 @@ export default defineComponent({
         return checkComp.value
       }else if (name === 'radio'){
         return radioComp.value
+      }else if (name === 'number'){
+        return numberComp.value
       }else{
         return textComp.value
       }
@@ -161,14 +161,21 @@ export default defineComponent({
           }
           //2.5 Setup form data
           setupForm(data.form_rows)
-
           //3. Check for session data
           // console.log("session:",getSessionData())
           if(hasSessionData()){
-            let d = getSessionData()
+            let d_n = getSessionData()
+            let d = JSON.parse(d_n)
+            console.log("data",d)
             let f = getSessionForm()
             if(f === formID.value.toString()){
-              formModel.value = JSON.parse(d)
+              for(let i = 0;i< d.length;i++){
+                d[i].forEach((item: any,idx: number) => {
+                  formRows.value[i].form_items[idx].model = item
+                })
+              }
+
+              // formModel.value = JSON.parse(d) //TODO add 
             }
           }
           //4. Get vacancy data
@@ -184,36 +191,56 @@ export default defineComponent({
           .catch((error2)=>{
             isLoading.value = false
             store.SET_ERROR({title: "エラー", text:"サーバーのエラーが発生しました。"})
-            goTo("Room")
+            console.log("vacancy problem")
+            // goTo("Room")
           })
       })
       .catch((error) => {
         isLoading.value = false;
         store.SET_ERROR({title: "エラー", text:"サーバーのエラーが発生しました。"})
-        goTo("Room")
-        // console.log(error)
-      })
+        console.log(error)
 
+        // goTo("Room")
+      })
     }
 
     function setupForm(f:FormRow[]):void{
       formRows.value = f
       formRows.value.forEach((row,idx)=>{
-        formModel.value.push([])
+        // formModel.value.push([])
         formRules.push([])
         row.form_items.forEach((item,itemIdx) => {
-          formModel.value[idx].push("")
+          if(item.type === "text"){
+            item.model = ""
+            // formModel.value[idx].push("_")
+          }else if (item.type === "select"){
+            item.model = {name: "", value: ""}
+            // formModel.value[idx].push({name: "", value: ""})
+          }else {
+            item.model = ""
+            // formModel.value[idx].push("_")
+          }
+
           let rules = getRuleFunctions(item)
           formRules[idx][itemIdx] = rules
           item['error'] = ''
         })
         
       })
+      console.log(formRows.value)
     }
 
     function saveForm(){
       // console.log("saving from to session")
-      saveSessionData(JSON.stringify(formModel.value))
+      let data:any = []
+      formRows.value.forEach((row,idx) => {
+        data.push([])
+        row.form_items.forEach((item, itemIdx) => {
+          data[idx].push(item.model)
+        })
+      })
+      saveSessionData(JSON.stringify(data))
+      console.log(data)
     }
 
     function getRuleFunctions(data:FormItem):{ (data: any): boolean|string}[]{
@@ -268,19 +295,10 @@ export default defineComponent({
       return []
     }
 
-    function setupYubinBango(){
-      const zip = document.querySelector("zip")
-      const add1 = document.querySelector("address-region")
-      if(zip){
-        zip.classList.add("p-postal-code")
-      }
-      if(add1){
-        add1.classList.add("p-region")
-      }
-    }
+
 
     const updateModel = (val: string|string[]|RadioData, indeces: Indeces) => {
-      formModel.value[indeces.one][indeces.two] = val;
+      formRows.value[indeces.one].form_items[indeces.two].model = val;
       validateField(val,indeces)
     }
 
@@ -324,45 +342,46 @@ export default defineComponent({
         requestData.append("room",roomID.value.toString())
         requestData.append("form",formID.value.toString())
         // Fill the requestData with key-value pairs
-        formModel.value.forEach((row,rowIdx)=>{
-          row.forEach((val,idx)=>{
-            if(typeof val === "string"){
+        formRows.value.forEach((row,rowIdx)=>{
+          row.form_items.forEach((val,idx)=>{
+            if(typeof val.model === "string"){
               // console.log("appending"+formRows.value[idx].label+val)
-              requestData.append(formRows.value[rowIdx].form_items[idx].label,val)
-            }else if(Array.isArray(val)){
+              requestData.append(formRows.value[rowIdx].form_items[idx].label,val.model)
+            }else if(Array.isArray(val.model)){
               let res = ""
-              for(let v of val){
+              for(let v of val.model){
                 res += v+","
               }
               requestData.append(formRows.value[rowIdx].form_items[idx].label,res)
-            }else if(typeof val === "object" && val!==null){
-              if(val.value){
-                requestData.append(formRows.value[rowIdx].form_items[idx].label,val.value as string)
+            }else if(typeof val.model === "object" && val.model!==null){
+              if(val.model.value){
+                requestData.append(formRows.value[rowIdx].form_items[idx].label,val.model.value as string)
               }
             }
 
           })
 
         })
+        // console.log(requestData)
         return requestData
     }
 
     const checkForm = () => {
       if(!showErrors.value){//actively validate
         showErrors.value = true;
-        formModel.value.forEach((row,idx)=>{
-          row.forEach((val, rowIdx) => {
-            validateField(val,{one: idx, two: rowIdx})
+        formRows.value.forEach((row,idx)=>{
+          row.form_items.forEach((val, rowIdx) => {
+            validateField(val.model,{one: idx, two: rowIdx})
           })
         })
       }
       if(checkAllErrors()){
         const requestData = buildRequestData()
 
-        // console.log("ready to send")
-        // for (var [key, value] of requestData.entries()) { 
-        //   console.log(key, value);
-        // }
+        console.log("ready to send")
+        for (var [key, value] of requestData.entries()) { 
+          console.log(key, value);
+        }
         isLoading.value = true;
         axios.request({
           method: "post",
@@ -370,7 +389,7 @@ export default defineComponent({
           url: "applicants/",
           data: requestData,
         }).then((response: any) => {
-          isLoading.value = true;
+          isLoading.value = false;
           // console.log(response)
           if(response.data && response.data.status){
             const status = response.data.status.toString()
@@ -381,11 +400,12 @@ export default defineComponent({
             }
           }
         }).catch((error: Error) => {
-          isLoading.value = true;
+          isLoading.value = false;
           console.error("Server could not accept response:"+error)
           store.SET_ERROR({title: "エラー", text:"サーバーのエラーが発生しました。"})
           goTo("Room")
         })
+        
         // document.querySelector("#theForm").submit()
       }
     }
@@ -409,7 +429,6 @@ export default defineComponent({
       router.push({
         name: where,
         params: param,
-        // query: {vacancy: vacancyID.toString()}
       })
     }
 
@@ -418,9 +437,9 @@ export default defineComponent({
     })
 
     return {
-      showErrors, isLoading,
+      showErrors, isLoading, formRules,
       formElem, date, time, pageTitle,
-      formRows, formModel, dateAndTime,
+      formRows, dateAndTime,
       getComp, updateModel, 
       checkForm, saveForm,
       goTo,
