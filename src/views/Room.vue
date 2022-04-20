@@ -422,7 +422,9 @@ import calendarServiceClass from "../helpers/CalendarService";
 import LoadingSpinner from "../components/loaders/LoadingSpinner.vue"
 
 export default defineComponent({
-  components: {},
+  components: {
+    LoadingSpinner
+  },
   setup() {
     const route = useRoute()
     const router = useRouter()

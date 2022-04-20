@@ -109,6 +109,7 @@ export default defineComponent({
       getSessionData,
       saveSessionData,
       getSessionForm,
+      removeSessionData,
       checkVacancy,
       setupYubinBango,
       } = FormsFunc()
@@ -390,10 +391,12 @@ export default defineComponent({
           data: requestData,
         }).then((response: any) => {
           isLoading.value = false;
-          // console.log(response)
+          console.log(response)
           if(response.data && response.data.status){
+            console.log(response.data.status)
             const status = response.data.status.toString()
             if(status === "OK"){
+              removeSessionData()
               goTo('Thanks')
             }else if(status.toLowerCase() === "refused"){
 

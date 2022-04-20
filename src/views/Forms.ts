@@ -39,6 +39,7 @@ export default function() {
   }
   const removeSessionData = () => {
     sessionStorage.removeItem(dataName)
+    sessionStorage.removeItem("form")
   }
 
   function setupYubinBango(){
