@@ -21,7 +21,8 @@
               </dl>
             </div>
           </section>
-          <form method="post" action="" class="" id="form" name="theForm" ref="formElem">
+          <form method="post" action="" class="h-adr" id="form" name="theForm" ref="formElem">
+            <span class="p-country-name" style="display:none;">Japan</span>
             <!-- <p id="counter__Wrapper" class="counter__Wrapper for-pc">
               あと<br><span id="counter">12</span>項目
             </p> -->
@@ -178,6 +179,7 @@ export default defineComponent({
             date.value = response2.data.date
             time.value = response2.data.time
             isLoading.value = false
+            setupYubinBango()
           })
           .catch((error2)=>{
             isLoading.value = false
@@ -266,6 +268,17 @@ export default defineComponent({
       return []
     }
 
+    function setupYubinBango(){
+      const zip = document.querySelector("zip")
+      const add1 = document.querySelector("address-region")
+      if(zip){
+        zip.classList.add("p-postal-code")
+      }
+      if(add1){
+        add1.classList.add("p-region")
+      }
+    }
+
     const updateModel = (val: string|string[]|RadioData, indeces: Indeces) => {
       formModel.value[indeces.one][indeces.two] = val;
       validateField(val,indeces)
@@ -303,11 +316,13 @@ export default defineComponent({
 
     function buildRequestData():FormData{
         const requestData:FormData = new FormData();
+
         requestData.append("vacancy",vacancyID.value.toString())
         // requestData.append("vacancy","444")
         requestData.append("date",date.value.toString())
         requestData.append("time",time.value.toString())
         requestData.append("room",roomID.value.toString())
+        requestData.append("form",formID.value.toString())
         // Fill the requestData with key-value pairs
         formModel.value.forEach((row,rowIdx)=>{
           row.forEach((val,idx)=>{
