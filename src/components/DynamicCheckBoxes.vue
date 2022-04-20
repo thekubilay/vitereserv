@@ -1,5 +1,31 @@
 <template>
-  <tr class="tr flex">
+  <div class="flex-column relative">
+    <label class="label comp-header flex" :for="form?.label">{{form?.title}}
+      <span v-if="form?.required" class="hissu">必須</span>
+      <span v-if="form?.hint" class="td2">({{form.hint}})</span>
+
+    </label>
+    <div class="flex checkbox flex-wrap">
+      <label v-for="(o,idx) in form?.options" :key="idx" :for="form.label+'check'+idx">
+        <input 
+            type="checkbox" 
+            :name="form?.label" 
+            :value="o.value" 
+            :id="form.label+'check'+idx" 
+            class="HopeTypeExample form-control"
+            @change="$emit('cVal')"
+            v-model="localModel"
+        >
+        {{o.label}}
+      </label>
+    </div>
+    <span v-if="error&&error!==true&&showErrors" class="is-danger">
+      {{error}}
+    </span>
+  </div>
+
+
+  <!-- <tr class="tr flex">
     <th class="th">
       <label :for="form?.label">{{form?.title}}</label><span v-if="form?.required" class="hissu">必須</span>
     </th>
@@ -22,7 +48,7 @@
       {{error}}
     </span>
     <td v-if="form?.hint" class="td2">{{form.hint}}</td>
-  </tr>
+  </tr> -->
 
 </template>
 <script lang="ts">

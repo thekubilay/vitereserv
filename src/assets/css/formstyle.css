@@ -642,7 +642,7 @@ request,reserve,confirm
     }
 }
 .form_page .template__Wrapper .container {
-    padding: 40px 60px 40px 80px;
+    padding: 40px 60px 40px 60px;
 }
 @media screen and (max-width: 767px) {
     .form_page .template__Wrapper .container {
@@ -836,37 +836,45 @@ tbody {
 }
 
 
+#request .menu__Wrapper .menu__contents,
 #reserve .menu__Wrapper .menu__contents,
 #reserve_confirm .menu__Wrapper .menu__contents {
     width: 70%;
 }
+#request .menu__contents dl,
 #reserve .menu__contents dl,
 #reserve_confirm .menu__contents dl {
     width: 100%;
     margin-bottom: 10px;
 }
+#request .menu__contents dt,
 #reserve .menu__contents dt,
 #reserve_confirm .menu__contents dt {
     font-weight: bold;
     width: 27%;
 }
+#request .menu__contents dd,
 #reserve .menu__contents dd,
 #reserve_confirm .menu__contents dd {
     width: 100%;
 }
 @media screen and (max-width: 767px) {
+    #request .menu__Wrapper,
     #reserve .menu__Wrapper,
     #reserve_confirm .menu__Wrapper {
         display: block;
     }
+    #request .menu__Wrapper .menu__contents,
     #reserve .menu__Wrapper .menu__contents,
     #reserve_confirm .menu__Wrapper .menu__contents {
         width: 100%;
     }
+    #request .menu__contents dl,
     #reserve .menu__contents dl,
     #reserve_confirm .menu__contents dl {
         display: block;
     }
+    #request .menu__contents dt,
     #reserve .menu__contents dt,
     #reserve_confirm .menu__contents dt {
         width: 100%;
@@ -916,6 +924,10 @@ tbody {
     padding: 13px;
     border-radius: 6px;
     box-shadow: 2px 2px 0px 0px #989898;
+    transition: all 0.3s;
+}
+.form_page .submit__Wrapper #submit_button:disabled {
+    background-color: #c2c2c2;
 }
 
 
@@ -1190,4 +1202,25 @@ detail
 }
 #detail .submit__Wrapper .btn_reserve button{
     color: #fff;
+}
+
+/* Added gloabl css */
+
+#request .formTable span.hissu {
+  color: #fff;
+  font-size: .9rem;
+  background-color: #ec5700;
+  margin-left: 5px;
+  padding: 2px 4px;
+  border-radius: 3px;
+  vertical-align: middle;
+}
+#request .formTable label.comp-header {
+  font-weight: bold;
+  margin-bottom: 8px;
+  height: 19px;
+  padding-left: 2px;
+}
+#request .formTable .flex-column.relative {
+  width: 100%;
 }
