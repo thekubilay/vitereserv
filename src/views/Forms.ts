@@ -29,9 +29,13 @@ export default function() {
   }
   const saveSessionData = (data: any) => {
     sessionStorage.setItem(dataName, data)
+    sessionStorage.setItem("form", formID.value.toString())
   }
   const getSessionData = (): any => {
     return sessionStorage.getItem(dataName)
+  }
+  const getSessionForm = () => {
+    return sessionStorage.getItem("form")
   }
   const removeSessionData = () => {
     sessionStorage.removeItem(dataName)
@@ -45,6 +49,7 @@ export default function() {
     hasSessionData,
     saveSessionData,
     getSessionData,
+    getSessionForm,
     removeSessionData,
   }
 }

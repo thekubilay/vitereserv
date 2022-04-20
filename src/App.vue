@@ -6,11 +6,11 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import Forms from "./views/Forms.vue"
+import Form from "./views/Form.vue"
 import Room from "./views/Room.vue"
 
 export default defineComponent({
-  components: {Forms, Room},
+  components: {Form, Room},
   setup(){
 
     return {}

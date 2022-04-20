@@ -1,20 +1,26 @@
 <template>
+  <div class="flex-column relative">
+    <label class="label comp-header flex" :for="form?.label">{{form?.title}}
+      <span v-if="form?.required" class="hissu">必須</span>
+      <span v-if="form?.hint" class="td2">({{form.hint}})</span>
+    </label>
+    <Dropdown @change="$emit('cVal')" v-model="localModel" :options="form?.options" optionLabel="label" :placeholder="(form?.placeholder?.toString())"></Dropdown>
+    <span v-if="error&&error!==true&&showErrors" class="is-danger">
+      {{error}}
+    </span>
+  </div>
 
-  <tr class="tr flex align-center">
+  <!-- <tr class="tr flex align-center">
     <th class="th"><label :for="form?.label">{{form?.title}}</label><span v-if="form?.required" class="hissu">必須</span></th>
     <td class="td select">
-      <!-- <select :name="form?.label" :id="form?.label" :class="{'validate[required]':form?.required}" data-prompt-position="topLeft:40">
-        <option value="">{{form?.placeholder}}</option>
-        <option v-for="(o, idx) in form.options" :key="idx" :value="o.value">{{o.label}}</option>
-      </select>
-      <span class="select-icon"><i class="fas fa-caret-down"></i></span> -->
+      
       <Dropdown @change="$emit('cVal')" v-model="localModel" :options="form?.options" optionLabel="label" :placeholder="(form?.placeholder?.toString())"></Dropdown>
     </td>
     <span v-if="error&&error!==true&&showErrors" class="is-danger">
       {{error}}
     </span>
     <td v-if="form?.hint" class="td2">{{form.hint}}</td>
-  </tr>
+  </tr> -->
 
 </template>
 <script lang="ts">

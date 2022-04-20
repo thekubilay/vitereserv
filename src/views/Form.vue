@@ -2,13 +2,24 @@
   <div id="request" class="form_page">
 
     <div class="template__Wrapper ">
-      <div class="container">
+      <div class="container relative">
+        <LoadingSpinner v-model="isLoading" text="ローディング中"/>
         <h2 class="h2">資料請求者情報の入力</h2>
-        <div class="">
-
-          <section class="menu__Wrapper">
+        <div class="relative">
+          <section class="menu__Wrapper flex">
             <h3 class="h3" id="project_name">
+              <span>ご予約内容</span>
             </h3>
+            <div class="menu__contents">
+              <dl class="flex align-center">
+                <dt>予約室名</dt>
+                <dd>{{pageTitle||"名前なし"}}</dd>
+              </dl>
+              <dl class="flex align-center">
+                <dt>ご利用日時</dt>
+                <dd>{{dateAndTime}}&nbsp;<button class="return-btn" @click="goTo('Room')">日付変更</button></dd>
+              </dl>
+            </div>
           </section>
           <form method="post" action="" class="" id="form" name="theForm" ref="formElem">
             <!-- <p id="counter__Wrapper" class="counter__Wrapper for-pc">
@@ -20,17 +31,22 @@
               <tr v-for="(row, rowIdx) in formRows" :key="rowIdx"
                 class="tr flex"
               >
-                <component v-for="(comp , idx) in row.form_items" 
-                    :key="idx" 
-                    :index="{one:rowIdx, two:idx}"
-                    :is="getComp(comp.type)" 
-                    :form="formRows[rowIdx].form_items[idx]" 
-                    :modelValue="formModel[rowIdx][idx]"
-                    @updateModel="updateModel"
-                    @cVal="saveForm()"
-                    :error="formRows[rowIdx].form_items[idx]['error']"
-                    :showErrors="showErrors"
-                />
+                <td class="flex">
+                  <div class="row flex justify-space-between w100">
+                    <component v-for="(comp , idx) in row.form_items" 
+                        :key="idx" 
+                        :index="{one:rowIdx, two:idx}"
+                        :is="getComp(comp.type)" 
+                        :form="formRows[rowIdx].form_items[idx]" 
+                        :modelValue="formModel[rowIdx][idx]"
+                        @updateModel="updateModel"
+                        @cVal="saveForm()"
+                        :error="formRows[rowIdx].form_items[idx]['error']"
+                        :showErrors="showErrors"
+                    />
+
+                  </div>
+                </td>
               </tr>
 
             </tbody>
@@ -44,7 +60,7 @@
 
             <ul class="submit__Wrapper flex align-center justify-center">
               <li>
-                <button type="button" @click="checkForm" id="submit_button" pr>送信する</button>
+                <button type="button" @click="checkForm" id="submit_button" pr  :disabled="isLoading">送信する</button>
               </li>
             </ul>
           </form>
@@ -55,25 +71,28 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, shallowRef, onMounted, ref } from "vue";
+import { defineComponent, computed, shallowRef, onMounted, ref,} from "vue";
 import { FormItem, FormRow } from "@/types/Form";
 import axios from "axios";
 import ENV from "../config"
+import router from "@/router";
 import useValidation from "@/utils/useValidation";
 import FormsFunc from "./Forms"
 import useStore from "../helpers/useStore"
+import LoadingSpinner from "../components/loaders/LoadingSpinner.vue"
 interface Indeces {
   one: number,
   two: number,
 }
+interface RadioData {
+  name: String,
+  value: String
+}
 export default defineComponent({
   components: {
+    LoadingSpinner
   },
   setup(){
-    interface RadioData {
-      name: String,
-      value: String
-    }
     const {store} = useStore()
     const formRows = ref<FormRow[]>([]);
     const formElem = ref<any>(null);
@@ -84,15 +103,18 @@ export default defineComponent({
     const checkComp = shallowRef<object | null>(null);
     const radioComp = shallowRef<object | null>(null);
     const showErrors = ref<boolean>(false);
+    const isLoading = ref<boolean>(false)
     const time = ref<string>("");
     const date = ref<string>("");
+    const pageTitle = ref<string>("");
     const {vacancyID,
       formID,
       roomID, 
       hasSessionData,
       getSessionData,
       saveSessionData,
-      checkVacancy
+      getSessionForm,
+      checkVacancy,
       } = FormsFunc()
 
     import("../components/DynamicInput.vue").then(val => {
@@ -122,40 +144,52 @@ export default defineComponent({
     }
 
     function init(){
-      // 1. Check vacancy
+      // 1. Check if vacancy, if not send back to calendar
       checkVacancy()
 
       // 2. Request form data
       const path = ENV.API + "forms/"+formID.value+"/"
-      console.log(path)
+      // console.log(path)
+      isLoading.value = true
       axios.get<FormItem[]>(path)
       .then((response) => {
           const data = JSON.parse(JSON.stringify(response.data))
           console.log(data)
+          if(data.title){
+            pageTitle.value = data.title.toString()
+          }
+          //2.5 Setup form data
           setupForm(data.form_rows)
 
           //3. Check for session data
           // console.log("session:",getSessionData())
           if(hasSessionData()){
             let d = getSessionData()
-            // console.log("load session data ",d)
-            // TODO add savechecks
-            formModel.value = JSON.parse(d)
+            let f = getSessionForm()
+            if(f === formID.value.toString()){
+              formModel.value = JSON.parse(d)
+            }
           }
           //4. Get vacancy data
+
           axios.get<any>(ENV.API+"vacancies/"+vacancyID.value+"/")
           .then((response2) => {
-            console.log("vacancy:",response2)
+            console.log("vacancy:",response2.data)
             date.value = response2.data.date
             time.value = response2.data.time
+            isLoading.value = false
           })
           .catch((error2)=>{
+            isLoading.value = false
             store.SET_ERROR({title: "エラー", text:"サーバーのエラーが発生しました。"})
+            goTo("Room")
           })
       })
       .catch((error) => {
+        isLoading.value = false;
         store.SET_ERROR({title: "エラー", text:"サーバーのエラーが発生しました。"})
-          console.log(error)
+        goTo("Room")
+        // console.log(error)
       })
 
     }
@@ -163,16 +197,15 @@ export default defineComponent({
     function setupForm(f:FormRow[]):void{
       formRows.value = f
       formRows.value.forEach((row,idx)=>{
-        formModel.value.push([]) //TODO How to structure model?
+        formModel.value.push([])
         formRules.push([])
         row.form_items.forEach((item,itemIdx) => {
           formModel.value[idx].push("")
           let rules = getRuleFunctions(item)
-          formRules[idx][itemIdx] = rules //TODO How to structure rules?
+          formRules[idx][itemIdx] = rules
+          item['error'] = ''
         })
         
-        //@ts-ignore
-        row['error'] = ''
       })
     }
 
@@ -212,9 +245,7 @@ export default defineComponent({
             if(match && match.length>0){
               let num = parseInt(match[1],10)
               res.push((data: string)=>{
-                if(data.length>=num){
-                  return true
-                }
+                if(data.length>=num){return true}
                 return `${num}文字以上を入力してください。`
               })
             }
@@ -224,9 +255,7 @@ export default defineComponent({
             if(match && match.length>0){
               let num = parseInt(match[1],10)
               res.push((data: string)=>{
-                if(data.length<=num){
-                  return true
-                }
+                if(data.length <=num ){return true}
                 return `${num}文字以下に入れてください。`
               })
             }
@@ -249,12 +278,10 @@ export default defineComponent({
         let res = rule(val);
         // console.log(res)
         if(typeof res!=="boolean"){
-          //@ts-ignore
           f['error'] = res
           return
         }
       }
-      //@ts-ignore
       f['error'] = ""
     }
 
@@ -274,20 +301,10 @@ export default defineComponent({
       return res
     }
 
-    const checkForm = () => {
-      if(!showErrors.value){//actively validate
-        showErrors.value = true;
-        formModel.value.forEach((row,idx)=>{
-          row.forEach((val, rowIdx) => {
-            validateField(val,{one: idx, two: rowIdx})
-          })
-        })
-      }
-      if(checkAllErrors()){
-
+    function buildRequestData():FormData{
         const requestData:FormData = new FormData();
-        // requestData.append("vacancy",vacancyID.value.toString())
-        requestData.append("vacancy","444")
+        requestData.append("vacancy",vacancyID.value.toString())
+        // requestData.append("vacancy","444")
         requestData.append("date",date.value.toString())
         requestData.append("time",time.value.toString())
         requestData.append("room",roomID.value.toString())
@@ -312,31 +329,73 @@ export default defineComponent({
           })
 
         })
-        console.log("ready to send")
-        for (var [key, value] of requestData.entries()) { 
-          console.log(key, value);
-        }
+        return requestData
+    }
+
+    const checkForm = () => {
+      if(!showErrors.value){//actively validate
+        showErrors.value = true;
+        formModel.value.forEach((row,idx)=>{
+          row.forEach((val, rowIdx) => {
+            validateField(val,{one: idx, two: rowIdx})
+          })
+        })
+      }
+      if(checkAllErrors()){
+        const requestData = buildRequestData()
+
+        // console.log("ready to send")
+        // for (var [key, value] of requestData.entries()) { 
+        //   console.log(key, value);
+        // }
+        isLoading.value = true;
         axios.request({
           method: "post",
           baseURL: ENV.API,
           url: "applicants/",
           data: requestData,
         }).then((response: any) => {
-          console.log(response)
+          isLoading.value = true;
+          // console.log(response)
           if(response.data && response.data.status){
             const status = response.data.status.toString()
             if(status === "OK"){
-
+              goTo('Thanks')
             }else if(status.toLowerCase() === "refused"){
 
             }
           }
         }).catch((error: Error) => {
+          isLoading.value = true;
           console.error("Server could not accept response:"+error)
           store.SET_ERROR({title: "エラー", text:"サーバーのエラーが発生しました。"})
+          goTo("Room")
         })
         // document.querySelector("#theForm").submit()
       }
+    }
+
+    const dateAndTime = computed(() => {
+      if(date.value && time.value){
+        let dateN = date.value.split('-')
+        let timeN = time.value.split(':')
+        if(dateN.length>2 && timeN.length>1){
+          return `${dateN[0]}年 ${dateN[1]}月 ${dateN[2]}日 ${timeN[0]}:${timeN[1]}`
+        }
+      }
+      return ""
+    })
+
+    const goTo = (where: string) => {
+      const param = {rid: ""}
+      if(where === 'Room'){
+        param.rid = roomID.value.toString()
+      }
+      router.push({
+        name: where,
+        params: param,
+        // query: {vacancy: vacancyID.toString()}
+      })
     }
 
     onMounted(() => {
@@ -344,11 +403,12 @@ export default defineComponent({
     })
 
     return {
-      showErrors,
-      formElem,
-      formRows, formModel,
-      getComp, updateModel,
+      showErrors, isLoading,
+      formElem, date, time, pageTitle,
+      formRows, formModel, dateAndTime,
+      getComp, updateModel, 
       checkForm, saveForm,
+      goTo,
     }
   }
 
@@ -368,5 +428,22 @@ export default defineComponent({
   background-color: #ec5700;
   color: white;
   font-size: 1rem;
+}
+.formTable tr td {
+  width: 100%;
+}
+.formTable .w100 {
+  width: 100%
+}
+button.return-btn {
+  color: #fff;
+  /* width: 100%; */
+  background-color: #00adef;
+  text-align: center;
+  padding: 0px 4px 2px;
+  border-radius: 6px;
+  margin-left: 4px;
+  font-size: 1rem;
+  /* box-shadow: 2px 2px 0px 0px #989898; */
 }
 </style>
