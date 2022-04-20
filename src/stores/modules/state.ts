@@ -1,11 +1,7 @@
 
-// import { Vacancy } from "@/types/Room"
+import { Error } from "@/types/Room"
 // import {ImageProject, Project, ProjectGallery} from "@/types/Project";
 // import {Salon} from "@/types/Salon";
-interface Error {
-  title: string,
-  text: string
-}
 
 export interface State {
   error: Error | null,

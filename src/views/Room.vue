@@ -1,14 +1,15 @@
 <template>
     <div id="index" class="main">
       <transition name="slide-fade" appear>
-        <div v-if="isActiveNotification"
+        <div v-if="isNotification"
               id="notification" class="notification">
-          <span class="close" @click="isActiveNotification=!isActiveNotification">×</span>
-          <h3 class="title">タイトル</h3>
-          <p class="body-text">テキストテキストテキスト</p>
+          <span class="close" @click="closeNotification()">×</span>
+          <h3 class="title">{{errorMessage.title}}</h3>
+          <p class="body-text">{{errorMessage.text}}</p>
         </div>
       </transition>
 
+      <LoadingSpinner v-model="isLoading" text="ローディング中"/>
       <div id="overlay" ref="overlay"></div>
       <div class="template__Wrapper">
         <div class="container">
@@ -406,25 +407,26 @@
         </div>
       </div>
     </div>
-    <button @click="isActiveNotification=!isActiveNotification">ここをクリック</button>
+    <button @click="isNotification=!isNotification">ここをクリック</button>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted, ref } from "vue";
+import { reactive, defineComponent, onMounted, ref } from "vue";
 import useStore from "@/helpers/useStore"
 import {useRouter, useRoute} from "vue-router";
-import { Room, SeparatedHoliday, Vacancy } from "@/types/Room"
+import { Room, SeparatedHoliday, Vacancy, Error } from "@/types/Room"
 import { WeekDatesAsObject } from "@/types/Calendar";
 import axios from "axios";
 import ENV from "../config"
 import calendarServiceClass from "../helpers/CalendarService";
+import LoadingSpinner from "../components/loaders/LoadingSpinner.vue"
 
 export default defineComponent({
   components: {},
   setup() {
     const route = useRoute()
     const router = useRouter()
-    const {error} = useStore()
+    const {store} = useStore()
     const overlay = ref<HTMLElement | null>(null)
     const calendarService = ref()
     const currentWeek = ref<number | null>(null);
@@ -432,7 +434,12 @@ export default defineComponent({
     const room = ref<Room | null>(null)
     const holidays = ref<string[] | []>([])
     const vacancies = ref<Vacancy[] | []>([])
-    const isActiveNotification = ref<boolean>(false)
+    const errorMessage = reactive<Error>({
+      title: "",
+      text: ""
+    })
+    const isNotification = ref<boolean>(false)
+    const isLoading = ref<boolean>(false)
 
     const formatDate = (val:string) => {
       return val.replaceAll("-", "/")
@@ -499,6 +506,11 @@ export default defineComponent({
       }
     }
 
+    const closeNotification = () => {
+      isNotification.value =! isNotification.value
+      store.SET_ERROR(null)
+    }
+
     function findVacancy(date:string, time:string):any{
       return vacancies.value.find((element:Vacancy) => {
         return (formatDate(element.date) === date) && (formatTime(element.time) === time)
@@ -506,10 +518,11 @@ export default defineComponent({
     }
 
     function getRooms(){
+      isLoading.value = true
       axios.request({
         method: "get",
-        // baseURL: ENV.API,
-        baseURL: "http://viterve-env.eba-pwmisykt.ap-northeast-1.elasticbeanstalk.com/api/v1/",
+        baseURL: ENV.API,
+        // baseURL: "http://viterve-env.eba-pwmisykt.ap-northeast-1.elasticbeanstalk.com/api/v1/",
         url: "rooms/" + route.params.rid + "/",
         params: {week: currentWeek.value? currentWeek.value : 0}
       })
@@ -518,8 +531,10 @@ export default defineComponent({
         room.value = data
         holidays.value = data.holidays.split(",")
         vacancies.value = data.vacancies
+        isLoading.value = false
       })
       .catch((eroor) => {
+        isLoading.value = false
         console.log(eroor)
       })
     }
@@ -539,11 +554,12 @@ export default defineComponent({
       currentWeek.value = calendarService.value.currentWeek
       weekDatesObjs.value = calendarService.value.getWeekDatesAsObject(currentWeek.value)
       getRooms();
-      if(error){
-        console.log(error)
+      if(store.error){
+        Object.assign(errorMessage, store.error)
+        isNotification.value = true
       }
       // setTimeout(() => {
-      //   isActiveNotification.value = true
+      //   isNotification.value = true
       // }, 1000)
     }
 
@@ -552,8 +568,8 @@ export default defineComponent({
     })
 
     return {
-      overlay, calendarService, currentWeek, weekDatesObjs, room, holidays, vacancies, isActiveNotification,
-      formatDate, changeWeek, separatedHolidaysCheck, vacanciesCheck, goToForm, pastTimeCheck,
+      overlay, calendarService, currentWeek, weekDatesObjs, room, holidays, vacancies, isNotification, errorMessage, isLoading,
+      formatDate, changeWeek, separatedHolidaysCheck, vacanciesCheck, goToForm, pastTimeCheck, closeNotification,
     };
   },
 });
@@ -567,6 +583,7 @@ export default defineComponent({
   height: auto;
   width: 350px;
   background-color: #e4e5ff;
+  box-shadow: rgb(149 157 165 / 20%) 0px 8px 24px;
 }
 .notification .title {
   padding: 7px 15px;
@@ -589,7 +606,8 @@ export default defineComponent({
   line-height: 35px;
   text-align: center;
   text-decoration: none;
-  text-indent: 0
+  text-indent: 0;
+  cursor: pointer;
 }
 
 .notification > .close:hover {
