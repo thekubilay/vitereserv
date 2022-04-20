@@ -1,7 +1,7 @@
 <template>
     <div id="index" class="main">
       <transition name="slide-fade" appear>
-        <div v-if="isActiveNotification"
+        <div v-if="isNotification"
               id="notification" class="notification">
           <span class="close" @click="closeNotification()">×</span>
           <h3 class="title">{{errorMessage.title}}</h3>
@@ -9,6 +9,7 @@
         </div>
       </transition>
 
+      <LoadingSpinner v-model="isLoading" text="ローディング中"/>
       <div id="overlay" ref="overlay"></div>
       <div class="template__Wrapper">
         <div class="container">
@@ -406,7 +407,7 @@
         </div>
       </div>
     </div>
-    <button @click="isActiveNotification=!isActiveNotification">ここをクリック</button>
+    <button @click="isNotification=!isNotification">ここをクリック</button>
 </template>
 
 <script lang="ts">
@@ -418,6 +419,7 @@ import { WeekDatesAsObject } from "@/types/Calendar";
 import axios from "axios";
 import ENV from "../config"
 import calendarServiceClass from "../helpers/CalendarService";
+import LoadingSpinner from "../components/loaders/LoadingSpinner.vue"
 
 export default defineComponent({
   components: {},
@@ -436,7 +438,8 @@ export default defineComponent({
       title: "",
       text: ""
     })
-    const isActiveNotification = ref<boolean>(false)
+    const isNotification = ref<boolean>(false)
+    const isLoading = ref<boolean>(false)
 
     const formatDate = (val:string) => {
       return val.replaceAll("-", "/")
@@ -504,7 +507,7 @@ export default defineComponent({
     }
 
     const closeNotification = () => {
-      isActiveNotification.value =! isActiveNotification.value
+      isNotification.value =! isNotification.value
       store.SET_ERROR(null)
     }
 
@@ -515,10 +518,11 @@ export default defineComponent({
     }
 
     function getRooms(){
+      isLoading.value = true
       axios.request({
         method: "get",
-        // baseURL: ENV.API,
-        baseURL: "http://viterve-env.eba-pwmisykt.ap-northeast-1.elasticbeanstalk.com/api/v1/",
+        baseURL: ENV.API,
+        // baseURL: "http://viterve-env.eba-pwmisykt.ap-northeast-1.elasticbeanstalk.com/api/v1/",
         url: "rooms/" + route.params.rid + "/",
         params: {week: currentWeek.value? currentWeek.value : 0}
       })
@@ -527,8 +531,10 @@ export default defineComponent({
         room.value = data
         holidays.value = data.holidays.split(",")
         vacancies.value = data.vacancies
+        isLoading.value = false
       })
       .catch((eroor) => {
+        isLoading.value = false
         console.log(eroor)
       })
     }
@@ -550,10 +556,10 @@ export default defineComponent({
       getRooms();
       if(store.error){
         Object.assign(errorMessage, store.error)
-        isActiveNotification.value = true
+        isNotification.value = true
       }
       // setTimeout(() => {
-      //   isActiveNotification.value = true
+      //   isNotification.value = true
       // }, 1000)
     }
 
@@ -562,7 +568,7 @@ export default defineComponent({
     })
 
     return {
-      overlay, calendarService, currentWeek, weekDatesObjs, room, holidays, vacancies, isActiveNotification, errorMessage,
+      overlay, calendarService, currentWeek, weekDatesObjs, room, holidays, vacancies, isNotification, errorMessage, isLoading,
       formatDate, changeWeek, separatedHolidaysCheck, vacanciesCheck, goToForm, pastTimeCheck, closeNotification,
     };
   },
