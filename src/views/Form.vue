@@ -31,6 +31,7 @@
             <tbody>
               <tr v-for="(row, rowIdx) in formRows" :key="rowIdx"
                 class="tr flex"
+                
               >
                 <td class="flex">
                   <div class="row flex justify-space-between w100">
@@ -44,6 +45,7 @@
                         @cVal="saveForm()"
                         :error="formRows[rowIdx].form_items[idx]['error']"
                         :showErrors="showErrors"
+                        :class="row.form_items.length>1?'column-'+row.form_items.length+'-space':'w100'"
                     />
 
                   </div>
@@ -156,7 +158,7 @@ export default defineComponent({
       axios.get<FormItem[]>(path)
       .then((response) => {
           const data = JSON.parse(JSON.stringify(response.data))
-          console.log(data)
+          // console.log(data)
           if(data.title){
             pageTitle.value = data.title.toString()
           }
@@ -167,7 +169,7 @@ export default defineComponent({
           if(hasSessionData()){
             let d_n = getSessionData()
             let d = JSON.parse(d_n)
-            console.log("data",d)
+            // console.log("data",d)
             let f = getSessionForm()
             if(f === formID.value.toString()){
               for(let i = 0;i< d.length;i++){
@@ -183,7 +185,7 @@ export default defineComponent({
 
           axios.get<any>(ENV.API+"vacancies/"+vacancyID.value+"/")
           .then((response2) => {
-            console.log("vacancy:",response2.data)
+            // console.log("vacancy:",response2.data)
             date.value = response2.data.date
             time.value = response2.data.time
             isLoading.value = false
@@ -217,6 +219,9 @@ export default defineComponent({
           }else if (item.type === "select"){
             item.model = {name: "", value: ""}
             // formModel.value[idx].push({name: "", value: ""})
+          }else if (item.type === "number"){
+            item.model = null
+            // formModel.value[idx].push({name: "", value: ""})
           }else {
             item.model = ""
             // formModel.value[idx].push("_")
@@ -228,7 +233,7 @@ export default defineComponent({
         })
         
       })
-      console.log(formRows.value)
+      // console.log(formRows.value)
     }
 
     function saveForm(){
@@ -241,7 +246,7 @@ export default defineComponent({
         })
       })
       saveSessionData(JSON.stringify(data))
-      console.log(data)
+      // console.log(data)
     }
 
     function getRuleFunctions(data:FormItem):{ (data: any): boolean|string}[]{
@@ -322,14 +327,14 @@ export default defineComponent({
       for(const row of formRows.value){
         for(const item of row.form_items){
           if(item.hasOwnProperty('error')){
-            console.log(item.error)
+            // console.log(item.error)
             if(typeof item.error === "string" && item.error.length>0){
               res = false
             }
           }
         }
       }
-      console.log(res)
+      // console.log(res)
       return res
     }
 
@@ -379,10 +384,10 @@ export default defineComponent({
       if(checkAllErrors()){
         const requestData = buildRequestData()
 
-        console.log("ready to send")
-        for (var [key, value] of requestData.entries()) { 
-          console.log(key, value);
-        }
+        // console.log("ready to send")
+        // for (var [key, value] of requestData.entries()) { 
+        //   console.log(key, value);
+        // }
         isLoading.value = true;
         axios.request({
           method: "post",
@@ -391,9 +396,9 @@ export default defineComponent({
           data: requestData,
         }).then((response: any) => {
           isLoading.value = false;
-          console.log(response)
+          // console.log(response)
           if(response.data && response.data.status){
-            console.log(response.data.status)
+            // console.log(response.data.status)
             const status = response.data.status.toString()
             if(status === "OK"){
               removeSessionData()

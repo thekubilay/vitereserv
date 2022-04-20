@@ -4,6 +4,8 @@ function required(val: string|Array<string>|Object){
       return true
     return "情報を入力してください。"
   }
+  if(typeof val === "number" && val.toString().length>0)
+    return true;
   if(typeof val === "string" && val.length>0)
     return true
   if(typeof val === "object" && val!==null)//null is considered an object
@@ -39,8 +41,8 @@ function kanaCheck(val: string) {
   return "全角カタカナで入力してください。"
 }
 
-function zipCodeCheck(val:string) {
-  console.log("zip")
+function zipCodeCheck(val:string|number) {
+  val = val.toString()
   if (!val || val.match(/^\d{3}-*\d{4}$/ )) {
       return true
   }

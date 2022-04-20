@@ -46,7 +46,7 @@ export default defineComponent({
   props: {
     form: Object as PropType<FormItem>,
     index: Object as PropType<Indeces>,
-    modelValue: String,
+    modelValue: Number,
     error: {
       type: [String,Boolean],
       default: ""
@@ -54,7 +54,7 @@ export default defineComponent({
     showErrors: Boolean
   },
   setup(props,{emit}){
-    const localModel = ref<string>("")
+    const localModel = ref<number>()
     if(props.modelValue){
       localModel.value = props.modelValue;
     }

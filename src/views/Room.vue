@@ -434,8 +434,8 @@ export default defineComponent({
     const currentWeek = ref<number | null>(null);
     const weekDatesObjs = ref<WeekDatesAsObject[] | null>(null);
     const room = ref<Room | null>(null)
-    const holidays = ref<string[] | []>([])
-    const vacancies = ref<Vacancy[] | []>([])
+    const holidays = ref<string[]>([])
+    const vacancies = ref<Vacancy[]>([])
     const errorMessage = reactive<Error>({
       title: "",
       text: ""
