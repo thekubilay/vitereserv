@@ -32,7 +32,7 @@
                     class="icon__Wrapper flex column justify-center align-center"
                   >
                     <figure class="icon circle">
-                      <svg fill="#00adef" viewBox="0 0 512 512">
+                      <svg :fill="mainColor" viewBox="0 0 512 512">
                         <path
                           d="M256,78.77c97.73,0,177.23,79.51,177.23,177.23S353.73,433.23,256,433.23,78.77,353.73,78.77,256,158.27,78.77, 256,78.77M256,0C114.62,0,0,114.62,0,256S114.62,512,256,512,512,397.38,512,256,397.38,0,256,0Z"
                         ></path>
@@ -43,7 +43,7 @@
                     class="icon__Wrapper flex column justify-center align-center"
                   >
                     <figure class="icon triangle">
-                      <svg fill="#00adef" viewBox="0 0 512 512">
+                      <svg :fill="mainColor" viewBox="0 0 512 512">
                         <path
                           d="M408.95,482.41H103.05c-37.76,0-72.41-20.12-90.43-52.49A97.36,97.36,0,0,1,15,330.06L172.31, 76.18a98.47,98.47,0,0,1,167.38,0L497,330.06a97.36,97.36,0,0,1,2.37,99.86C481.35,462.29,446.7,482.41, 408.95,482.41ZM256,108.34a19.42,19.42,0,0,0-16.75,9.32L81.94,371.54a19.14,19.14,0,0,0-.52,20.07c4.2, 7.55,12.29,12.05,21.63,12.05H408.95c9.34,0,17.43-4.5,21.63-12.05a19.14,19.14,0,0,0-.52-20.07L272.75, 117.66A19.42,19.42,0,0,0,256,108.34Z"
                         ></path>
@@ -133,7 +133,7 @@
                             <div v-if="vacanciesCheck(item.date, time.time).mark==='circle'" class="btn_select" @click="goToForm(item.date, time.time, room)">
                               <div class="icon__Wrapper">
                                 <figure class="icon circle">
-                                  <svg fill="#00adef" viewBox="0 0 512 512">
+                                  <svg :fill="mainColor" viewBox="0 0 512 512">
                                     <path
                                       d="M256,78.77c97.73,0,177.23,79.51,177.23,177.23S353.73,433.23,256,433.23,78.77,353.73,78.77,256,158.27,78.77, 256,78.77M256,0C114.62,0,0,114.62,0,256S114.62,512,256,512,512,397.38,512,256,397.38,0,256,0Z"
                                     ></path>
@@ -148,7 +148,7 @@
                             <div v-else-if="vacanciesCheck(item.date, time.time).mark==='triangle'" class="btn_select" @click="goToForm(item.date, time.time, room)">
                               <div class="icon__Wrapper">
                                 <figure class="icon triangle">
-                                  <svg fill="#00adef" viewBox="0 0 512 512">
+                                  <svg :fill="mainColor" viewBox="0 0 512 512">
                                     <path
                                       d="M408.95,482.41H103.05c-37.76,0-72.41-20.12-90.43-52.49A97.36,97.36,0,0,1,15,330.06L172.31, 76.18a98.47,98.47,0,0,1,167.38,0L497,330.06a97.36,97.36,0,0,1,2.37,99.86C481.35,462.29,446.7,482.41, 408.95,482.41ZM256,108.34a19.42,19.42,0,0,0-16.75,9.32L81.94,371.54a19.14,19.14,0,0,0-.52,20.07c4.2, 7.55,12.29,12.05,21.63,12.05H408.95c9.34,0,17.43-4.5,21.63-12.05a19.14,19.14,0,0,0-.52-20.07L272.75, 117.66A19.42,19.42,0,0,0,256,108.34Z"
                                     ></path>
@@ -288,126 +288,12 @@
             </section>
             <!-- calendar__Wrapper -->
 
-            <!-- スマホの表示 -->
-            <section class="definition__Wrapper for-sp">
-              <dl class="definition__list">
-                <dt class="day">
-                  2022/4/11
-                  <span class="">(月)</span>
-                </dt>
-                <dd>
-                  <ul class="daily-booking__Wrapper">
-                    <!-- 休日の場合 -->
-                    <li class="daily-booking__list">
-                      <div
-                        class="daily-booking__button flex justify-between align-center"
-                      >
-                        <div class="contents flex align-center btn_select">
-                          <figure class="icon bar">
-                            <svg
-                              fill="#c2c2c2"
-                              xmlns="http://www.w3.org/2000/svg"
-                              viewBox="0 0 32 3.92"
-                            >
-                              <defs></defs>
-                              <rect class="cls-1" width="32" height="3.92" />
-                            </svg>
-                          </figure>
-                          定休日
-                        </div>
-                      </div>
-                    </li>
-                    <!-- 休日以外の場合 -->
-                    <li>
-                      <div class="flex justify-between align-center">
-                        <!-- telの場合 -->
-                        <a
-                          class="daily-booking__button contents flex align-center btn_select"
-                        >
-                          <figure class="icon tel">
-                            <svg
-                              fill="#c2c2c2"
-                              xmlns="http://www.w3.org/2000/svg"
-                              viewBox="0 0 32 32"
-                              style="enable-background: new 0 0 32 32"
-                              xml:space="preserve"
-                            >
-                              <g>
-                                <g>
-                                  <polygon
-                                    class="st0"
-                                    points="6.8,12.6 9.4,12.6 9.4,20.7 10.8,20.7 10.8,12.6 13.5,12.6 13.5,11.3 6.8,11.3     "
-                                  />
-                                  <polygon
-                                    class="st0"
-                                    points="15.4,16.4 18.7,16.4 18.7,15.1 15.4,15.1 15.4,12.6 18.9,12.6 18.9,11.3 14,11.3 14,20.7 19.1,20.7 19.1,19.4 15.4,19.4     "
-                                  />
-                                  <polygon
-                                    class="st0"
-                                    points="21.6,19.4 21.6,11.3 20.1,11.3 20.1,20.7 25.2,20.7 25.2,19.4     "
-                                  />
-                                </g>
-                                <path
-                                  class="st0"
-                                  d="M29.9,7.7c0.2,0,0.4,0.2,0.4,0.4v15.8c0,0.2-0.2,0.4-0.4,0.4H2.1c-0.2,0-0.4-0.2-0.4-0.4V8.1c0-0.2,0.2-0.4,0.4-0.4H29.9 M29.9,6H2.1C0.9,6,0,6.9,0,8.1v15.8C0,25.1,0.9,26,2.1,26h27.8c1.2,0,2.1-0.9,2.1-2.1V8.1C32,6.9,31.1,6,29.9,6L29.9,6z"
-                                />
-                              </g>
-                            </svg>
-                          </figure>
-                          10:00 〜 <span>11:00</span>
-                        </a>
-                        <!-- tel以外 -->
-                        <!-- マル -->
-                        <div
-                          class="daily-booking__button contents flex align-center btn_select"
-                        >
-                          <figure class="icon circle">
-                            <svg fill="#00adef" viewBox="0 0 512 512">
-                              <path
-                                d="M256,78.77c97.73,0,177.23,79.51,177.23,177.23S353.73,433.23,256,433.23,78.77,353.73,78.77,256,158.27,78.77, 256,78.77M256,0C114.62,0,0,114.62,0,256S114.62,512,256,512,512,397.38,512,256,397.38,0,256,0Z"
-                              ></path>
-                            </svg>
-                          </figure>
-                          13:00 〜 <span>14:00</span>
-                        </div>
-                        <!-- 三角 -->
-                        <div
-                          class="daily-booking__button contents flex align-center btn_select"
-                        >
-                          <figure class="icon triangle">
-                            <svg fill="#00adef" viewBox="0 0 512 512">
-                              <path
-                                d="M408.95,482.41H103.05c-37.76,0-72.41-20.12-90.43-52.49A97.36,97.36,0,0,1,15,330.06L172.31, 76.18a98.47,98.47,0,0,1,167.38,0L497,330.06a97.36,97.36,0,0,1,2.37,99.86C481.35,462.29,446.7,482.41, 408.95,482.41ZM256,108.34a19.42,19.42,0,0,0-16.75,9.32L81.94,371.54a19.14,19.14,0,0,0-.52,20.07c4.2, 7.55,12.29,12.05,21.63,12.05H408.95c9.34,0,17.43-4.5,21.63-12.05a19.14,19.14,0,0,0-.52-20.07L272.75, 117.66A19.42,19.42,0,0,0,256,108.34Z"
-                              ></path>
-                            </svg>
-                          </figure>
-                          15:00 〜 <span>16:00</span>
-                        </div>
-                        <!-- 残席ゼロ -->
-                        <div
-                          class="daily-booking__button contents flex align-center btn_select disable"
-                        >
-                          <figure class="icon cross">
-                            <svg fill="#c2c2c2" viewBox="0 0 512 512">
-                              <path
-                                d="M321.83,256,498.37,79.46a46.55,46.55,0,1,0-65.83-65.83L256,190.17,79.46,13.63A46.55,46.55,0,0,0, 13.63,79.46L190.17,256,13.63,432.54a46.55,46.55,0,0,0,65.83,65.83L256,321.83,432.54,498.37a46.55,46.55, 0,0,0,65.83-65.83Z"
-                              ></path>
-                            </svg>
-                          </figure>
-                          18:00 〜 <span>19:00</span>
-                        </div>
-                      </div>
-                    </li>
-                  </ul>
-                </dd>
-              </dl>
-            </section>
+            
             <!-- definition__Wrapper -->
           </div>
         </div>
       </div>
     </div>
-    <button @click="isNotification=!isNotification">ここをクリック</button>
 </template>
 
 <script lang="ts">
@@ -442,6 +328,7 @@ export default defineComponent({
     })
     const isNotification = ref<boolean>(false)
     const isLoading = ref<boolean>(false)
+    const mainColor: string = "rgb(99, 102, 241)"
 
     const formatDate = (val:string):string => {
       return val.replaceAll("-", "/")
@@ -477,12 +364,14 @@ export default defineComponent({
     const vacanciesCheck = (date:string, time:string):Mark=> {
       const vacancy = findVacancy(date, time)
       if(vacancy) {
+        
         const left:number = vacancy.limit - vacancy.applicants.length;
+        console.log(vacancy,left)
         if(left > vacancy.status_triangle){
           return {id: vacancy.id, mark: "circle"}
-        }else if(left <= vacancy.status_triangle && left !== 0){
+        }else if(left <= vacancy.status_triangle && left > 0){
           return {id: vacancy.id, mark: "triangle"}
-        }else if(left  === 0) {
+        }else if(left  <= 0) {
           return {id: vacancy.id, mark: "cross"}
         }
       }
@@ -572,7 +461,7 @@ export default defineComponent({
     })
 
     return {
-      overlay, calendarService, currentWeek, weekDatesObjs, room, holidays, vacancies, isNotification, errorMessage, isLoading,
+      overlay, calendarService, currentWeek, weekDatesObjs, room, holidays, vacancies, isNotification, errorMessage, isLoading, mainColor,
       formatDate, changeWeek, separatedHolidaysCheck, vacanciesCheck, goToForm, pastTimeCheck, closeNotification,
     };
   },
@@ -593,6 +482,7 @@ export default defineComponent({
   padding: 7px 15px;
   color: aliceblue;
   background-color: #6366F1;
+  min-height: 38px;
 }
 .notification .body-text {
   padding: 7px 15px;

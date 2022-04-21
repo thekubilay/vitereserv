@@ -85,14 +85,11 @@ export default defineComponent({
 })
 </script>
 <style>
-.p-dropdown{
-
+/* .p-dropdown{
     padding: 8px 0px 8px 8px;
     width: 100%;
     margin-right: 5%;
     font: inherit;
-    /* border: 1px solid #ccc;
-    box-sizing: border-box; */
     border-color: #ccc;
     border-radius: 0px;
 }
@@ -103,7 +100,7 @@ export default defineComponent({
 }
 .p-dropdown-panel .p-dropdown-items .p-dropdown-item{
   font-size: 1.4rem;
-}
+} */
 </style>
 <style scoped>
 /* span.is-danger {

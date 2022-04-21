@@ -4,7 +4,7 @@
     <div class="template__Wrapper ">
       <div class="container relative">
         <LoadingSpinner v-model="isLoading" text="ローディング中"/>
-        <h2 class="h2">資料請求者情報の入力</h2>
+        <h2 class="h2">お申込み内容の入力</h2>
         <div class="relative">
           <section class="menu__Wrapper flex">
             <h3 class="h3" id="project_name">
@@ -60,7 +60,7 @@
               </li>
             </ul>
           </form>
-          <button class="return-btn" @click="clearModel()">フォームクリア</button>
+          <button class="reset-form" @click="clearModel()">フォームクリア</button>
         </div> 
       </div>
     </div>
@@ -434,7 +434,7 @@ export default defineComponent({
               removeSessionData()
               goTo('Thanks')
             }else if(status.toLowerCase() === "refused"){
-              store.SET_ERROR({title: "エラー", text:status.info})
+              store.SET_ERROR({title: "エラー", text:response.data.info})
               goTo("Room")
             }
           }
@@ -503,8 +503,8 @@ export default defineComponent({
   position: absolute;
   right: 10px;
   top: -5px;
-  padding: 5px;
-  border-radius: 4px;
+  padding:  3px 5px 4px;
+  /* border-radius: 4px; */
   background-color: #ec5700;
   color: white;
   font-size: 1rem;
@@ -518,12 +518,22 @@ export default defineComponent({
 button.return-btn {
   color: #fff;
   /* width: 100%; */
-  background-color: #00adef;
+  background-color: rgb(99, 102, 241);
   text-align: center;
-  padding: 0px 4px 2px;
-  border-radius: 6px;
+  padding: 2px 6px 4px;
+  /* border-radius: 6px; */
   margin-left: 4px;
   font-size: 1rem;
+  position: relative;
+  bottom: 2px;
   /* box-shadow: 2px 2px 0px 0px #989898; */
+}
+button.reset-form {
+  color: #fff;
+  background-color: #999;
+  text-align: center;
+  padding: 0px 4px 2px;
+  margin-left: 4px;
+  font-size: 1rem;
 }
 </style>

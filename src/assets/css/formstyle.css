@@ -214,7 +214,8 @@ main {
 
 .template__Wrapper .h2 {
     font-size: 24px;
-    color: #00adef;
+    /* color: #00adef; */
+    color: rgb(99, 102, 241);
     letter-spacing: .1rem;
     text-align: center;
     padding-bottom: 10px;
@@ -359,8 +360,8 @@ index
 
 #index .calendar__header .icon__Wrapper {
     width: 36px;
-    height: 18px;
-    margin: 2px 5px 0;
+    /* height: 18px; */
+    margin: 0px 5px 0;
     padding: 0px;
     background: rgb(231,231,231);
     background: linear-gradient(90deg, rgba(231,231,231,1) 0%, rgba(236,236,236,1) 22%, rgba(255,255,255,1) 100%);
@@ -372,11 +373,11 @@ index
 }
 #index .calendar__header .icon__Wrapper .icon {
     width: 12px;
-    height: 20px;
+    /* height: 20px; */
 }
 @media screen and (max-width: 767px) {
     #index .calendar__header .icon__Wrapper .icon {
-        height: 14px;
+        /* height: 14px; */
     }
     #index .calendar__header {
         display: block;
@@ -393,7 +394,7 @@ index
     height: 30px;
     cursor: pointer;
     border: 1px solid #c7c7c7;
-    border-radius: 4px;
+    /* border-radius: 4px; */
     background-color: #fafafa;
 }
 #index .calendar__header .arrow.disable {
@@ -534,7 +535,8 @@ index
     width: 32px;
     height: 32px;
     margin: auto;
-    color: #00adef;
+    color: rgb(99, 102, 241);
+    /* color: #00adef; */
 }
 #index .week-cell__contents .icon.circle svg {
     width: 24px;
@@ -627,7 +629,8 @@ index
     width: 26px;
     height: 26px;
     margin: auto;
-    color: #00adef;
+    color: rgb(99, 102, 241);
+    /* color: #00adef; */
 }
 
 
@@ -661,7 +664,8 @@ request,reserve,confirm
     padding-bottom: 10px;
 }
 .form_page .menu__Wrapper .h3 span {
-    color: #00adef;
+    color: rgb(99, 102, 241);
+    /* color: #00adef; */
     margin-right: 30px;
 }
 
@@ -676,7 +680,7 @@ request,reserve,confirm
     width: 75px;
     padding: 5px 0;
     border-radius: 5px;
-    background-color: #00adef;
+    background-color: rgb(99, 102, 241);;
     text-align: center;
     color: #fff;
 }
@@ -919,10 +923,10 @@ tbody {
 .form_page .submit__Wrapper #submit_button {
     color: #fff;
     width: 100%;
-    background-color: #00adef;
+    background-color: rgb(99, 102, 241);;
     text-align: center;
     padding: 13px;
-    border-radius: 6px;
+    /* border-radius: 6px; */
     box-shadow: 2px 2px 0px 0px #989898;
     transition: all 0.3s;
 }
@@ -1198,7 +1202,7 @@ detail
     background-color: rgb(250, 250, 250);
 }
 #detail .submit__Wrapper .btn_reserve {
-    background-color: #00adef;
+    background-color: rgb(99, 102, 241);;
 }
 #detail .submit__Wrapper .btn_reserve button{
     color: #fff;
@@ -1208,11 +1212,11 @@ detail
 
 #request .formTable span.hissu {
   color: #fff;
-  font-size: .9rem;
+  font-size: .95rem;
   background-color: #ec5700;
   margin-left: 5px;
-  padding: 2px 4px;
-  border-radius: 3px;
+  padding: 2px 4px 0;
+  /* border-radius: 3px; */
   vertical-align: middle;
 }
 #request .formTable label.comp-header {
@@ -1224,3 +1228,23 @@ detail
 /* #request .formTable .flex-column.relative {
   width: 100%;
 } */
+.p-dropdown{
+
+  padding: 8px 0px 8px 8px;
+  width: 100%;
+  margin-right: 5%;
+  font: inherit;
+  /* border: 1px solid #ccc;
+  box-sizing: border-box; */
+  border-color: #ccc;
+  border-radius: 0px;
+}
+.p-inputtext{
+  border-radius: 0;
+  font-size: 1.4rem;
+  padding: 0;
+  color: #000;
+}
+.p-dropdown-panel .p-dropdown-items .p-dropdown-item{
+font-size: 1.4rem;
+}
