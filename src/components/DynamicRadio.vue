@@ -6,19 +6,21 @@
     </label>
     <div class="radio">
       <ul class="flex justify-between">
-        <li v-for="(o,idx) in form?.options" :key="idx">
-          <input 
-              type="radio" 
-              :id="form.label+'radio'+idx"
-              :name="form?.label" 
-              :value="form.options[idx].value" 
-              class="radio-input" 
-              :class="{'validate[required]':form?.required}" 
-              @change="$emit('cVal')"
-              v-model="localModel"
-          >
-          <label :for="form.label+'radio'+idx">{{form.options[idx].value}}</label>
-        </li>
+        <template v-if="form.options">
+          <li v-for="(o,idx) in form?.options" :key="idx">
+            <input 
+                type="radio" 
+                :id="form.label+'radio'+idx"
+                :name="form?.label" 
+                :value="form.options[idx].value" 
+                class="radio-input" 
+                :class="{'validate[required]':form?.required}" 
+                @change="$emit('cVal')"
+                v-model="localModel"
+            >
+            <label :for="form.label+'radio'+idx">{{form.options[idx].value}}</label>
+          </li>
+        </template>
         
       </ul>
     </div>
@@ -65,7 +67,10 @@ export default defineComponent({
   name: "DynamicRadio",
   emits: ['updateModel','cVal'],
   props: {
-    form: Object as PropType<FormItem>,
+    form: {
+      type: Object as PropType<FormItem>,
+      required: true
+    },
     index: Object as PropType<Indeces>,
     modelValue: [String, Array],
     error: {

@@ -62,7 +62,10 @@ export default defineComponent({
   name: "DynamicCheckBoxes",
   emits: ['updateModel','cVal'],
   props: {
-    form: Object as PropType<FormItem>,
+    form: {
+      type: Object as PropType<FormItem>,
+      required: true
+    },
     index: Object as PropType<Indeces>,
     modelValue: [String,Array],
     error: {
@@ -72,7 +75,7 @@ export default defineComponent({
     showErrors: Boolean
   },
   setup(props,{emit}){
-    const localModel = ref<String|Array<String>>([])
+    const localModel = ref<string[]>([])
     if(props.modelValue && Array.isArray(props.modelValue)){
       localModel.value = props.modelValue as string[];
     }
@@ -81,7 +84,7 @@ export default defineComponent({
     })
     watch(() => props.modelValue, (val) => {
       if(typeof val=== "string" || Array.isArray(val))
-        localModel.value = val as string|string[]
+        localModel.value = val as string[]
     })
     return {
       localModel

@@ -130,7 +130,7 @@
                         <!-- v-for -->
                           <div v-for="(time, index) in room.times" :key="index" class="sec">
                             <!-- マル -->
-                            <div v-if="vacanciesCheck(item.date, time.time).mark==='circle'" class="btn_select" @click="goToForm(item.date, time.time, room.form)">
+                            <div v-if="vacanciesCheck(item.date, time.time).mark==='circle'" class="btn_select" @click="goToForm(item.date, time.time, room)">
                               <div class="icon__Wrapper">
                                 <figure class="icon circle">
                                   <svg fill="#00adef" viewBox="0 0 512 512">
@@ -145,7 +145,7 @@
                               </p>
                             </div>
                             <!-- 三角 -->
-                            <div v-else-if="vacanciesCheck(item.date, time.time).mark==='triangle'" class="btn_select" @click="goToForm(item.date, time.time, room.form)">
+                            <div v-else-if="vacanciesCheck(item.date, time.time).mark==='triangle'" class="btn_select" @click="goToForm(item.date, time.time, room)">
                               <div class="icon__Wrapper">
                                 <figure class="icon triangle">
                                   <svg fill="#00adef" viewBox="0 0 512 512">
@@ -160,7 +160,7 @@
                               </p>
                             </div>
                             <!-- 残席ゼロ -->
-                            <div v-else-if="vacanciesCheck(item.date, time.time).mark==='batu'" class="btn_select disable">
+                            <div v-else-if="vacanciesCheck(item.date, time.time).mark==='cross'" class="btn_select disable">
                               <div class="icon__Wrapper noflame">
                                 <figure class="icon cross">
                                   <svg fill="#c2c2c2" viewBox="0 0 512 512">
@@ -443,15 +443,15 @@ export default defineComponent({
     const isNotification = ref<boolean>(false)
     const isLoading = ref<boolean>(false)
 
-    const formatDate = (val:string) => {
+    const formatDate = (val:string):string => {
       return val.replaceAll("-", "/")
     }
 
-    const formatTime = (val:string) => {
+    const formatTime = (val:string):string => {
       return val.slice( 0, -3 )
     }
 
-    const changeWeek = (num:number) => {
+    const changeWeek = (num:number):void => {
       overlay.value?.classList.add('active')
       if(currentWeek.value){
         currentWeek.value += num
@@ -470,8 +470,11 @@ export default defineComponent({
       return false
     }
 
-
-    const vacanciesCheck = (date:string, time:string):any => {
+    interface Mark {
+      id: number,
+      mark: string,
+    }
+    const vacanciesCheck = (date:string, time:string):Mark=> {
       const vacancy = findVacancy(date, time)
       if(vacancy) {
         const left:number = vacancy.limit - vacancy.applicants.length;
@@ -480,11 +483,10 @@ export default defineComponent({
         }else if(left <= vacancy.status_triangle && left !== 0){
           return {id: vacancy.id, mark: "triangle"}
         }else if(left  === 0) {
-          return {id: vacancy.id, mark: "batu"}
+          return {id: vacancy.id, mark: "cross"}
         }
-      }else{
-        return false
       }
+      return {id: 0, mark: "none"}
     }
 
     const pastTimeCheck = (timestamp:number):boolean => {
@@ -497,12 +499,12 @@ export default defineComponent({
     }
 
 
-    const goToForm = (date:string, time:string, formId:number) => {
+    const goToForm = (date:string, time:string, room:Room|null) => {
       const vacancy = findVacancy(date, time)
       if(vacancy){
         router.push({
           name: "Form",
-          params: {rid:route.params.rid, fid:formId},
+          params: {rid:route.params.rid, fid:room?.form},
           query: {vacancy: vacancy.id}
         })
       }
