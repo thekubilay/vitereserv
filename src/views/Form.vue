@@ -407,35 +407,35 @@ export default defineComponent({
       if(checkAllErrors()){
         const requestData = buildRequestData()
 
-        console.log("ready to send")
-        for (var [key, value] of requestData.entries()) { 
-          console.log(key, value);
-        }
-        // isLoading.value = true;
-        // axios.request({
-        //   method: "post",
-        //   baseURL: ENV.API,
-        //   url: "applicants/",
-        //   data: requestData,
-        // }).then((response: any) => {
-        //   isLoading.value = false;
-        //   // console.log(response)
-        //   if(response.data && response.data.status){
-        //     // console.log(response.data.status)
-        //     const status = response.data.status.toString()
-        //     if(status === "OK"){
-        //       removeSessionData()
-        //       goTo('Thanks')
-        //     }else if(status.toLowerCase() === "refused"){
+        // console.log("ready to send")
+        // for (var [key, value] of requestData.entries()) { 
+        //   console.log(key, value);
+        // }
+        isLoading.value = true;
+        axios.request({
+          method: "post",
+          baseURL: ENV.API,
+          url: "applicants/",
+          data: requestData,
+        }).then((response: any) => {
+          isLoading.value = false;
+          // console.log(response)
+          if(response.data && response.data.status){
+            // console.log(response.data.status)
+            const status = response.data.status.toString()
+            if(status === "OK"){
+              removeSessionData()
+              goTo('Thanks')
+            }else if(status.toLowerCase() === "refused"){
 
-        //     }
-        //   }
-        // }).catch((error: Error) => {
-        //   isLoading.value = false;
-        //   console.error("Server could not accept response:"+error)
-        //   store.SET_ERROR({title: "エラー", text:"サーバーのエラーが発生しました。"})
-        //   goTo("Room")
-        // })
+            }
+          }
+        }).catch((error: Error) => {
+          isLoading.value = false;
+          console.error("Server could not accept response:"+error)
+          store.SET_ERROR({title: "エラー", text:"サーバーのエラーが発生しました。"})
+          goTo("Room")
+        })
         
         // document.querySelector("#theForm").submit()
       }
