@@ -366,7 +366,6 @@ export default defineComponent({
       if(vacancy) {
         
         const left:number = vacancy.limit - vacancy.applicants.length;
-        console.log(vacancy,left)
         if(left > vacancy.status_triangle){
           return {id: vacancy.id, mark: "circle"}
         }else if(left <= vacancy.status_triangle && left > 0){
@@ -481,7 +480,7 @@ export default defineComponent({
 .notification .title {
   padding: 7px 15px;
   color: aliceblue;
-  background-color: #6366F1;
+  background-color: #ff7979;
   min-height: 38px;
 }
 .notification .body-text {
