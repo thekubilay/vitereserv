@@ -77,6 +77,7 @@ import useValidation from "@/utils/useValidation";
 import FormsFunc from "./Forms"
 import useStore from "../helpers/useStore"
 import LoadingSpinner from "../components/loaders/LoadingSpinner.vue"
+// import {Core as YubinBangoCore} from 'yubinbango-core'
 interface Indeces {
   one: number,
   two: number,
@@ -87,7 +88,7 @@ interface RadioData {
 }
 export default defineComponent({
   components: {
-    LoadingSpinner
+    LoadingSpinner,
   },
   setup(){
     const {store} = useStore()
@@ -107,7 +108,8 @@ export default defineComponent({
     const pageTitle = ref<string>("");
     const {vacancyID,
       formID,
-      roomID, 
+      roomID,
+      cityOptions, 
       hasSessionData,
       getSessionData,
       saveSessionData,
@@ -196,15 +198,14 @@ export default defineComponent({
             isLoading.value = false
             store.SET_ERROR({title: "エラー", text:"サーバーのエラーが発生しました。"})
             console.log("vacancy problem")
-            // goTo("Room")
+            goTo("Room")
           })
       })
       .catch((error) => {
         isLoading.value = false;
         store.SET_ERROR({title: "エラー", text:"サーバーのエラーが発生しました。"})
         console.log(error)
-
-        // goTo("Room")
+        goTo("Room")
       })
     }
 
@@ -219,6 +220,9 @@ export default defineComponent({
             // formModel.value[idx].push("_")
           }else if (item.type === "select"){
             item.model = {label: "", value: ""}
+            if(["city","cities"].includes(item.label)){
+              item.options = cityOptions
+            }
             // formModel.value[idx].push({name: "", value: ""})
           }else if (item.type === "number"){
             item.model = null
@@ -305,6 +309,9 @@ export default defineComponent({
     }
 
     const clearModel = () => {
+      // setupYubinBango()
+      // testYubin()
+
       formRows.value.forEach((row,rowIdx)=>{
         row.form_items.forEach((item,itemIdx)=>{
           if(item.model){
@@ -440,6 +447,13 @@ export default defineComponent({
         // document.querySelector("#theForm").submit()
       }
     }
+
+    // function testYubin(){
+    //   const zip = document.querySelector("#zip")
+    //   new YubinBangoCore(zip, (addr: any)=>{
+    //     console.log(addr)
+    //   })
+    // }
 
     const dateAndTime = computed(() => {
       if(date.value && time.value){
