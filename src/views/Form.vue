@@ -434,7 +434,8 @@ export default defineComponent({
               removeSessionData()
               goTo('Thanks')
             }else if(status.toLowerCase() === "refused"){
-
+              store.SET_ERROR({title: "エラー", text:status.info})
+              goTo("Room")
             }
           }
         }).catch((error: Error) => {
