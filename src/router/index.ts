@@ -2,6 +2,11 @@ import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router"
 
 let routes: Array<RouteRecordRaw> = [
   {
+    path: '/', 
+    name: 'Home',
+    component: () => import('../views/Home.vue')
+  },
+  {
     path: '/:rid', 
     name: 'Room',
     component: () => import('../views/Room.vue')
@@ -14,7 +19,7 @@ let routes: Array<RouteRecordRaw> = [
   {
     path: '/404', 
     name: 'Error',
-    component: () => import('../views/Error.vue')
+    component: () => import('../views/Home.vue')
   },
   {
     path: '/thanks',
