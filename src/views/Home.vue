@@ -27,7 +27,7 @@
                                 <a href="" class="link">お問い合わせ</a>
                             </li> -->
                             <li class="item button-primary">
-                                <a href="" class="link">ログイン</a>
+                                <a href="https://panel.viterve.com/" class="link">ログイン</a>
                             </li>
                         </ul>
                     </div>
@@ -60,7 +60,7 @@
                     <div class="features wow fadeInUp" data-wow-delay="0.9s">
                         <p class="p1">アカウントをお持ちの方は</p>
                         <button class="button flex justify-center align-center">
-                            <a href="">ログインへ</a>
+                            <a href="https://panel.viterve.com/">ログインへ</a>
                         </button>
                     </div>
                 </div>
@@ -82,7 +82,7 @@
         </section>
 
 
-        <footer class="footer">
+        <footer class="home-footer">
             <div class="container flex align-start">
                 <div class="logo flex">
                     <img src="/logo.svg" alt="">
@@ -106,7 +106,7 @@
                         <a href="" class="link">お問い合わせ</a>
                     </li> -->
                     <li class="item button-primary">
-                        <a href="" class="link">ログイン</a>
+                        <a href="https://panel.viterve.com/" class="link">ログイン</a>
                     </li>
                 </ul>
             </div>
@@ -170,17 +170,16 @@
     }
   }
 
-  
 
   onMounted(() => {
     // new WOW().init();
-    if(rotatingCopys.value && rotatingCopys.value.length>0){
-      rotatingCopys.value[0].classList.add('is-visible')
+    const htmlTag = document.querySelector('html')
+    if(htmlTag){
+        htmlTag.style.fontSize = "1rem";
     }
-      resizeCopy(0);
-      setInterval(() => {
-          changeCopy()
-      }, 3000);
+    setInterval(() => {
+        changeCopy()
+    }, 3000);
       // setTimeout(() => {tabLine.style.opacity = "1"}, 300)
       // gsap.fromTo(bgLogo,
       //     {y:0},
@@ -196,13 +195,17 @@
       //             invalidateOnRefresh: true,
       //         },
       //     });
-      rotatingCopys.value = Array.from(document.querySelectorAll('.rotating-copy'))
-      if(rotatingCopys.value && rotatingCopys.value.length > 0){
+    rotatingCopys.value = Array.from(document.querySelectorAll('.rotating-copy'))
+    if(rotatingCopys.value && rotatingCopys.value.length > 0){
         rotatingCopysLength.value = rotatingCopys.value.length
-      }
-      if(main.value){
+    }
+    if(rotatingCopys.value && rotatingCopys.value.length>0){
+        rotatingCopys.value[0].classList.add('is-visible')
+    }
+    resizeCopy(0);
+    if(main.value){
         main.value.style.opacity = "1"
-      }
+    }
   })
 </script>
 
@@ -304,12 +307,12 @@ ul {
     overflow: hidden;
     opacity: 0;
     transition: opacity 1.5s;
+    animation: fade 1.5s;
 }
 .home > .hero {
     position: relative;
     width: 100%;
 	/* height: 100vh; */
-    padding-top: 20px;
     padding-bottom: 30px;
 	background-color: rgb(213,213,238);
     background: linear-gradient(93deg, rgba(213,213,238,1) 0%, rgba(179,180,241,1) 90%);
@@ -720,31 +723,31 @@ ul {
 
 
 
-.home > .footer {
+.home > .home-footer {
     position: relative;
     width: 100%;
     padding: 30px 0 30px;
     background-color: #F5F5F7;
 }
-.home > .footer > .container > .logo {
+.home > .home-footer > .container > .logo {
     padding-right: 60px;
     height: auto;
-    width: 120px;
+    width: 170px;
 }
-.home > .footer > .container > .menu-items {
+.home > .home-footer > .container > .menu-items {
     width: calc(50% - 95px);
 }
-.home > .footer > .container > .menu-items > .item {
+.home > .home-footer > .container > .menu-items > .item {
     width: 25%;
     margin: 0 0 0px;
     text-align: center;
     overflow: hidden;
 }
-.home > .footer > .container > .menu-items > .item.button-primary {
+.home > .home-footer > .container > .menu-items > .item.button-primary {
     display: block;
     background-color: #000;
 }
-.home > .footer > .container > .menu-items > .item.button-primary > .link {
+.home > .home-footer > .container > .menu-items > .item.button-primary > .link {
     position: relative;
     z-index: 0;
     display: block;
@@ -752,10 +755,10 @@ ul {
     color: #fff;
     padding: 0.5rem 0.6rem;
 }
-.home > .footer > .container > .menu-items > .item.button-primary > .link:hover {
+.home > .home-footer > .container > .menu-items > .item.button-primary > .link:hover {
     color: #333;
 }
-.home > .footer > .container > .menu-items > .item.button-primary > .link::after {
+.home > .home-footer > .container > .menu-items > .item.button-primary > .link::after {
     position: absolute;
     z-index: -1;
     content: "";
@@ -768,10 +771,10 @@ ul {
     box-sizing: border-box;
     transition: all 0.3s ease;
 }
-.home > .footer > .container > .menu-items > .item.button-primary > .link:hover::after {
+.home > .home-footer > .container > .menu-items > .item.button-primary > .link:hover::after {
     width: 100%;
 }
-.home > .footer > .container > .menu-items > .item.button-primary > .link::before {
+.home > .home-footer > .container > .menu-items > .item.button-primary > .link::before {
     position: absolute;
     z-index: -2;
     content: "";
@@ -829,10 +832,6 @@ ul {
     }
     .h3 {
         font-size: 1.4rem;
-    }
-
-    .home > .hero {
-        padding-top: 0px;
     }
 
     .home > .hero > .bg-logo {
@@ -997,19 +996,19 @@ ul {
         height: 40px;
         margin-bottom: 10px;
     }
-    .home > .footer > .container {
+    .home > .home-footer > .container {
         display: block;
     }
-    .home > .footer > .container > .menu-items {
+    .home > .home-footer > .container > .menu-items {
         width: 100%;
         flex-wrap: wrap;
     }
-    .home > .footer > .container > .menu-items > .item {
+    .home > .home-footer > .container > .menu-items > .item {
         width: 50%;
         margin: 10px auto 10px 0;
         text-align: left;
     }
-    .home > .footer > .container > .menu-items > .item.button-primary {
+    .home > .home-footer > .container > .menu-items > .item.button-primary {
         width: 100%;
         text-align: center;
     }
