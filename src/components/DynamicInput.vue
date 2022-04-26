@@ -1,5 +1,5 @@
 <template>
-  <div class="flex-column relative">
+  <div class="flex-column relative" :style="'width:'+form?.width+';'">
     <label class="label comp-header flex" :for="form?.label">{{form?.title}}
       <span v-if="form?.required" class="hissu">必須</span>
       <span v-if="form?.hint" class="td2">({{form.hint}})</span>
@@ -15,20 +15,12 @@
       @change="$emit('cVal')"
       v-model="localModel"
     />
-    <span v-if="error&&error!==true&&showErrors" class="is-danger">
-    {{error}}
+    <span class="error-wrapper">
+      <span v-if="error&&error!==true&&showErrors" class="is-danger">
+        {{error}}
+      </span>
     </span>
   </div>
-  <!-- <tr class="tr flex align-center">
-    <th class="th"><label :for="form?.label">{{form?.title}}</label><span v-if="form?.required" class="hissu">必須</span></th>
-    <td class="td" :class="{long: form?.width}">
-
-    </td>
-    <span v-if="error&&error!==true&&showErrors" class="is-danger">
-      {{error}}
-    </span>
-    <td v-if="form?.hint" class="td2">{{form.hint}}</td>
-  </tr> -->
 
 </template>
 <script lang="ts">
@@ -50,7 +42,8 @@ export default defineComponent({
       type: [String,Boolean],
       default: ""
     },
-    showErrors: Boolean
+    showErrors: Boolean,
+    rowClasses: String,
   },
   components: {
     InputText
@@ -73,5 +66,3 @@ export default defineComponent({
   }
 })
 </script>
-<style scoped>
-</style>

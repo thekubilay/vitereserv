@@ -76,12 +76,12 @@ blockquote::before,blockquote::after,q::before,q::after{
 common
 --------------------------------*/
 html{
-    font-size: 0.625rem;
+    font-size: 1rem;
     overflow-x: hidden;
 }
 body{
     font-family: 'Avenir Next','Hiragino Kaku Gothic ProN','ヒラギノ角ゴ ProN W3','Meiryo','メイリオ',sans-serif;
-    font-size: 1.4rem;
+    font-size: 1rem;
     line-height: 1.5;
     color: #555;
 }
@@ -1228,23 +1228,3 @@ detail
 /* #request .formTable .flex-column.relative {
   width: 100%;
 } */
-.p-dropdown{
-
-  padding: 8px 0px 8px 8px;
-  width: 100%;
-  margin-right: 5%;
-  font: inherit;
-  /* border: 1px solid #ccc;
-  box-sizing: border-box; */
-  border-color: #ccc;
-  border-radius: 0px;
-}
-.p-inputtext{
-  border-radius: 0;
-  font-size: 1.4rem;
-  padding: 0;
-  color: #000;
-}
-.p-dropdown-panel .p-dropdown-items .p-dropdown-item{
-font-size: 1.4rem;
-}

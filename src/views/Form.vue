@@ -1,66 +1,44 @@
 <template>
   <div id="request" class="form_page">
-
     <div class="template__Wrapper ">
       <div class="container relative">
         <LoadingSpinner v-model="isLoading" text="ローディング中"/>
-        <h2 class="h2">お申込み内容の入力</h2>
+        <h1 class="header-text">お申込み内容の入力</h1>
         <div class="relative">
-          <section class="menu__Wrapper flex">
-            <h3 class="h3" id="project_name">
-              <span>ご予約内容</span>
-            </h3>
-            <div class="menu__contents">
-              <dl class="flex align-center">
-                <dt>予約室名</dt>
-                <dd>{{pageTitle||"名前なし"}}</dd>
-              </dl>
-              <dl class="flex align-center">
-                <dt>ご利用日時</dt>
-                <dd>{{dateAndTime}}&nbsp;<button class="return-btn" @click="goTo('Room')">日付変更</button></dd>
-              </dl>
-            </div>
+          <section class="flex-column header-subtext">
+            <h2>{{pageTitle||"名前なし"}}</h2>
+            <!-- <p></p>
+            <p>ご利用日時</p> -->
+            <p>{{dateAndTime}}&nbsp;<button class="return-btn" @click="goTo('Room')">日付変更</button></p>
           </section>
           <form method="post" action="" class="h-adr" id="form" name="theForm" ref="formElem">
             <span class="p-country-name" style="display:none;">Japan</span>
-            <!-- <p id="counter__Wrapper" class="counter__Wrapper for-pc">
-              あと<br><span id="counter">12</span>項目
-            </p> -->
 
-            <table class="formTable">
-            <tbody>
-              <tr v-for="(row, rowIdx) in formRows" :key="rowIdx"
-                class="tr flex"
-                
-              >
-                <td class="flex">
-                  <div class="row flex justify-space-between w100">
-                    <component v-for="(comp , idx) in row.form_items" 
-                        :key="idx" 
-                        :index="{one:rowIdx, two:idx}"
-                        :is="getComp(comp.type)" 
-                        :form="formRows[rowIdx].form_items[idx]" 
-                        :modelValue="formRows[rowIdx].form_items[idx].model"
-                        @updateModel="updateModel"
-                        @cVal="saveForm()"
-                        :error="formRows[rowIdx].form_items[idx]['error']"
-                        :showErrors="showErrors"
-                        :class="row.form_items.length>1?'column-'+row.form_items.length+'-space':'w100'"
-                    />
+            <div v-for="(row, rowIdx) in formRows" :key="rowIdx"
+              class="form-row flex justify-space-between w100"
+              :class="''+row.classes"
+            >
+              <component v-for="(comp , idx) in row.form_items"
+                :key="idx" 
+                :index="{one:rowIdx, two:idx}"
+                :is="getComp(comp.type)" 
+                :form="formRows[rowIdx].form_items[idx]" 
+                :modelValue="formRows[rowIdx].form_items[idx].model"
+                @updateModel="updateModel"
+                @cVal="saveForm()"
+                :error="formRows[rowIdx].form_items[idx]['error']"
+                :showErrors="showErrors"
+                :class="row.form_items.length>1?'column-'+row.form_items.length+'-space':'w100'"
+                :rowClasses="row.classes"
+              />
 
-                  </div>
-                </td>
-              </tr>
+            </div>
+            <div class="form-button-wrapper flex justify-end align-center">
+              <button type="button" class="submit-button flex align-center justify-center" @click="checkForm" id="submit_button" :disabled="isLoading">送信する</button>
+            </div>
 
-            </tbody>
-            </table>
-            <ul class="submit__Wrapper flex align-center justify-center">
-              <li>
-                <button type="button" @click="checkForm" id="submit_button" pr  :disabled="isLoading">送信する</button>
-              </li>
-            </ul>
           </form>
-          <button class="reset-form" @click="clearModel()">フォームクリア</button>
+          <!-- <button class="reset-form" @click="clearModel()">フォームクリア</button> -->
         </div> 
       </div>
     </div>
@@ -139,7 +117,7 @@ export default defineComponent({
         return textComp.value
       }else if (name === 'select'){
         return selectComp.value
-      }else if (name === 'check'){
+      }else if (name === 'checkbox'){
         return checkComp.value
       }else if (name === 'radio'){
         return radioComp.value
@@ -162,8 +140,8 @@ export default defineComponent({
       .then((response) => {
           const data = JSON.parse(JSON.stringify(response.data))
           // console.log(data)
-          if(data.title){
-            pageTitle.value = data.title.toString()
+          if(data.sub_title){
+            pageTitle.value = data.sub_title.toString()
           }
           //2.5 Setup form data
           setupForm(data.form_rows)
@@ -177,7 +155,8 @@ export default defineComponent({
             if(f === formID.value.toString()){
               for(let i = 0;i< d.length;i++){
                 d[i].forEach((item: any,idx: number) => {
-                  formRows.value[i].form_items[idx].model = item
+                  if(formRows.value[i] && formRows.value[i].form_items[idx])
+                    formRows.value[i].form_items[idx].model = item
                 })
               }
 
@@ -192,6 +171,7 @@ export default defineComponent({
             date.value = response2.data.date
             time.value = response2.data.time
             isLoading.value = false
+            console.log("data",formRows.value)
             setupYubinBango()
           })
           .catch((error2)=>{
@@ -279,7 +259,7 @@ export default defineComponent({
             res.push(useValidation.kanaCheck)
           }else if(rule === "zipcode"){
             res.push(useValidation.zipCodeCheck)
-          }else if(rule === "phonenumber"){
+          }else if(rule === "tel"){
             res.push(useValidation.phoneNumberCheck)
           }else if(rule.startsWith("minlength")){
             let reg = /\(([0-9]+)\)/
@@ -497,43 +477,201 @@ export default defineComponent({
 
 <style>
 
-/* ADDED */
-#request span.is-danger {
+
+/* #request span.is-danger {
   display: block;
   position: absolute;
   right: 10px;
   top: -5px;
   padding:  3px 5px 4px;
-  /* border-radius: 4px; */
   background-color: #ec5700;
   color: white;
   font-size: 1rem;
 }
 .formTable tr td {
   width: 100%;
+} */
+#request {
+  color: rgb(32, 64, 97)
 }
-.formTable .w100 {
+#request .w100 {
   width: 100%
 }
-button.return-btn {
+#request button.return-btn {
   color: #fff;
-  /* width: 100%; */
-  background-color: rgb(99, 102, 241);
+  background-color: rgba(99, 102, 241,0.7);
   text-align: center;
   padding: 2px 6px 4px;
-  /* border-radius: 6px; */
   margin-left: 4px;
   font-size: 1rem;
   position: relative;
   bottom: 2px;
-  /* box-shadow: 2px 2px 0px 0px #989898; */
 }
-button.reset-form {
+
+#request button.reset-form {
   color: #fff;
   background-color: #999;
   text-align: center;
   padding: 0px 4px 2px;
-  margin-left: 4px;
+  margin-left: 0px;
   font-size: 1rem;
 }
+
+#request h1.header-text{
+  font-size: 2.5rem;
+  margin-bottom: 60px;
+}
+
+#request section.header-subtext{
+  margin-bottom: 60px;
+}
+#request section.header-subtext h2{
+  font-size: 1.6rem;
+  margin-bottom: 20px;
+}
+/* ---- Form ---- */
+#request .form-row{
+  margin-bottom: 10px;
+}
+#request .form-row label.label{
+  margin-bottom: 6px;
+  font-weight: 600;
+  align-items: center;
+  /* color: rgb(54,71,89); */
+}
+
+#request .hissu {
+  background-color: #e74c3c;
+  padding: 0 4px 1px;
+  color: #f1f2f6;
+  font-size: .67rem;
+  display: block;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  margin-left: 5px;
+  border-radius: 0px;
+}
+#request .td2 {
+  margin-left: 5px;
+  color: #808080;
+}
+#request .error-wrapper{
+  display: flex;
+
+  height: 25px;
+}
+#request span.is-danger{
+  /* display: block; */
+  /* position: absolute;
+  right: 10px;
+  top: -5px; */
+  padding: 1px 3px 1px 0;
+  border-radius: 0px;
+  font-size: 0.8rem;
+  color: #ec5700;
+  /* color: white; */
+}
+
+#request .p-dropdown{
+  padding: 0;
+  width: 100%;
+  margin-right: 0;
+  font: inherit;
+  /* border-width: 0 !important; */
+  /* border: 1px solid #ccc;
+  box-sizing: border-box; */
+  /* border-color: #ccc; */
+  border-radius: 0px;
+  background-color: rgba(245,243,250,0.6);
+}
+#request .p-dropdown .p-inputtext{
+  height: 34px;
+  line-height: 2.4;
+}
+#request .p-dropdown .p-dropdown-trigger{
+  background-color: rgba(245,243,250,0.6);
+}
+
+#request .p-inputtext{
+  /* border-width: 0 !important; */
+  height: 36px;
+  border-radius: 0px;
+  font-size: 1.0rem;
+  padding: 0;
+  padding-left: 4px;
+  color: #000;
+  background-color: rgba(245,243,250,0.6);
+}
+#request .p-inputtext:enabled:focus{
+  /* border: none; */
+}
+#request .p-inputtext::placeholder{
+  color: rgba(128,127,130,1);
+}
+/* #request .p-inputtext{
+  color: rgba(128,127,130,1);
+} */
+#request .p-dropdown-panel .p-dropdown-items .p-dropdown-item{
+  font-size: 1.4rem;
+}
+
+#request .p-checkbox .p-checkbox-box{
+  border-radius: 0;
+}
+
+#request .checkbox-wrapper{
+  margin-right: 8px;
+}
+#request .flex-column .checkbox-wrapper{
+  margin-bottom: 8px;
+}
+#request .checkbox-wrapper:last-of-type{
+  margin-right: 0px;
+}
+#request .flex-column .checkbox-wrapper:last-of-type{
+  margin-bottom: 0;
+}
+#request .checkbox-wrapper label{
+  font-size: 0.8rem;
+  margin-left: 4px;
+}
+
+
+/* ---Button--- */
+
+#request button.submit-button{
+  width: 140px;
+  color: #f5f6fa;
+  background: radial-gradient(circle, rgba(102, 105, 242, 1) 75%, rgba(88, 91, 210, 1) 100%);
+  height: 44px;
+  width: 100px;
+  font-weight: 400;
+  border-radius: 0px;
+  /* padding: 6px 12px; */
+  font-size: 1rem;
+}
+#request .form-button-wrapper{
+  margin-top: 50px;
+}
+
+@media screen and (max-width: 767px){
+  #request .form-row .form-row-wrapper{
+    flex-direction: column;
+  }
+  #request .form-row .form-row-wrapper .flex-column{
+    width: 100%;
+  }
+}
+@media screen and (max-width: 480px){
+  #request .form-row .form-row-wrapper .flex-column{
+    width: 100% !important;
+  }
+  #request button.submit-button{
+    width: 100%;
+  }
+}
+/* --- Form end --- */
 </style>

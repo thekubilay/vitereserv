@@ -1,21 +1,9 @@
 <template>
-  <div class="flex-column relative">
+  <div class="flex-column relative" :style="'width:'+form?.width+';'">
     <label class="label comp-header flex" :for="form?.label">{{form?.title}}
       <span v-if="form?.required" class="hissu">必須</span>
       <span v-if="form?.hint" class="td2">({{form.hint}})</span>
     </label>
-      <!-- <select
-        @change="$emit('cVal')"
-        v-model="localModel"
-        :name="form?.label" 
-        :id="form?.label" 
-        :class="{'validate[required]':form?.required}" 
-        data-prompt-position="topLeft:40"
-      >
-        <option value="">{{form?.placeholder}}</option>
-        <option v-for="(o, idx) in form.options" :key="idx" :value="o.value">{{o.label}}</option>
-      </select>
-      <span class="select-icon"><i class="fas fa-caret-down"></i></span> -->
     
     <Dropdown 
       @change="$emit('cVal')" 
@@ -25,26 +13,12 @@
       :placeholder="(form?.placeholder?.toString())"
     >
     </Dropdown>
-    <span v-if="error&&error!==true&&showErrors" class="is-danger">
-      {{error}}
+    <span class="error-wrapper">
+      <span v-if="error&&error!==true&&showErrors" class="is-danger">
+        {{error}}
+      </span>
     </span>
   </div>
-
-  <!-- <tr class="tr flex align-center">
-    <th class="th"><label :for="form?.label">{{form?.title}}</label><span v-if="form?.required" class="hissu">必須</span></th>
-    <td class="td select">
-      <select :name="form?.label" :id="form?.label" :class="{'validate[required]':form?.required}" data-prompt-position="topLeft:40">
-        <option value="">{{form?.placeholder}}</option>
-        <option v-for="(o, idx) in form.options" :key="idx" :value="o.value">{{o.label}}</option>
-      </select>
-      <span class="select-icon"><i class="fas fa-caret-down"></i></span>
-      <Dropdown @change="$emit('cVal')" v-model="localModel" :options="form?.options" optionLabel="label" :placeholder="(form?.placeholder?.toString())"></Dropdown>
-    </td>
-    <span v-if="error&&error!==true&&showErrors" class="is-danger">
-      {{error}}
-    </span>
-    <td v-if="form?.hint" class="td2">{{form.hint}}</td>
-  </tr> -->
 
 </template>
 <script lang="ts">
@@ -65,7 +39,8 @@ export default defineComponent({
       type: [String,Boolean],
       default: ""
     },
-    showErrors: Boolean
+    showErrors: Boolean,
+    rowClasses: String,
   },
   setup(props,{emit}){
     const localModel = ref<Array<any>>([])
@@ -103,14 +78,5 @@ export default defineComponent({
 } */
 </style>
 <style scoped>
-/* span.is-danger {
-  display: block;
-  position: absolute;
-  right: 10px;
-  top: -5px;
-  padding: 5px;
-  border-radius: 4px;
-  background-color: #ec5700;
-  color: white;
-} */
+
 </style>

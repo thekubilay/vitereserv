@@ -1,5 +1,5 @@
 <template>
-  <div class="flex-column relative"> 
+  <div class="flex-column relative" :style="'width:'+form?.width+';'"> 
     <label class="label comp-header flex" :for="form?.label">{{form?.title}}
       <span v-if="form?.required" class="hissu">必須</span>
       <span v-if="form?.hint" class="td2">({{form.hint}})</span>
@@ -24,8 +24,10 @@
         
       </ul>
     </div>
-    <span v-if="error&&error!==true&&showErrors" class="is-danger">
-      {{error}}
+    <span class="error-wrapper">
+      <span v-if="error&&error!==true&&showErrors" class="is-danger">
+        {{error}}
+      </span>
     </span>
   </div>
 
@@ -77,7 +79,8 @@ export default defineComponent({
       type: [String,Boolean],
       default: ""
     },
-    showErrors: Boolean
+    showErrors: Boolean,
+    rowClasses: String,
   },
   setup(props,{emit}){
     const localModel = ref<String|Array<String>>("")
@@ -98,14 +101,5 @@ export default defineComponent({
 })
 </script>
 <style scoped>
-/* span.is-danger {
-  display: block;
-  position: absolute;
-  right: 10px;
-  top: -5px;
-  padding: 5px;
-  border-radius: 4px;
-  background-color: #ec5700;
-  color: white;
-} */
+
 </style>
