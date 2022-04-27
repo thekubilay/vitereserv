@@ -59,11 +59,11 @@
                     </svg>
                     <span class="">残りわずか</span>
                   </li>
-                  <!-- <li class="flex align-center">
+                  <li class="flex align-center">
                     <svg
                       width="9"
                       height="9"
-                      fill="#c2c2c2"
+                      fill="#edebe7"
                       viewBox="0 0 512 512"
                     >
                       <path
@@ -71,7 +71,7 @@
                       ></path>
                     </svg>
                     <span class="">予約できません</span>
-                  </li> -->
+                  </li>
               </ul>
             </p>
           </div>
@@ -492,6 +492,7 @@ export default defineComponent({
 #index .week-cell-header .date{
   font-weight: 300;
   font-size: 0.8rem;
+  margin-top: 2px;
 }
 
 /* time content cells */

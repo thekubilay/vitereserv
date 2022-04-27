@@ -37,7 +37,7 @@ export default function() {
           {"label": "三重県", "value": "三重県", "extra":""},
           {"label": "滋賀県", "value": "滋賀県", "extra":""},
           {"label": "京都府", "value": "京都府", "extra":""},
-          {"label": "大阪", "value": "大阪", "extra":""},
+          {"label": "大阪府", "value": "大阪府", "extra":""},
           {"label": "兵庫県", "value": "兵庫県", "extra":""},
           {"label": "奈良県", "value": "奈良県", "extra":""},
           {"label": "和歌山県", "value": "和歌山県", "extra":""},
