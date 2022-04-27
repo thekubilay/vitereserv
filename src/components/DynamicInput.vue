@@ -16,10 +16,13 @@
     <div v-if="form && form.hint && form?.hint.length>1" class="hint">
       <span>{{form.hint}}</span>
     </div>
-    <span v-if="error && showErrors" class="error-wrapper">
+    <span v-if="showErrors" class="error-wrapper">
       <span v-if="error &&  showErrors" class="is-danger">
         {{error}}
       </span>
+    </span>
+    <span v-if="ruleErrors.length" class="error-wrapper">
+      <span v-for="(errText, idx) in ruleErrors" :key="idx" class="is-danger block">{{errText}}</span>
     </span>
   </div>
 
@@ -28,6 +31,7 @@
 import { defineComponent, PropType, watch, ref } from "vue";
 import { FormItem } from "@/types/Form";
 import InputText from 'primevue/inputtext';
+import useRuleHandler from "@/utils/useRuleHandler"
 interface Indeces {
   one: number,
   two: number,
@@ -37,6 +41,7 @@ export default defineComponent({
   emit: ['updateModel','cVal'],
   props: {
     form: Object as PropType<FormItem>,
+    rules: String as PropType<string>,
     index: Object as PropType<Indeces>,
     modelValue: String,
     error: {
@@ -49,11 +54,15 @@ export default defineComponent({
     InputText
   },
   setup(props,{emit}){
+    const {is_valid} = useRuleHandler()
+    const ruleErrors = ref<string[]>([])
     const localModel = ref<string>("")
+    const rules: string[] = props.form?.rules?.split(",") as []
     if(props.modelValue){
       localModel.value = props.modelValue;
     }
     watch(() => localModel.value, (val) => {
+      ruleErrors.value = is_valid(rules, val)
       emit('updateModel', val, props.index)
     })
     watch(() => props.modelValue, (val) => {
@@ -61,7 +70,7 @@ export default defineComponent({
         localModel.value = val
     })
     return {
-      localModel
+      localModel, ruleErrors
     }
   }
 })
