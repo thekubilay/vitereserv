@@ -31,57 +31,71 @@
   
               </div>
             </div>
-            <p class="header-subtext">
+            <div class="header-subtext flex">
               <!-- <h2 v-if="room">{{ room.name }}</h2> -->
               <ul class="icon-list flex flex-wrap">
-                  <li class="flex align-center">
-                    <svg
-                      width="12"
-                      height="12"
-                      fill="#6366f1"
-                      viewBox="0 0 512 512"
-                    >
-                      <path d="M256,78.77c97.73,0,177.23,79.51,177.23,177.23S353.73,433.23,256,433.23,78.77,353.73,78.77,256,158.27,78.77, 256,78.77M256,0C114.62,0,0,114.62,0,256S114.62,512,256,512,512,397.38,512,256,397.38,0,256,0Z"></path>
-                    </svg>
-                    <span class="">予約できます</span>
-                  </li>
-                  <li class="flex align-center">
-                    <svg
-                      width="14"
-                      height="12"
-                      fill="#6366f1"
-                      fill-opacity="0.7"
-                      viewBox="0 0 512 512"
-                    >
-                      <path
-                        d="M408.95,482.41H103.05c-37.76,0-72.41-20.12-90.43-52.49A97.36,97.36,0,0,1,15,330.06L172.31, 76.18a98.47,98.47,0,0,1,167.38,0L497,330.06a97.36,97.36,0,0,1,2.37,99.86C481.35,462.29,446.7,482.41, 408.95,482.41ZM256,108.34a19.42,19.42,0,0,0-16.75,9.32L81.94,371.54a19.14,19.14,0,0,0-.52,20.07c4.2, 7.55,12.29,12.05,21.63,12.05H408.95c9.34,0,17.43-4.5,21.63-12.05a19.14,19.14,0,0,0-.52-20.07L272.75, 117.66A19.42,19.42,0,0,0,256,108.34Z"
-                      ></path>
-                    </svg>
-                    <span class="">残りわずか</span>
-                  </li>
-                  <li class="flex align-center">
-                    <svg
-                      width="9"
-                      height="9"
-                      fill="#edebe7"
-                      viewBox="0 0 512 512"
-                    >
-                      <path
-                        d="M321.83,256,498.37,79.46a46.55,46.55,0,1,0-65.83-65.83L256,190.17,79.46,13.63A46.55,46.55,0,0,0, 13.63,79.46L190.17,256,13.63,432.54a46.55,46.55,0,0,0,65.83,65.83L256,321.83,432.54,498.37a46.55,46.55, 0,0,0,65.83-65.83Z"
-                      ></path>
-                    </svg>
-                    <span class="">予約できません</span>
-                  </li>
+                <li class="flex align-center">
+                  <svg
+                    width="12"
+                    height="12"
+                    fill="#6366f1"
+                    viewBox="0 0 512 512"
+                  >
+                    <path d="M256,78.77c97.73,0,177.23,79.51,177.23,177.23S353.73,433.23,256,433.23,78.77,353.73,78.77,256,158.27,78.77, 256,78.77M256,0C114.62,0,0,114.62,0,256S114.62,512,256,512,512,397.38,512,256,397.38,0,256,0Z"></path>
+                  </svg>
+                  <span class="">予約できます</span>
+                </li>
+                <li class="flex align-center">
+                  <svg
+                    width="14"
+                    height="12"
+                    fill="#6366f1"
+                    fill-opacity="0.7"
+                    viewBox="0 0 512 512"
+                  >
+                    <path
+                      d="M408.95,482.41H103.05c-37.76,0-72.41-20.12-90.43-52.49A97.36,97.36,0,0,1,15,330.06L172.31, 76.18a98.47,98.47,0,0,1,167.38,0L497,330.06a97.36,97.36,0,0,1,2.37,99.86C481.35,462.29,446.7,482.41, 408.95,482.41ZM256,108.34a19.42,19.42,0,0,0-16.75,9.32L81.94,371.54a19.14,19.14,0,0,0-.52,20.07c4.2, 7.55,12.29,12.05,21.63,12.05H408.95c9.34,0,17.43-4.5,21.63-12.05a19.14,19.14,0,0,0-.52-20.07L272.75, 117.66A19.42,19.42,0,0,0,256,108.34Z"
+                    ></path>
+                  </svg>
+                  <span class="">残りわずか</span>
+                </li>
+                <li class="flex align-center">
+                  <svg
+                    width="9"
+                    height="9"
+                    fill="#e0deda"
+                    viewBox="0 0 512 512"
+                  >
+                    <path
+                      d="M321.83,256,498.37,79.46a46.55,46.55,0,1,0-65.83-65.83L256,190.17,79.46,13.63A46.55,46.55,0,0,0, 13.63,79.46L190.17,256,13.63,432.54a46.55,46.55,0,0,0,65.83,65.83L256,321.83,432.54,498.37a46.55,46.55, 0,0,0,65.83-65.83Z"
+                    ></path>
+                  </svg>
+                  <span class="">予約できません</span>
+                </li>
               </ul>
-            </p>
+            </div>
           </div>
 
 
-
-
           <div class="calender-wrapper">
-<!-- new -->
             <section class="calendar-outer flex justify-space-between">
+              <div class="weekday-wrapper flex-column sp-times">
+                <div class="week-cell-header flex">
+
+                </div>
+                <div class="week-cell__contents flex column justify-start align-center">
+                  <div v-for="(time, index) in room?.times" :key="index" class="sec sp-sec">
+                    <div class="btn_select">
+                      <p class="sp-time">
+                        <span>
+                          {{time.time}}
+                        </span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
               <div v-for="(item, idx) in weekDatesObjs" :key="idx" class="weekday-wrapper flex-column">
                 <div class="week-cell-header flex justify-space-between align-start">
                   <div class="day">{{ item.day }}</div>
@@ -111,56 +125,56 @@
                   </div>
 
                   <template v-else-if="room && room.times && room.times.length > 0">
-                      <div v-for="(time, index) in room.times" :key="index" class="sec">
-                        <!-- マル -->
-                        <div v-if="vacanciesCheck(item.date, time.time).mark==='circle'" class="btn_select" @click="goToForm(item.date, time.time, room)">
-                          <p class="time">
-                            <span>{{ getPrepTime(time.time) }}</span>
-                          </p>
-                          <div class="icon-wrapper">
-                            <figure class="icon circle">
-                              <svg fill="#6366f1" viewBox="0 0 512 512">
-                                <path
-                                  d="M256,78.77c97.73,0,177.23,79.51,177.23,177.23S353.73,433.23,256,433.23,78.77,353.73,78.77,256,158.27,78.77, 256,78.77M256,0C114.62,0,0,114.62,0,256S114.62,512,256,512,512,397.38,512,256,397.38,0,256,0Z"
-                                ></path>
-                              </svg>
-                            </figure>
-                          </div>
-
-                        </div>
-                        <!-- 三角 -->
-                        <div v-else-if="vacanciesCheck(item.date, time.time).mark==='triangle'" class="btn_select" @click="goToForm(item.date, time.time, room)">
-                          <p class="time">
-                            <span>{{ getPrepTime(time.time) }}</span>
-                          </p>
-                          <div class="icon-wrapper">
-                            <figure class="icon triangle">
-                              <svg fill="#6366f1" fill-opacity="0.7" viewBox="0 0 512 512">
-                                <path
-                                  d="M408.95,482.41H103.05c-37.76,0-72.41-20.12-90.43-52.49A97.36,97.36,0,0,1,15,330.06L172.31, 76.18a98.47,98.47,0,0,1,167.38,0L497,330.06a97.36,97.36,0,0,1,2.37,99.86C481.35,462.29,446.7,482.41, 408.95,482.41ZM256,108.34a19.42,19.42,0,0,0-16.75,9.32L81.94,371.54a19.14,19.14,0,0,0-.52,20.07c4.2, 7.55,12.29,12.05,21.63,12.05H408.95c9.34,0,17.43-4.5,21.63-12.05a19.14,19.14,0,0,0-.52-20.07L272.75, 117.66A19.42,19.42,0,0,0,256,108.34Z"
-                                ></path>
-                              </svg>
-                            </figure>
-                          </div>
-
+                    <div v-for="(time, index) in room.times" :key="index" class="sec">
+                      <!-- マル -->
+                      <div v-if="vacanciesCheck(item.date, time.time).mark==='circle'" class="btn_select" @click="goToForm(item.date, time.time, room)">
+                        <p class="time">
+                          <span>{{ getPrepTime(time.time) }}</span>
+                        </p>
+                        <div class="icon-wrapper">
+                          <figure class="icon circle">
+                            <svg fill="#6366f1" viewBox="0 0 512 512">
+                              <path
+                                d="M256,78.77c97.73,0,177.23,79.51,177.23,177.23S353.73,433.23,256,433.23,78.77,353.73,78.77,256,158.27,78.77, 256,78.77M256,0C114.62,0,0,114.62,0,256S114.62,512,256,512,512,397.38,512,256,397.38,0,256,0Z"
+                              ></path>
+                            </svg>
+                          </figure>
                         </div>
 
-                        <div v-else class="btn_select disable">
-                          <p class="time">
-                            <span>{{ getPrepTime(time.time) }}</span>
-                          </p>
-                          <div class="icon-wrapper noflame">
-                            <figure class="icon cross">
-                              <svg fill="#edebe7" viewBox="0 0 512 512">
-                                <path
-                                  d="M321.83,256,498.37,79.46a46.55,46.55,0,1,0-65.83-65.83L256,190.17,79.46,13.63A46.55,46.55,0,0,0, 13.63,79.46L190.17,256,13.63,432.54a46.55,46.55,0,0,0,65.83,65.83L256,321.83,432.54,498.37a46.55,46.55, 0,0,0,65.83-65.83Z"
-                                ></path>
-                              </svg>
-                            </figure>
-                          </div>
-
-                        </div>
                       </div>
+                      <!-- 三角 -->
+                      <div v-else-if="vacanciesCheck(item.date, time.time).mark==='triangle'" class="btn_select" @click="goToForm(item.date, time.time, room)">
+                        <p class="time">
+                          <span>{{ getPrepTime(time.time) }}</span>
+                        </p>
+                        <div class="icon-wrapper">
+                          <figure class="icon triangle">
+                            <svg fill="#6366f1" fill-opacity="0.7" viewBox="0 0 512 512">
+                              <path
+                                d="M408.95,482.41H103.05c-37.76,0-72.41-20.12-90.43-52.49A97.36,97.36,0,0,1,15,330.06L172.31, 76.18a98.47,98.47,0,0,1,167.38,0L497,330.06a97.36,97.36,0,0,1,2.37,99.86C481.35,462.29,446.7,482.41, 408.95,482.41ZM256,108.34a19.42,19.42,0,0,0-16.75,9.32L81.94,371.54a19.14,19.14,0,0,0-.52,20.07c4.2, 7.55,12.29,12.05,21.63,12.05H408.95c9.34,0,17.43-4.5,21.63-12.05a19.14,19.14,0,0,0-.52-20.07L272.75, 117.66A19.42,19.42,0,0,0,256,108.34Z"
+                              ></path>
+                            </svg>
+                          </figure>
+                        </div>
+
+                      </div>
+
+                      <div v-else class="btn_select disable">
+                        <p class="time">
+                          <span>{{ getPrepTime(time.time) }}</span>
+                        </p>
+                        <div class="icon-wrapper noflame">
+                          <figure class="icon cross">
+                            <svg fill="#edebe7" viewBox="0 0 512 512">
+                              <path
+                                d="M321.83,256,498.37,79.46a46.55,46.55,0,1,0-65.83-65.83L256,190.17,79.46,13.63A46.55,46.55,0,0,0, 13.63,79.46L190.17,256,13.63,432.54a46.55,46.55,0,0,0,65.83,65.83L256,321.83,432.54,498.37a46.55,46.55, 0,0,0,65.83-65.83Z"
+                              ></path>
+                            </svg>
+                          </figure>
+                        </div>
+
+                      </div>
+                    </div>
                   </template>
                 </div>
 
@@ -397,16 +411,13 @@ export default defineComponent({
 .slide-fade-leave-active {
   transition: all .6s cubic-bezier(1.0, 0.5, 0.8, 1.0);
 }
-.slide-fade-enter, .slide-fade-leave-to
-/* .slide-fade-leave-active below version 2.1.8 */ {
+.slide-fade-enter, .slide-fade-leave-to{
   transform: translateX(10px);
   opacity: 0;
 }
 </style>
 <style>
-/* body, #app, #main {
-  background-color: white;
-} */
+
 #index {
   height: 100%;
   background-color: white;
@@ -425,7 +436,6 @@ export default defineComponent({
   display: inline-block;
 }
 
-
 #index .selected-week-wrapper{
   margin-left: 20px
 }
@@ -435,23 +445,19 @@ export default defineComponent({
 #index .selected-week-wrapper .arrow{
   cursor: pointer;
   padding: 4px;
-  /* border: 1px solid black; */
   margin: 0 5px;
 }
 #index .selected-week-wrapper .arrow i{
   font-size: 1.4rem;
 }
 
-
 #index .icon-list {
-  /* -webkit-box-pack: end;
-  -webkit-justify-content: flex-end;
-  -ms-flex-pack: end;
-  justify-content: flex-end; */
   font-size: 0.8rem;
   font-weight: 300;
   margin: 10px 0 10px;
-  border-left: 1px solid black;
+  padding: 10px 10px 10px 0;
+  border-left: 4px solid rgb(99, 102, 241);
+  background-color: rgb(99, 102, 241,0.05);
 }
 #index .icon-list li {
   margin-left: 8px;
@@ -462,10 +468,6 @@ export default defineComponent({
   padding-left: 5px;
 }
 
-
-/* #index .selected-week-wrapper .arrow:first-of-type{
-
-} */
 /* --- Content --- */
 #index .weekday-wrapper {
   margin-right: 0px;
@@ -498,12 +500,8 @@ export default defineComponent({
 /* time content cells */
 
 #index .calendar-outer .week-cell__contents .icon-wrapper{
-  /* min-width: 90px; */
-  /* margin-top: 5px;
-  margin-bottom: 5px;
-  padding: 5px 0 1px; */
   padding-bottom: 10px;
-  background-color: none;
+  background-color: transparent;
   width: 100%;
 }
 
@@ -511,7 +509,9 @@ export default defineComponent({
   width: 50px;
   height: 50px;
 }
-
+#index .calendar-outer .week-cell__contents .icon.circle svg {
+  padding: 0;
+}
 #index .calendar-outer .week-cell__contents .icon.bar svg,
 #index .calendar-outer .week-cell__contents .icon.circle svg,
 #index .calendar-outer .week-cell__contents .icon.triangle svg,
@@ -520,6 +520,12 @@ export default defineComponent({
   height: auto;
 }
 
+#index .calendar-outer .week-cell__contents p.sp-time {
+  display: inline;
+  font-size: 1.2rem;
+  line-height: 1.3;
+  margin: 0px 0 10px 0;
+}
 
 #index .calendar-outer .week-cell__contents p.time {
   display: inline;
@@ -538,6 +544,9 @@ export default defineComponent({
   min-width: 110px;
   margin: 0px auto 10px;
   text-align: center;
+}
+#index .calendar-outer .week-cell__contents .sp-sec .space{
+  height: 60px;
 }
 #index .calendar-outer .week-cell__contents .sec.holiday{
   height: 100%;
@@ -584,13 +593,11 @@ export default defineComponent({
   margin-left: 10px;
 }
 
-/* #index .weekday-wrapper:hover .week-cell__contents{
-  background-color: rgb(237,235,231);
-} */
-
 #index .weekday-wrapper:hover .week-cell-header{
   border-color: rgb(208, 85, 68);
 }
+
+
 
 @media screen and (max-width: 970px) {
   #index .calendar-outer .week-cell__contents .sec {
@@ -599,34 +606,103 @@ export default defineComponent({
 }
 
 
-
+@media screen and (min-width: 767px) {
+  #index .calendar-outer .sp-times {
+    display: none;
+  }
+}
 
 @media screen and (max-width: 767px) {
   #index h1.header-text{
     text-align: center;
+    font-size: 1.5rem;
   }
-  #index .calendar-outer {
-    flex-direction: column;
+  #index .header-subtext{
+    align-items: center;
+    justify-content: center;
+
   }
   #index .weekday-wrapper{
     margin: 0;
+    width: 100%;
   }
+
+  #index .week-cell-header{
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 5px;
+    padding-bottom: 0px;
+    height: 45px;
+  }
+  #index .week-cell-header .date{
+    font-size: 0.6rem;
+  }
+
+  #index .icon-list {
+    border: none;
+    justify-content: center;
+    background-color: white;
+  }
+
+  #index .calendar-outer {
+    justify-content: center;
+  }
+
+
+
+
+  /* --- Calendar css --- */
   #index .calendar-outer .week-cell__contents {
     margin-bottom: 5px;
   }
+  #index .calendar-outer .week-cell__contents .icon {
+    height: 18px;
+    width: 18px;
+  }
+  #index .calendar-outer .week-cell__contents .icon.circle svg,
+  #index .calendar-outer .week-cell__contents .icon.triangle svg,
+  #index .calendar-outer .week-cell__contents .icon.cross svg {
+    margin: 0;
+  }
+  #index .calendar-outer .week-cell__contents .icon-wrapper {
+    padding: 0;
+  }
+
+
   #index .top-line{
     flex-direction: column;
     margin-bottom: 10px;
   }
+
+
+  #index .calendar-outer .week-cell__contents p.sp-time {
+    font-size: 0.7rem;
+  }
+  #index .calendar-outer .week-cell__contents .sec.holiday {
+    font-size: 0.7rem;
+    border-width: 1px;
+  }
   #index .selected-week-wrapper span.week-text{
     padding-bottom: 1px;
   }
-  /* #index .selected-week-wrapper .arrow {
-    border: 1px solid black;
-  } */
+
   #index .calendar-outer .week-cell__contents .sec {
     min-width: 100%;
+    min-height: 40px;
+    margin: 0;
+    align-items: center;
   }
+
+  #index .sec .btn_select {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    min-width: 40px;
+    height: 40px;
+    border-width: 1px;
+  }
+
   #index .week-cell__contents .sec.empty{
     min-height: 0;
   }
@@ -641,14 +717,12 @@ export default defineComponent({
     font-size: 0.8rem;
   }
 
-  #index .week-cell-header{
-    padding-bottom: 5px;
-    height: 30px;
-  }
+  #index .calendar-outer .week-cell__contents p.time {
+    display: none;
 
-  #index .icon-list {
-    border: none;
-    justify-content: center;
+  }
+  #index .sec .btn_select:hover p.time{
+    margin-left: 0px;
   }
 }
 
