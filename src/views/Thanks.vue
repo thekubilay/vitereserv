@@ -4,7 +4,7 @@
       <h2 class="h2">ありがとうございました。</h2>
       <div>
         <section class="message__Wrapper">
-          <h3 class="h3"><span>フォームの申し込みは<br class="for-sp">成功しました。</span></h3>
+          <h3 class="h3"><span>ご予約の申し込み受付けました。</span></h3>
         </section>
       </div>
     </div>

@@ -24,8 +24,11 @@
         
       </ul>
     </div>
-    <span class="error-wrapper">
-      <span v-if="error&&error!==true&&showErrors" class="is-danger">
+    <div v-if="form && form.hint && form?.hint.length>1" class="hint">
+      <span>{{form.hint}}</span>
+    </div>
+    <span v-if="error && error!==true && showErrors" class="error-wrapper">
+      <span v-if="error && error!==true && showErrors" class="is-danger">
         {{error}}
       </span>
     </span>

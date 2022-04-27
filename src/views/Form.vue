@@ -3,7 +3,7 @@
     <div class="template__Wrapper ">
       <div class="container relative">
         <LoadingSpinner v-model="isLoading" text="ローディング中"/>
-        <h1 class="header-text">お申込み内容の入力</h1>
+        <h1 class="header-text">ご予約内容の入力</h1>
         <div class="relative">
           <section class="flex-column header-subtext">
             <h2>{{ pageTitle || "名前なし" }}</h2>

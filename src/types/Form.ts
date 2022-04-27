@@ -31,7 +31,7 @@ export interface FormItem{
   title: string,
   type: string,
   width: null | string | number,
-  error?: string,
+  error?: string | boolean,
   model: any,
   rulefunctions?: any
   // model: string | object | string[]
