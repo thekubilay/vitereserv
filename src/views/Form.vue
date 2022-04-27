@@ -147,7 +147,7 @@ export default defineComponent({
           const data = JSON.parse(JSON.stringify(response.data))
           // console.log(data)
           if (data.sub_title) {
-            pageTitle.value = data.sub_title !== "null" ?  data.sub_title.toString() : ""
+            pageTitle.value = data.title !== "null" ?  data.title.toString() : ""
           }
           //2.5 Setup form data
           setupForm(data.form_rows)
