@@ -2,7 +2,6 @@
   <div class="flex-column relative" :style="'width:'+form?.width+';'">
     <label class="label comp-header flex" :for="form?.label">{{form?.title}}
       <span v-if="form?.required" class="hissu">必須</span>
-      <span v-if="form?.hint" class="td2">({{form.hint}})</span>
     </label>
     <div class="checkbox flex" :class="rowClasses">
       <label :for="form.label+'check'" v-if="!form.options || form.options?.length<1">
@@ -24,7 +23,10 @@
         </label>
       </div>
     </div>
-    <span class="error-wrapper">
+    <div v-if="form && form.hint && form?.hint.length>1" class="hint">
+      <span>{{form.hint}}</span>
+    </div>
+    <span v-if="error&&error!==true&&showErrors" class="error-wrapper">
       <span v-if="error&&error!==true&&showErrors" class="is-danger">
         {{error}}
       </span>

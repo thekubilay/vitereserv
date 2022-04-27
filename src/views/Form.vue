@@ -146,7 +146,7 @@ export default defineComponent({
         .then((response) => {
           const data = JSON.parse(JSON.stringify(response.data))
           // console.log(data)
-          if (data.sub_title) {
+          if (data.title) {
             pageTitle.value = data.title !== "null" ?  data.title.toString() : ""
           }
           //2.5 Setup form data
@@ -176,8 +176,9 @@ export default defineComponent({
               // console.log("vacancy:",response2.data)
               date.value = response2.data.date
               time.value = response2.data.time
+              document.getElementsByTagName('title')[0].innerHTML = (pageTitle.value)?pageTitle.value:"ビターブ｜予約システム作成・予約管理ならおまかせ｜viterve"
               isLoading.value = false
-              console.log("data", formRows.value)
+              // console.log("data", formRows.value)
               setupYubinBango()
             })
             .catch((error2) => {
@@ -488,7 +489,8 @@ export default defineComponent({
 <style>
 
 #request {
-  color: rgb(32, 64, 97)
+  color: rgb(32, 64, 97);
+  height: 100%;
 }
 
 #request .w100 {
@@ -558,6 +560,11 @@ export default defineComponent({
 #request .td2 {
   margin-left: 5px;
   color: #808080;
+}
+#request .hint {
+  font-size: .85rem;
+  font-weight: 600;
+    color: #808080;
 }
 
 #request .error-wrapper {

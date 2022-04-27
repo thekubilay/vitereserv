@@ -58,25 +58,25 @@ function minLength(l: number,val:string){
 }
 
 function phoneNumberCheck(val: string) {
-  // if (!val || val.match(/^0\d-\d{4}-\d{4}$/ )) {
+  // if (!val || val.match(/^0\d{9}$/ )) {
   //     return true
   // }
-  // else if(!val || val.match(/^0\d{3}-\d{2}-\d{4}$/ )) {
+  // else if(!val || val.match(/^0\d{3}\d{2}\d{4}$/ )) {
   //     return true
   // }
-  // else if(!val || val.match(/^\(0\d\)\d{4}-\d{4}$/ )) {
+  // else if(!val || val.match(/^\(0\d\)\d{4}\d{4}$/ )) {
   //     return true
   // }
-  // else if(!val || val.match(/^\(0\d{3}\)\d{2}-\d{4}$/ )) {
+  // else if(!val || val.match(/^\(0\d{3}\)\d{2}\d{4}$/ )) {
   //     return true
   // }
-  // else if(!val || val.match(/^(070|080|090)-\d{4}-\d{4}$/ )) {
+  // else if(!val || val.match(/^(070|080|090)\d{4}\d{4}$/ )) {
   //     return true
   // }
-  // else if(!val || val.match(/^050-\d{4}-\d{4}$/ )) {
+  // else if(!val || val.match(/^050\d{4}\d{4}$/ )) {
   //     return true
   // }
-  // else if(!val || val.match(/^0120-\d{3}-\d{3}$/ )) {
+  // else if(!val || val.match(/^0120\d{3}\d{3}$/ )) {
   //     return true
   // }
   return true
