@@ -130,7 +130,7 @@
                   <template v-else-if="room && room.times && room.times.length > 0">
                     <div v-for="(time, index) in room.times" :key="index" class="sec">
                       <!-- マル -->
-                      <div v-if="vacanciesCheck(item.date, time.time).mark==='circle'" class="btn_select" @click="goToForm(item.date, time.time, room)">
+                      <div v-if="findHourBefore(time) && vacanciesCheck(item.date, time.time).mark==='circle'" class="btn_select" @click="goToForm(item.date, time.time, room)">
                         <p class="time">
                           <span>{{ getPrepTime(time.time) }}</span>
                         </p>
@@ -146,7 +146,7 @@
 
                       </div>
                       <!-- 三角 -->
-                      <div v-else-if="vacanciesCheck(item.date, time.time).mark==='triangle'" class="btn_select" @click="goToForm(item.date, time.time, room)">
+                      <div v-else-if="findHourBefore(time) && vacanciesCheck(item.date, time.time).mark==='triangle'" class="btn_select" @click="goToForm(item.date, time.time, room)">
                         <p class="time">
                           <span>{{ getPrepTime(time.time) }}</span>
                         </p>
@@ -200,6 +200,7 @@ import axios from "axios";
 import ENV from "../config"
 import calendarServiceClass from "../helpers/CalendarService";
 import LoadingSpinner from "../components/loaders/LoadingSpinner.vue"
+import moment from "moment";
 
 export default defineComponent({
   components: {
@@ -223,6 +224,19 @@ export default defineComponent({
     const isNotification = ref<boolean>(false)
     const isLoading = ref<boolean>(false)
     const mainColor: string = "rgb(99, 102, 241)"
+
+    const findHourBefore = (time:any): boolean => {
+      const hour = 60 * 60 * 1000; //(60seconds * 60minutes * 1000ms, to get the milliseconds)
+      const hourAgo = Date.now() - hour;
+
+      const now: any = moment().format("HHmm")
+      if (parseInt(now) - parseInt(time?.time.replace(":","")) > 60){
+        return false
+      } else {
+        return true
+      }
+
+    }
 
     const formatDate = (val:string):string => {
       return val.replaceAll("-", "/")
@@ -361,7 +375,7 @@ export default defineComponent({
 
     return {
       overlay, calendarService, currentWeek, weekDatesObjs, room, holidays, vacancies, isNotification, errorMessage, isLoading, mainColor,
-      formatDate, changeWeek, separatedHolidaysCheck, vacanciesCheck, goToForm, pastTimeCheck, closeNotification, getPrepTime,
+      formatDate, changeWeek, separatedHolidaysCheck, vacanciesCheck, goToForm, pastTimeCheck, closeNotification, getPrepTime, findHourBefore,
     };
   },
 });
