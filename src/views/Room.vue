@@ -17,9 +17,9 @@
 
             <h1 class="flex-column heading">
               <span class="title block header-text">{{room?.name||"ご予約内容の選択"}}</span>
-              <span class="sub-title block">{{room?.header}}</span>
+              <span v-if="room?.header && room?.header !== 'null'" class="sub-title block">{{room?.header}}</span>
             </h1>
-            <p class="room-body-summary">{{room?.body}}</p>
+            <p v-if="room?.body && room?.body !== 'null'" class="room-body-summary">{{room?.body}}</p>
               <!-- ご予約内容の選択 -->
             <div class="header-subtext flex justify-space-between">
               <!-- <h2 v-if="room">{{ room.name }}</h2> -->
@@ -64,7 +64,7 @@
                 </li>
               </ul>
                <div class="selected-week-wrapper flex align-center">
-  
+
                 <button class="flex justify-center align-center arrow prev" @click="changeWeek(-1)">
                   <i class="pi pi-angle-left"></i>
                 </button>
@@ -74,7 +74,7 @@
                 <button class="flex justify-center align-center arrow next" @click="changeWeek(1)">
                   <i class="pi pi-angle-right"></i>
                 </button>
-  
+
               </div>
             </div>
           </div>
@@ -183,7 +183,7 @@
 
               </div>
             </section>
-            
+
           </div><!-- calendar-wrapper -->
         </div>
       </div>
@@ -258,7 +258,7 @@ export default defineComponent({
     const vacanciesCheck = (date:string, time:string):Mark=> {
       const vacancy = findVacancy(date, time)
       if(vacancy) {
-        
+
         const left:number = vacancy.limit - vacancy.applicants.length;
         if(left > vacancy.status_triangle){
           return {id: vacancy.id, mark: "circle"}
@@ -433,7 +433,7 @@ export default defineComponent({
   margin-bottom: 30px;
 }
 
-/* 
+/*
 #index .header-container h1.heading {
 
 } */
@@ -619,7 +619,7 @@ export default defineComponent({
 
 #index .calendar-outer .week-cell__contents .sec.empty{
   height: 100%;
-} 
+}
 
 
 
