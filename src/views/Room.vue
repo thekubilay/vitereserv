@@ -85,7 +85,6 @@
               <div v-for="(item, idx) in weekDatesObjs" :key="idx" class="weekday-wrapper flex-column">
                 <div class="week-cell-header flex justify-space-between align-start">
                   <div class="day">{{ item.day }}</div>
-                  &nbsp;
                   <div class="date">{{ item.date.slice(5, item.date.length) }}</div>
                 </div>
 
@@ -412,6 +411,9 @@ export default defineComponent({
   height: 100%;
   background-color: white;
 }
+#index .container{
+  max-width:none;
+}
 /* --- Header --- */
 #index .header-container{
   margin-bottom: 30px;
@@ -466,7 +468,7 @@ export default defineComponent({
 } */
 /* --- Content --- */
 #index .weekday-wrapper {
-  margin-right: 20px;
+  margin-right: 0px;
   /* transition: all 0.3s; */
 }
 
@@ -476,10 +478,10 @@ export default defineComponent({
 
 #index .week-cell-header {
   width: auto;
-  height: 50px;
+  height: 34px;
   line-height: 1.2;
   text-align: start;
-  background-color: white;
+  background-color: #fff;
   padding-bottom: 30px;
 }
 
@@ -495,16 +497,13 @@ export default defineComponent({
 /* time content cells */
 
 #index .calendar-outer .week-cell__contents .icon-wrapper{
-  min-width: 90px;
-  margin-top: 5px;
+  /* min-width: 90px; */
+  /* margin-top: 5px;
   margin-bottom: 5px;
-  padding: 5px 0 1px;
+  padding: 5px 0 1px; */
+  padding-bottom: 10px;
   background-color: none;
-  /* background: linear-gradient(90deg, rgba(231,231,231,1) 0%, rgba(236,236,236,1) 22%, rgba(255,255,255,1) 100%); */
-  /* border: 1px solid #b9b9b9; */
-  /* box-shadow: 1px 1px 2px 0px rgb(200 200 200);
-  -webkit-box-shadow: 1px 1px 2px 0px rgb(200 200 200);
-  -moz-box-shadow: 1px 1px 2px 0px rgb(200 200 200); */
+  width: 100%;
 }
 
 #index .calendar-outer .week-cell__contents .icon {
@@ -534,9 +533,10 @@ export default defineComponent({
 }
 
 #index .calendar-outer .week-cell__contents .sec {
-    min-height: 70px;
-    margin: 0px auto 20px;
-    text-align: center;
+  min-height: 70px;
+  min-width: 110px;
+  margin: 0px auto 10px;
+  text-align: center;
 }
 #index .calendar-outer .week-cell__contents .sec.holiday{
   height: 100%;
@@ -551,7 +551,7 @@ export default defineComponent({
 
 
 #index .sec.holiday p{
-  width: 90px;
+  /* width: 90px; */
   margin: 0;
 }
 
@@ -591,7 +591,11 @@ export default defineComponent({
   border-color: rgb(208, 85, 68);
 }
 
-
+@media screen and (max-width: 970px) {
+  #index .calendar-outer .week-cell__contents .sec {
+    min-width: 95px;
+  }
+}
 
 
 
@@ -619,6 +623,9 @@ export default defineComponent({
   /* #index .selected-week-wrapper .arrow {
     border: 1px solid black;
   } */
+  #index .calendar-outer .week-cell__contents .sec {
+    min-width: 100%;
+  }
   #index .week-cell__contents .sec.empty{
     min-height: 0;
   }
