@@ -477,20 +477,6 @@ export default defineComponent({
 
 <style>
 
-
-/* #request span.is-danger {
-  display: block;
-  position: absolute;
-  right: 10px;
-  top: -5px;
-  padding:  3px 5px 4px;
-  background-color: #ec5700;
-  color: white;
-  font-size: 1rem;
-}
-.formTable tr td {
-  width: 100%;
-} */
 #request {
   color: rgb(32, 64, 97)
 }
@@ -605,9 +591,9 @@ export default defineComponent({
   color: #000;
   background-color: rgba(245,243,250,0.6);
 }
-#request .p-inputtext:enabled:focus{
-  /* border: none; */
-}
+/* #request .p-inputtext:enabled:focus{
+  border: none;
+} */
 #request .p-inputtext::placeholder{
   color: rgba(128,127,130,1);
 }

@@ -88,45 +88,6 @@
                       <!-- 休日以外の場合 -->
                       <template v-else-if="room && room.times && room.times.length > 0">
                         <!-- telの場合 -->
-                        <!-- <div class="sec">
-                          <a class="btn_select">
-                            <div class="icon__Wrapper noflame">
-                              <figure class="icon tel">
-                                <svg
-                                  fill="#c2c2c2"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  viewBox="0 0 32 32"
-                                  style="enable-background: new 0 0 32 32"
-                                  xml:space="preserve"
-                                >
-                                  <g>
-                                    <g>
-                                      <polygon
-                                        class="st0"
-                                        points="6.8,12.6 9.4,12.6 9.4,20.7 10.8,20.7 10.8,12.6 13.5,12.6 13.5,11.3 6.8,11.3     "
-                                      />
-                                      <polygon
-                                        class="st0"
-                                        points="15.4,16.4 18.7,16.4 18.7,15.1 15.4,15.1 15.4,12.6 18.9,12.6 18.9,11.3 14,11.3 14,20.7 19.1,20.7 19.1,19.4 15.4,19.4     "
-                                      />
-                                      <polygon
-                                        class="st0"
-                                        points="21.6,19.4 21.6,11.3 20.1,11.3 20.1,20.7 25.2,20.7 25.2,19.4     "
-                                      />
-                                    </g>
-                                    <path
-                                      class="st0"
-                                      d="M29.9,7.7c0.2,0,0.4,0.2,0.4,0.4v15.8c0,0.2-0.2,0.4-0.4,0.4H2.1c-0.2,0-0.4-0.2-0.4-0.4V8.1c0-0.2,0.2-0.4,0.4-0.4H29.9 M29.9,6H2.1C0.9,6,0,6.9,0,8.1v15.8C0,25.1,0.9,26,2.1,26h27.8c1.2,0,2.1-0.9,2.1-2.1V8.1C32,6.9,31.1,6,29.9,6L29.9,6z"
-                                    />
-                                  </g>
-                                </svg>
-                              </figure>
-                            </div>
-                            <p class="time">
-                              <span>10:00〜<br /><span>11:00</span></span>
-                            </p>
-                          </a>
-                        </div> -->
                         <!-- v-for -->
                           <div v-for="(time, index) in room.times" :key="index" class="sec">
                             <!-- マル -->
@@ -232,55 +193,12 @@
                     </svg>
                     <span class="">予約できません</span>
                   </li>
-                  <!-- <li class="flex align-center">
-                    <svg
-                      width="16"
-                      height="16"
-                      fill="#c2c2c2"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 32 32"
-                      style="enable-background: new 0 0 32 32"
-                      xml:space="preserve"
-                    >
-                      <g>
-                        <g>
-                          <polygon
-                            class="st0"
-                            points="6.8,12.6 9.4,12.6 9.4,20.7 10.8,20.7 10.8,12.6 13.5,12.6 13.5,11.3 6.8,11.3    "
-                          />
-                          <polygon
-                            class="st0"
-                            points="15.4,16.4 18.7,16.4 18.7,15.1 15.4,15.1 15.4,12.6 18.9,12.6 18.9,11.3 14,11.3 14,20.7 19.1,20.7 19.1,19.4 15.4,19.4     "
-                          />
-                          <polygon
-                            class="st0"
-                            points="21.6,19.4 21.6,11.3 20.1,11.3 20.1,20.7 25.2,20.7 25.2,19.4     "
-                          />
-                        </g>
-                        <path
-                          class="st0"
-                          d="M29.9,7.7c0.2,0,0.4,0.2,0.4,0.4v15.8c0,0.2-0.2,0.4-0.4,0.4H2.1c-0.2,0-0.4-0.2-0.4-0.4V8.1c0-0.2,0.2-0.4,0.4-0.4H29.9 M29.9,6H2.1C0.9,6,0,6.9,0,8.1v15.8C0,25.1,0.9,26,2.1,26h27.8c1.2,0,2.1-0.9,2.1-2.1V8.1C32,6.9,31.1,6,29.9,6L29.9,6z"
-                        />
-                      </g>
-                    </svg>
-                    <span class="">お電話でご予約ください</span>
-                  </li> -->
                 </ul>
               </div>
               <!-- calendar__contents -->
 
               <div class="calendar__notice">
-                <!-- <ul class="">
-                  <li><p class="p1">現在予約できる期間：
-                    <span>
-                      {{backData.contents.reservation_start_date.slice(0,4)+"年"+backData.contents.reservation_start_date.slice(5,7)+"月"+backData.contents.reservation_start_date.slice(8,10)+"日"}}
-                      〜
-                      {{backData.contents.reservation_finish_date.slice(0,4)+"年"+backData.contents.reservation_finish_date.slice(5,7)+"月"+backData.contents.reservation_finish_date.slice(8,10)+"日"}}
-                    </span>
-                  </p>
-                  </li>
-                  <li><p class="p1">{{period_description}}</p></li>
-                </ul> -->
+
                 <p v-if="room" class="p1 left">
                   <span class="list-item">{{ room.body }}</span>
                 </p>
