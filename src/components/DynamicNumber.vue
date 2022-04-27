@@ -2,8 +2,6 @@
   <div class="flex-column relative" :style="'width:'+form?.width+';'">
     <label class="label comp-header flex" :for="form?.label">{{form?.title}}
       <span v-if="form?.required" class="hissu">必須</span>
-      <span v-if="form?.hint" class="td2">({{form.hint}})</span>
-
     </label>
     <InputNumber
       :name="form?.label"
@@ -25,8 +23,8 @@
       </span>
     </span>
   </div>
-
 </template>
+
 <script lang="ts">
 import { defineComponent, PropType, watch, ref } from "vue";
 import { FormItem } from "@/types/Form";

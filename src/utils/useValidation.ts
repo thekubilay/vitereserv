@@ -57,29 +57,33 @@ function minLength(l: number,val:string){
   return `${l}文字以上を入力して下さい。`
 }
 
-function phoneNumberCheck(val: string) {
-  // if (!val || val.match(/^0\d-\d{4}-\d{4}$/ )) {
+function phoneNumberCheck(val: string|number) {
+  // if(typeof val === "number")
+  // val = String(val)
+  // console.log(val,val.match(/^0\d{9}$/))
+  // if (!val || val.match(/^0\d{9}$/)) {
   //     return true
   // }
-  // else if(!val || val.match(/^0\d{3}-\d{2}-\d{4}$/ )) {
+  // else if(!val || val.match(/^0\d{3}\d{2}\d{4}$/)) {
   //     return true
   // }
-  // else if(!val || val.match(/^\(0\d\)\d{4}-\d{4}$/ )) {
+  // else if(!val || val.match(/^\(0\d\)\d{4}\d{4}$/)) {
   //     return true
   // }
-  // else if(!val || val.match(/^\(0\d{3}\)\d{2}-\d{4}$/ )) {
+  // else if(!val || val.match(/^\(0\d{3}\)\d{2}\d{4}$/)) {
   //     return true
   // }
-  // else if(!val || val.match(/^(070|080|090)-\d{4}-\d{4}$/ )) {
+  // else if(!val || val.match(/^(070|080|090)\d{4}\d{4}$/)) {
   //     return true
   // }
-  // else if(!val || val.match(/^050-\d{4}-\d{4}$/ )) {
+  // else if(!val || val.match(/^050\d{4}\d{4}$/)) {
   //     return true
   // }
-  // else if(!val || val.match(/^0120-\d{3}-\d{3}$/ )) {
+  // else if(!val || val.match(/^0120\d{3}\d{3}$/)) {
   //     return true
   // }
   return true
+  // return "電話番号を正しく入力してください。"
 }
 
 export default {

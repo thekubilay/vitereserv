@@ -2,8 +2,6 @@
   <div class="flex-column relative" :style="'width:'+form?.width+';'">
     <label class="label comp-header flex" :for="form?.label">{{form?.title}}
       <span v-if="form?.required" class="hissu">必須</span>
-      <span v-if="form?.hint" class="td2">({{form.hint}})</span>
-
     </label>
     <InputText type="text"
       :name="form?.label"
@@ -20,6 +18,7 @@
     </div>
     <span v-if="error && error!==true && showErrors" class="error-wrapper">
       <span v-if="error && error!==true && showErrors" class="is-danger">
+
         {{error}}
       </span>
     </span>

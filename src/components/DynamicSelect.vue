@@ -2,7 +2,6 @@
   <div class="flex-column relative" :style="'width:'+form?.width+';'" style="margin: 20px 0">
     <label class="label comp-header flex" :for="form?.label">{{form?.title}}
       <span v-if="form?.required" class="hissu">必須</span>
-      <span v-if="form?.hint" class="td2">({{form.hint}})</span>
     </label>
 
     <Dropdown
