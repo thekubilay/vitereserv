@@ -562,14 +562,13 @@ export default defineComponent({
   color: #808080;
 }
 #request .hint {
-  font-size: .85rem;
+  font-size: .7rem;
   font-weight: 600;
-    color: #808080;
+  color: #929292;
 }
 
 #request .error-wrapper {
   display: flex;
-  height: 25px;
 }
 
 #request span.is-danger {
@@ -577,7 +576,7 @@ export default defineComponent({
   /* position: absolute;
   right: 10px;
   top: -5px; */
-  padding: 1px 3px 1px 0;
+  padding: 0px 3px 0px 0;
   border-radius: 0px;
   font-size: .7rem;
   color: #ec5700;

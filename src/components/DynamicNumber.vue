@@ -23,8 +23,8 @@
       </span>
     </span>
   </div>
-
 </template>
+
 <script lang="ts">
 import { defineComponent, PropType, watch, ref } from "vue";
 import { FormItem } from "@/types/Form";
