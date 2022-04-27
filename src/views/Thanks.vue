@@ -4,7 +4,8 @@
       <h2 class="h2">ありがとうございました。</h2>
       <div>
         <section class="message__Wrapper">
-          <h3 class="h3"><span>ご予約の申し込み受付けました。</span></h3>
+          <h3 class="h3"><span>オンライン相談の申し込みが<br class="for-sp">完了しました。</span></h3>
+          <p>ご予約の日時などをメール送信致しましたので<br class="for-sp">ご確認ください。</p>
         </section>
       </div>
     </div>
