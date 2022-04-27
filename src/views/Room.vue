@@ -412,7 +412,7 @@ export default defineComponent({
   background-color: white;
 }
 #index .container{
-  max-width:none;
+  max-width:1160px;
 }
 /* --- Header --- */
 #index .header-container{

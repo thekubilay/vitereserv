@@ -561,6 +561,11 @@ export default defineComponent({
   margin-left: 5px;
   color: #808080;
 }
+#request .hint {
+  font-size: .85rem;
+  font-weight: 600;
+    color: #808080;
+}
 
 #request .error-wrapper {
   display: flex;
