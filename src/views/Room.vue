@@ -38,7 +38,7 @@
                     <svg
                       width="12"
                       height="12"
-                      fill="#c2c2c2"
+                      fill="#6366f1"
                       viewBox="0 0 512 512"
                     >
                       <path d="M256,78.77c97.73,0,177.23,79.51,177.23,177.23S353.73,433.23,256,433.23,78.77,353.73,78.77,256,158.27,78.77, 256,78.77M256,0C114.62,0,0,114.62,0,256S114.62,512,256,512,512,397.38,512,256,397.38,0,256,0Z"></path>
@@ -49,7 +49,8 @@
                     <svg
                       width="14"
                       height="12"
-                      fill="#c2c2c2"
+                      fill="#6366f1"
+                      fill-opacity="0.7"
                       viewBox="0 0 512 512"
                     >
                       <path
@@ -305,6 +306,7 @@ export default defineComponent({
         room.value = data
         holidays.value = data.holidays.split(",")
         vacancies.value = data.vacancies
+        document.getElementsByTagName('title')[0].innerHTML = (room.value)?room.value.name:"ビターブ｜予約システム作成・予約管理ならおまかせ｜viterve"
         isLoading.value = false
       })
       .catch((eroor) => {
@@ -403,6 +405,13 @@ export default defineComponent({
 }
 </style>
 <style>
+/* body, #app, #main {
+  background-color: white;
+} */
+#index {
+  height: 100%;
+  background-color: white;
+}
 /* --- Header --- */
 #index .header-container{
   margin-bottom: 30px;
@@ -440,6 +449,7 @@ export default defineComponent({
   font-size: 0.8rem;
   font-weight: 300;
   margin: 10px 0 10px;
+  border-left: 1px solid black;
 }
 #index .icon-list li {
   margin-left: 8px;
@@ -626,6 +636,11 @@ export default defineComponent({
   #index .week-cell-header{
     padding-bottom: 5px;
     height: 30px;
+  }
+
+  #index .icon-list {
+    border: none;
+    justify-content: center;
   }
 }
 
