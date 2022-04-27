@@ -9,29 +9,19 @@
         </div>
       </transition>
 
-      <LoadingSpinner v-model="isLoading" text="ローディング中"/>
+      <LoadingSpinner v-model="isLoading" />
       <div id="overlay" ref="overlay"></div>
       <div class="template__Wrapper">
         <div class="container">
           <div class="header-container">
-            <div class="top-line flex">
-              <h1 class="header-text">{{room?.name||"ご予約内容の選択"}}</h1>
+
+            <h1 class="flex-column heading">
+              <span class="title block header-text">{{room?.name||"ご予約内容の選択"}}</span>
+              <span class="sub-title block">{{room?.header}}</span>
+            </h1>
+            <p class="room-body-summary">{{room?.body}}</p>
               <!-- ご予約内容の選択 -->
-              <div class="selected-week-wrapper flex align-center">
-  
-                <div class="flex justify-center align-center arrow prev" @click="changeWeek(-1)">
-                  <i class="pi pi-angle-left"></i>
-                  <!-- <img src="/arrow.svg" /> -->
-                </div>
-                <span class="week-text" v-if="weekDatesObjs"> {{ weekDatesObjs[0].date }}（日） 〜 {{ weekDatesObjs[6].date }}（土） </span>
-                <div class="flex justify-center align-center arrow next" @click="changeWeek(1)">
-                  <i class="pi pi-angle-right"></i>
-                  <!-- <img src="/arrow.svg" /> -->
-                </div>
-  
-              </div>
-            </div>
-            <div class="header-subtext flex">
+            <div class="header-subtext flex justify-space-between">
               <!-- <h2 v-if="room">{{ room.name }}</h2> -->
               <ul class="icon-list flex flex-wrap">
                 <li class="flex align-center">
@@ -73,6 +63,19 @@
                   <span class="">予約できません</span>
                 </li>
               </ul>
+               <div class="selected-week-wrapper flex align-center">
+  
+                <button class="flex justify-center align-center arrow prev" @click="changeWeek(-1)">
+                  <i class="pi pi-angle-left"></i>
+                </button>
+
+                <span class="week-text" v-if="weekDatesObjs"> {{ weekDatesObjs[0].date }}（日） 〜 {{ weekDatesObjs[6].date }}（土） </span>
+
+                <button class="flex justify-center align-center arrow next" @click="changeWeek(1)">
+                  <i class="pi pi-angle-right"></i>
+                </button>
+  
+              </div>
             </div>
           </div>
 
@@ -429,32 +432,75 @@ export default defineComponent({
 #index .header-container{
   margin-bottom: 30px;
 }
-#index .top-line{
-  margin-bottom: 20px;
-}
-#index h1.header-text {
+
+/* 
+#index .header-container h1.heading {
+
+} */
+
+#index .header-container h1 .title {
   display: inline-block;
+  font-size: 2rem;
 }
+#index .header-container h1 .sub-title {
+  display: inline-block;
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+#index .header-container p.room-body-summary{
+  font-size: 0.75rem;
+  margin-top: 20px;
+  background-color: #faebd76f;
+  padding: 10px;
+  border-left: 4px solid #f0932b;
+}
+
+
 
 #index .selected-week-wrapper{
   margin-left: 20px
 }
 #index .selected-week-wrapper span.week-text{
+  color: #b0ada7;
   padding-bottom: 2px;
 }
 #index .selected-week-wrapper .arrow{
   cursor: pointer;
-  padding: 4px;
+  padding: 0px;
   margin: 0 5px;
+  border: 2px solid black;
+  background-color: rgb(99, 102, 241,0.05);
+  height: 33px;
+  width: 33px;
+  transition: 0.3s;
 }
+
+#index .selected-week-wrapper .arrow:active{
+  transform: translateY(2px);
+}
+
+#index .selected-week-wrapper .arrow:hover{
+  border-color: #f5f6fa;
+  background-color: rgb(99, 102, 241);
+}
+
 #index .selected-week-wrapper .arrow i{
+  color:rgb(99, 102, 241);
   font-size: 1.4rem;
+}
+
+#index .selected-week-wrapper .arrow:hover i{
+  color:white;
+}
+
+#index .header-subtext{
+  margin-top: 14px;
 }
 
 #index .icon-list {
   font-size: 0.8rem;
   font-weight: 300;
-  margin: 10px 0 10px;
+  margin: 0;
   padding: 10px 10px 10px 0;
   border-left: 4px solid rgb(99, 102, 241);
   background-color: rgb(99, 102, 241,0.05);
@@ -613,14 +659,17 @@ export default defineComponent({
 }
 
 @media screen and (max-width: 767px) {
-  #index h1.header-text{
+  #index h1 .title{
     text-align: center;
     font-size: 1.5rem;
+  }
+  #index .header-container h1 .sub-title{
+    text-align: center
   }
   #index .header-subtext{
     align-items: center;
     justify-content: center;
-
+    flex-direction: column-reverse;
   }
   #index .weekday-wrapper{
     margin: 0;
@@ -632,7 +681,7 @@ export default defineComponent({
     align-items: center;
     margin-bottom: 5px;
     padding-bottom: 0px;
-    height: 45px;
+    height: 50px;
   }
   #index .week-cell-header .date{
     font-size: 0.6rem;

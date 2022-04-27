@@ -2,7 +2,7 @@
   <div id="request" class="form_page">
     <div class="template__Wrapper ">
       <div class="container relative">
-        <LoadingSpinner v-model="isLoading" text="ローディング中"/>
+        <LoadingSpinner v-model="isLoading" />
         <!-- <h1 class="header-text">ご予約内容の入力</h1> -->
         <div class="relative">
           <section class="flex-column header-subtext">
