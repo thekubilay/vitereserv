@@ -461,36 +461,35 @@ export default defineComponent({
   margin-left: 20px
 }
 #index .selected-week-wrapper span.week-text{
-  color: #b0ada7;
+  color: #8d8a8a;
+  font-weight: 400;
   padding-bottom: 2px;
 }
 #index .selected-week-wrapper .arrow{
   cursor: pointer;
   padding: 0px;
   margin: 0 5px;
-  border: 2px solid black;
-  background-color: rgb(99, 102, 241,0.05);
-  height: 33px;
+  /*border: 2px solid black;*/
+  height: 39px;
   width: 33px;
   transition: 0.3s;
 }
+#index .selected-week-wrapper .arrow i {
+  font-size: 2rem;
+  color: #8c8c8c;
+}
+
 
 #index .selected-week-wrapper .arrow:active{
   transform: translateY(2px);
 }
 
 #index .selected-week-wrapper .arrow:hover{
-  border-color: #f5f6fa;
-  background-color: rgb(99, 102, 241);
-}
-
-#index .selected-week-wrapper .arrow i{
-  color:rgb(99, 102, 241);
-  font-size: 1.4rem;
+  background-color: rgb(99, 102, 241,0.05);
 }
 
 #index .selected-week-wrapper .arrow:hover i{
-  color:white;
+  color: rgb(99, 102, 241);
 }
 
 #index .header-subtext{
