@@ -1,19 +1,19 @@
 <template>
-  <div class="flex-column relative" :style="'width:'+form?.width+';'">
+  <div class="flex-column relative" :style="'width:'+form?.width+';'" style="margin: 20px 0">
     <label class="label comp-header flex" :for="form?.label">{{form?.title}}
       <span v-if="form?.required" class="hissu">必須</span>
       <span v-if="form?.hint" class="td2">({{form.hint}})</span>
     </label>
-    
-    <Dropdown 
-      @change="$emit('cVal')" 
-      v-model="localModel" 
-      :options="form?.options" 
-      optionLabel="label" 
+
+    <Dropdown
+      @change="$emit('cVal')"
+      v-model="localModel"
+      :options="form?.options"
+      optionLabel="label"
       :placeholder="(form?.placeholder?.toString())"
     >
     </Dropdown>
-    <span class="error-wrapper">
+    <span v-if="error" class="error-wrapper">
       <span v-if="error&&error!==true&&showErrors" class="is-danger">
         {{error}}
       </span>

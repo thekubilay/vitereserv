@@ -5,9 +5,9 @@
       <span v-if="form?.hint" class="td2">({{form.hint}})</span>
 
     </label>
-    <InputNumber 
-      :name="form?.label" 
-      :id="form?.label" 
+    <InputNumber
+      :name="form?.label"
+      :id="form?.label"
       class="w40 center"
       :placeholder="form?.placeholder||''"
       :required="form?.required"
@@ -16,7 +16,7 @@
       @input="$emit('cVal')"
       v-model="localModel"
     />
-    <span class="error-wrapper">
+    <span v-if="error" class="error-wrapper">
       <span v-if="error&&error!==true&&showErrors" class="is-danger">
         {{error}}
       </span>
