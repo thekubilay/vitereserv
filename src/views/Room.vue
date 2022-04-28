@@ -130,7 +130,7 @@
                   <template v-else-if="room && room.times && room.times.length > 0">
                     <div v-for="(time, index) in room.times" :key="index" class="sec">
                       <!-- マル -->
-                      <div v-if="findHourBefore(time) && vacanciesCheck(item.date, time.time).mark==='circle'" class="btn_select" @click="goToForm(item.date, time.time, room)">
+                      <div v-if="findHourBefore(time, item.date) && vacanciesCheck(item.date, time.time).mark==='circle'" class="btn_select" @click="goToForm(item.date, time.time, room)">
                         <p class="time">
                           <span>{{ getPrepTime(time.time) }}</span>
                         </p>
@@ -146,7 +146,7 @@
 
                       </div>
                       <!-- 三角 -->
-                      <div v-else-if="findHourBefore(time) && vacanciesCheck(item.date, time.time).mark==='triangle'" class="btn_select" @click="goToForm(item.date, time.time, room)">
+                      <div v-else-if="findHourBefore(time, item.date) && vacanciesCheck(item.date, time.time).mark==='triangle'" class="btn_select" @click="goToForm(item.date, time.time, room)">
                         <p class="time">
                           <span>{{ getPrepTime(time.time) }}</span>
                         </p>
@@ -164,7 +164,7 @@
 
                       <div v-else class="btn_select disable">
                         <p class="time">
-                          <span>{{ getPrepTime(time.time) }}</span>
+                          <span>{{ getPrepTime(time.time, item.date) }}</span>
                         </p>
                         <div class="icon-wrapper noflame">
                           <figure class="icon cross">
@@ -225,15 +225,21 @@ export default defineComponent({
     const isLoading = ref<boolean>(false)
     const mainColor: string = "rgb(99, 102, 241)"
 
-    const findHourBefore = (time:any): boolean => {
+    const findHourBefore = (time:any, date:string): boolean => {
       const hour = 60 * 60 * 1000; //(60seconds * 60minutes * 1000ms, to get the milliseconds)
       const hourAgo = Date.now() - hour;
 
       const now: any = moment().format("HHmm")
 
-      // return parseInt(time?.time.replace(":", "")) - parseInt(now) >= 100;
-      return true
+      const isTimeNotOver: boolean = parseInt(time?.time.replace(":", "")) - parseInt(now) >= 100;
+      const varDate = new Date(date.replace("年","-").replace("月","-").replace("日",""));
+      const today = new Date();
 
+      if (varDate >= today){
+        return true
+      } else {
+        return isTimeNotOver
+      }
     }
 
     const formatDate = (val:string):string => {
