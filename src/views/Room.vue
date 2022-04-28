@@ -231,7 +231,8 @@ export default defineComponent({
 
       const now: any = moment().format("HHmm")
 
-      return parseInt(time?.time.replace(":", "")) - parseInt(now) >= 100;
+      // return parseInt(time?.time.replace(":", "")) - parseInt(now) >= 100;
+      return true
 
     }
 
