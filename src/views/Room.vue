@@ -230,11 +230,8 @@ export default defineComponent({
       const hourAgo = Date.now() - hour;
 
       const now: any = moment().format("HHmm")
-      if (parseInt(now) - parseInt(time?.time.replace(":","")) > 60){
-        return false
-      } else {
-        return true
-      }
+
+      return parseInt(time?.time.replace(":", "")) - parseInt(now) >= 100;
 
     }
 

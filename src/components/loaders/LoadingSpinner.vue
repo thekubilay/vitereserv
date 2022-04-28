@@ -67,7 +67,7 @@ export default defineComponent({
   },
 });
 </script>
-<style scoped>
+<style>
 .loader {
   z-index: 7;
   width: 100%;
