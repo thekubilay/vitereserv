@@ -5,6 +5,7 @@ import App from './App.vue';
 import PrimeVue from 'primevue/config';
 import Dropdown from 'primevue/dropdown';
 import router from './router'
+import VueGtag from "vue-gtag-next";
 
 
 import 'primevue/resources/themes/saga-blue/theme.css';
@@ -35,4 +36,5 @@ app.use(pinia)
 app.use(PrimeVue,primeOptions)
 app.use(router)
 app.component('Dropdown', Dropdown)
+app.use(VueGtag, { property: { id: 'UA-185297424-1', router } })
 app.mount('#app')
