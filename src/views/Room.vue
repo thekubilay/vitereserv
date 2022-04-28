@@ -164,7 +164,7 @@
 
                       <div v-else class="btn_select disable">
                         <p class="time">
-                          <span>{{ getPrepTime(time.time, item.date) }}</span>
+                          <span>{{ getPrepTime(time.time) }}</span>
                         </p>
                         <div class="icon-wrapper noflame">
                           <figure class="icon cross">
