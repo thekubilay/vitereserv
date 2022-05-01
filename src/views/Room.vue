@@ -232,13 +232,14 @@ export default defineComponent({
       const now: any = moment().format("HHmm")
 
       const isTimeNotOver: boolean = parseInt(time?.time.replace(":", "")) - parseInt(now) >= 100;
+      // console.log(parseInt(time?.time.replace(":", "")), parseInt(now))
       const varDate = new Date(date.replace("年","-").replace("月","-").replace("日",""));
       const today = new Date();
 
       if (varDate >= today){
-        return true
-      } else {
         return isTimeNotOver
+      } else {
+        return true
       }
     }
 
@@ -333,7 +334,7 @@ export default defineComponent({
         baseURL: ENV.API,
         // baseURL: "http://viterve-env.eba-pwmisykt.ap-northeast-1.elasticbeanstalk.com/api/v1/",
         url: "rooms/" + route.params.rid + "/",
-        params: {week: currentWeek.value? currentWeek.value : 0}
+        params: {week: currentWeek.value ? (currentWeek.value-1) : 0}
       })
       .then((response) => {
         const data = JSON.parse(JSON.stringify(response.data))
