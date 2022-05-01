@@ -10,7 +10,7 @@ export default class CalendarService {
   public weekdays: string[] = ["日曜日", "月曜日", "火曜日", "水曜日", "木曜日", "金曜日", "土曜日"]
   public weekdaysShort: string[] = ["日", "月", "火", "水", "木", "金", "土"]
   public currentDate: string = moment().format("YYYY年MM月DD日")
-  public currentWeek: number = moment(new Date(), "YYYY-MM-DD").week() - 1
+  public currentWeek: number = moment(new Date(), "YYYY-MM-DD").week() - 2
   public currentMonth: number = moment(new Date()).month() + 1
   public currentYear: number = moment().year()
 
