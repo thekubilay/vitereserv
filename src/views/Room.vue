@@ -225,21 +225,22 @@ export default defineComponent({
     const isLoading = ref<boolean>(false)
     const mainColor: string = "rgb(99, 102, 241)"
 
-    const findHourBefore = (time:any, date:string): boolean => {
-      const hour = 60 * 60 * 1000; //(60seconds * 60minutes * 1000ms, to get the milliseconds)
-      const hourAgo = Date.now() - hour;
+    const findHourBefore = (param:any, date:string): boolean => {
 
-      const now: any = moment().format("HHmm")
+      const now: any = moment(moment().format("HH:mm:ss"))
+      const timeFormatted: any = new Date (new Date().toDateString() + ' ' + param.time)
+      const time: any = moment(moment(timeFormatted).format("HH:mm:ss"))
 
-      const isTimeNotOver: boolean = parseInt(time?.time.replace(":", "")) - parseInt(now) >= 100;
+      const isTimeNotOver: boolean = parseInt(param?.time.replace(":", "")) - parseInt(now) >= 100;
       // console.log(parseInt(time?.time.replace(":", "")), parseInt(now))
       const varDate = new Date(date.replace("年","-").replace("月","-").replace("日",""));
       const today = new Date();
 
+      // console.log(time, now)
       if (varDate >= today){
         return true
       } else {
-        return true
+        return isTimeNotOver
       }
     }
 
