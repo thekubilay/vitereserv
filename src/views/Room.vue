@@ -227,20 +227,20 @@ export default defineComponent({
 
     const findHourBefore = (param:any, date:string): boolean => {
 
-      const now: any = moment(moment().format("HH:mm:ss"))
+      const now: any = moment()
       const timeFormatted: any = new Date (new Date().toDateString() + ' ' + param.time)
-      const time: any = moment(moment(timeFormatted).format("HH:mm:ss"))
+      const time: any = moment(moment(timeFormatted))
 
       const isTimeNotOver: boolean = parseInt(param?.time.replace(":", "")) - parseInt(now) >= 100;
-      // console.log(parseInt(time?.time.replace(":", "")), parseInt(now))
       const varDate = new Date(date.replace("年","-").replace("月","-").replace("日",""));
       const today = new Date();
 
-      // console.log(time, now)
+      // console.log(time.fu, now)
+      // console.log(time.diff(now, "hours"))
       if (varDate >= today){
         return true
       } else {
-        return isTimeNotOver
+        return time.diff(now, "hours") >= 0;
       }
     }
 
