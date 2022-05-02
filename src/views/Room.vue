@@ -237,7 +237,7 @@ export default defineComponent({
       const today = new Date();
 
       if (varDate >= today){
-        return isTimeNotOver
+        return true
       } else {
         return true
       }
