@@ -235,8 +235,6 @@ export default defineComponent({
       const varDate = new Date(date.replace("年","-").replace("月","-").replace("日",""));
       const today = new Date();
 
-      // console.log(time.fu, now)
-      // console.log(time.diff(now, "hours"))
       if (varDate >= today){
         return true
       } else {
@@ -257,7 +255,7 @@ export default defineComponent({
       if(currentWeek.value){
         currentWeek.value += num
       }
-      weekDatesObjs.value = calendarService.value.getWeekDatesAsObject(currentWeek.value)
+      weekDatesObjs.value = calendarService.value.getWeekDatesAsObject(currentWeek.value as number)
       getRooms();
       setTimeout(() => {
         overlay.value?.classList.remove('active')
@@ -335,7 +333,7 @@ export default defineComponent({
         baseURL: ENV.API,
         // baseURL: "http://viterve-env.eba-pwmisykt.ap-northeast-1.elasticbeanstalk.com/api/v1/",
         url: "rooms/" + route.params.rid + "/",
-        params: {week: currentWeek.value ? (currentWeek.value-1) : 0}
+        params: {week: currentWeek.value ? (currentWeek.value) : 0}
       })
       .then((response) => {
         const data = JSON.parse(JSON.stringify(response.data))
@@ -364,7 +362,7 @@ export default defineComponent({
       deleteQuery()
       calendarService.value = new calendarServiceClass();
       currentWeek.value = calendarService.value.currentWeek
-      weekDatesObjs.value = calendarService.value.getWeekDatesAsObject(currentWeek.value)
+      weekDatesObjs.value = calendarService.value.getWeekDatesAsObject(currentWeek.value as number)
       getRooms();
       if(store.error){
         Object.assign(errorMessage, store.error)
