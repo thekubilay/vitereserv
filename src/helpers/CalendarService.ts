@@ -1,5 +1,5 @@
 import moment from "moment";
-import {DateObject, Month, WeekDatesAsObject} from "@/types/Calendar";
+import {DateObject, Month, WeekDatesAsObject} from "../types/Calendar";
 
 moment.locale("ja", {
   weekdays: ["日曜日", "月曜日", "火曜日", "水曜日", "木曜日", "金曜日", "土曜日"],
@@ -10,12 +10,32 @@ export default class CalendarService {
   public weekdays: string[] = ["日曜日", "月曜日", "火曜日", "水曜日", "木曜日", "金曜日", "土曜日"]
   public weekdaysShort: string[] = ["日", "月", "火", "水", "木", "金", "土"]
   public currentDate: string = moment().format("YYYY年MM月DD日")
-  public currentWeek: number = moment(new Date(), "YYYY-MM-DD").week() - 2
+  public currentWeek: number = parseInt(moment(new Date()).clone().startOf("isoWeek").format("W"))
   public currentMonth: number = moment(new Date()).month() + 1
   public currentYear: number = moment().year()
 
   constructor(year: number|null=null) {
     if (year) this.currentYear = year
+  }
+
+  test(): string {
+//     let mLocal = moment();
+//     let mISO = mLocal.clone();
+//     let f = 'ddd DD MMM YYYY';
+//     console.log('Start date : ' + mLocal.format(f));
+//
+// // "locale aware" start of week
+//     mLocal.startOf("week");
+// // ISO start of week
+//     mISO.startOf("isoWeek");
+//
+//
+//     console.log('Local start: ' + mLocal.format(f));
+//     console.log('ISO week   : ' + mLocal.format("W, YYYY"))
+//     console.log('ISO start  : ' + mISO.format(f));
+//     console.log('ISO week   : ' + mISO.format("W, YYYY"))
+
+    return ""
   }
 
   get currentWeekDates(): string[] {
@@ -134,7 +154,7 @@ export default class CalendarService {
       return {
         date: moment(date).format('YYYY/MM/DD'),
         day: moment(date).format('ddd'),
-        week: moment(date, "YYYY-MM-DD").week() - 1,
+        week: moment(date, "YYYY-MM-DD").week(),
         month: (moment(new Date()).month() + 1) + "月",
         timestamp: moment(date).valueOf()
       }
