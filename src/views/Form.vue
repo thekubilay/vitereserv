@@ -12,38 +12,17 @@
             <p>{{ dateAndTime }}&nbsp;<button class="return-btn" @click="goTo('Room')">日付変更</button>
             </p>
           </section>
-          <DynamicForm
-            :form="dynForm"
+          <Form
+            v-if="Object.keys(dynForm).length > 0"
+            v-model:form="dynForm"
+            :data="modelData"
+            :extraData="extraData"
+            :config="config"
+            :confirm="false"
+            :submit="submit"
+            :onComplete="onComplete"
+            :onError="onError"
           />
-          <!-- <form method="post" action="" class="h-adr" id="form" name="theForm" ref="formElem">
-            <span class="p-country-name" style="display:none;">Japan</span>
-
-            <div v-for="(row, rowIdx) in formRows" :key="rowIdx"
-                 class="form-row flex justify-space-between w100"
-                 :class="''+row.classes">
-
-              <component v-for="(comp , idx) in row.form_items"
-                         :key="idx"
-                         :index="{one:rowIdx, two:idx}"
-                         :is="getComp(comp.type)"
-                         :form="formRows[rowIdx].form_items[idx]"
-                         :modelValue="formRows[rowIdx].form_items[idx].model"
-                         @updateModel="updateModel"
-                         @cVal="saveForm()"
-                         :error="formRows[rowIdx].form_items[idx]['error']"
-                         :showErrors="showErrors"
-                         :class="row.form_items.length>1?'column-'+row.form_items.length+'-space':'w100'"
-                         :rowClasses="row.classes"
-              />
-
-            </div>
-            <div class="form-button-wrapper flex justify-end align-center">
-              <button type="button" class="submit-button flex align-center justify-center" @click="checkForm"
-                      id="submit_button" :disabled="isLoading">送信する
-              </button>
-            </div>
-
-          </form> -->
         </div>
       </div>
     </div>
@@ -51,99 +30,93 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, computed, shallowRef, onMounted, ref,} from "vue";
+import {defineComponent, computed, onMounted, ref, watch, ComputedRef} from "vue";
 import {FormItem, FormRow} from "@/types/Form";
-import DynamicForm from "../components/dynamic-form/templates/Form.vue"
+import {DynamicFormRow, DynamicForm} from "../components/dynamic-form/types/DynamicForm"
+import {Crud} from "../components/dynamic-form/types/Crud"
+import Form from "../components/dynamic-form/templates/Form.vue"
 import axios from "axios";
 import ENV from "../config"
 import router from "@/router";
-// import useValidation from "@/utils/useValidation";
+
 import FormsFunc from "./Forms"
 import useStore from "../helpers/useStore"
-import LoadingSpinner from "../components/loaders/LoadingSpinner.vue"
+import LoadingSpinner from "@/components/loaders/LoadingSpinner.vue"
+import { DynamicFormRowColumn } from "@/components/dynamic-form/types/DynamicForm";
+import { isRomaji, isKatakana, isMail, isZip, isRomajiWithIrregulars, isNumber } from "@/components/dynamic-form/helpers/useRules";
 
-// import {Core as YubinBangoCore} from 'yubinbango-core'
-interface Indeces {
-  one: number,
-  two: number,
-}
-
-interface RadioData {
-  name: String,
-  value: String
+interface Extra {
+  vacancy?: string,
+  date?: string,
+  time?: string,
+  form?: string,
+  room?: string,
 }
 
 export default defineComponent({
   components: {
-    LoadingSpinner, DynamicForm,
+    LoadingSpinner, Form,
   },
   setup() {
     const {store} = useStore()
-    const dynForm = ref<any>({rows:[]});
-
-
-
-
-    const formRows = ref<FormRow[]>([]);
-    const formElem = ref<any>(null);
-    // const formModel = ref<Array<Array<string|RadioData|string[]>>>([]);
-    const formRules: { (data: any): boolean | string }[][][] = []; //Array of functions
-    const textComp = shallowRef<object | null>(null);
-    const numberComp = shallowRef<object | null>(null);
-    const selectComp = shallowRef<object | null>(null);
-    const checkComp = shallowRef<object | null>(null);
-    const radioComp = shallowRef<object | null>(null);
-    const showErrors = ref<boolean>(false);
+    const dynForm = ref<DynamicForm>({} as DynamicForm);
+    const pageTitle = ref<string>("");
+    const subTitle = ref<string>("");
+    const extraData = ref<Extra>({vacancy: "",});
+    const config = ref<Crud>({method: "POST", url: ENV.API+"applicants/"})
     const isLoading = ref<boolean>(false)
     const time = ref<string>("");
     const date = ref<string>("");
-    const pageTitle = ref<string>("");
+    const modelData = ref<any>();
+    let isPageLoaded = false
     const {
       vacancyID,
+      cityOptions,
       formID,
       roomID,
-      cityOptions,
+      getSessionFormID,
       hasSessionData,
       getSessionData,
-      saveSessionData,
-      getSessionForm,
       removeSessionData,
       checkVacancy,
-      // setupYubinBango,
+      saveSessionData,
     } = FormsFunc()
 
-    // import("../components/DynamicInput.vue").then(val => {
-    //   textComp.value = val.default;
-    // })
-    // import("../components/DynamicSelect.vue").then(val => {
-    //   selectComp.value = val.default;
-    // })
-    // import("../components/DynamicCheckBoxes.vue").then(val => {
-    //   checkComp.value = val.default;
-    // })
-    // import("../components/DynamicRadio.vue").then(val => {
-    //   radioComp.value = val.default;
-    // })
-    // import("../components/DynamicNumber.vue").then(val => {
-    //   numberComp.value = val.default;
-    // })
-    // const getComp = (name: string) => {
-    //   if (name === 'text') {
-    //     return textComp.value
-    //   } else if (name === 'select') {
-    //     return selectComp.value
-    //   } else if (name === 'checkbox') {
-    //     return checkComp.value
-    //   } else if (name === 'radio') {
-    //     return radioComp.value
-    //   } else if (name === 'number') {
-    //     return numberComp.value
-    //   } else {
-    //     return textComp.value
+    // async function init2(): Promise<void>{
+    //   // 1. Check if vacancy, if not send back to calendar
+    //   checkVacancy()
+    //   // 2. Request form data
+    //   const path = ENV.API + "forms/" + formID.value + "/"
+    //   isLoading.value = true
+    //   try {
+    //     const response1 = await axios.get<FormItem[]>(path)
+    //     const data = JSON.parse(JSON.stringify(response1.data))
+    //     // console.log(data)
+    //     if (data.title) {
+    //       pageTitle.value = data.title !== "null" ?  data.title.toString() : ""
+    //     }
+    //     if (data.sub_title){
+    //       subTitle.value = data.sub_title !== "null" ?  data.sub_title.toString() : ""
+    //     }
+    //     // 2.5 Setup form data
+    //     setupForm(data.form_rows)
+
+    //     // 3. Check for session data
+    //     loadSession()
+
+    //     // 4. Get vacancy data
+    //     const response2 = await axios.get<any>(ENV.API + "vacancies/" + vacancyID.value + "/")
+    //     date.value = response2.data.date
+    //     time.value = response2.data.time
+    //     document.getElementsByTagName('title')[0].innerHTML = (pageTitle.value)?pageTitle.value:"ビターブ｜予約システム作成・予約管理ならおまかせ｜viterve"
+    //     isLoading.value = false
+    //     isPageLoaded = true
+    //     setupExtraData()
+    //   } catch {
     //   }
     // }
 
-    function init() {
+    function init(): void {
       // 1. Check if vacancy, if not send back to calendar
       checkVacancy()
 
@@ -154,40 +127,20 @@ export default defineComponent({
       axios.get<FormItem[]>(path)
         .then((response) => {
           const data = JSON.parse(JSON.stringify(response.data))
-          console.log(data)
-
-
-
-
-
-
-
-
+          // console.log(data)
           if (data.title) {
             pageTitle.value = data.title !== "null" ?  data.title.toString() : ""
           }
-          //2.5 Setup form data
-          // setupForm(data.form_rows)
-          //3. Check for session data
-          // console.log("session:",getSessionData())
-          if (hasSessionData()) {
-            let d_n = getSessionData()
-            let d = JSON.parse(d_n)
-            // console.log("data",d)
-            let f = getSessionForm()
-            if (f === formID.value.toString()) {
-              for (let i = 0; i < d.length; i++) {
-                d[i].forEach((item: any, idx: number) => {
-                  if (formRows.value[i] && formRows.value[i].form_items[idx])
-                    formRows.value[i].form_items[idx].model = item
-                })
-              }
-
-              // formModel.value = JSON.parse(d) //TODO add
-            }
+          if (data.sub_title){
+            subTitle.value = data.sub_title !== "null" ?  data.sub_title.toString() : ""
           }
-          //4. Get vacancy data
+          // 2.5 Setup form data
+          setupForm(data.form_rows)
 
+          // 3. Check for session data
+          loadSession()
+
+          // 4. Get vacancy data
           axios.get<any>(ENV.API + "vacancies/" + vacancyID.value + "/")
             .then((response2) => {
               // console.log("vacancy:",response2.data)
@@ -195,15 +148,17 @@ export default defineComponent({
               time.value = response2.data.time
               document.getElementsByTagName('title')[0].innerHTML = (pageTitle.value)?pageTitle.value:"ビターブ｜予約システム作成・予約管理ならおまかせ｜viterve"
               isLoading.value = false
-              // console.log("data", formRows.value)
-              // setupYubinBango()
+              isPageLoaded = true
+              setupExtraData()
             })
             .catch((error2) => {
               isLoading.value = false
+              isPageLoaded = true
               store.SET_ERROR({title: "エラー", text: "サーバーのエラーが発生しました。"})
               console.log("vacancy problem")
               goTo("Room")
             })
+          // isLoading.value = false
         })
         .catch((error) => {
           isLoading.value = false;
@@ -213,258 +168,195 @@ export default defineComponent({
         })
     }
 
-    // function setupForm(f: FormRow[]): void {
-    //   formRows.value = f
-    //   formRows.value.forEach((row, idx) => {
-    //     // formModel.value.push([])
-    //     formRules.push([])
-    //     row.form_items.forEach((item, itemIdx) => {
-    //       if (item.type === "text") {
-    //         item.model = null
-    //         // formModel.value[idx].push("_")
-    //       } else if (item.type === "select") {
-    //         item.model = {label: "", value: ""}
-    //         if (["city", "cities"].includes(item.label)) {
-    //           item.options = cityOptions
-    //         }
-    //         // formModel.value[idx].push({name: "", value: ""})
-    //       } else if (item.type === "number") {
-    //         item.model = null
-    //         // formModel.value[idx].push({name: "", value: ""})
-    //       } else {
-    //         item.model = null
-    //         // formModel.value[idx].push("_")
-    //       }
+    function getRows(rows: FormRow[]): DynamicFormRow[]{
+      const retRows: DynamicFormRow[] = []
+      rows.forEach((row:FormRow, idx: number) => {
+        retRows.push(
+          {
+            class: row.column?`column-${row.column}`:"",
+            columns: getColumns(row.form_items),
+            margin: "0 0 16px 0",
+          }
+        )
+      })
+      return retRows
+    }
 
-    //       let rules = getRuleFunctions(item)
-    //       formRules[idx][itemIdx] = rules
-    //       item['error'] = ''
-    //     })
+    function getColumns(form_items: FormItem[]): DynamicFormRowColumn[]{
+      const retColumns:DynamicFormRowColumn[] = []
+      form_items.forEach((formItem:FormItem) => {
+        let column: DynamicFormRowColumn =
+        {
+          component: null,
+          columnWidth: formItem.width?""+formItem.width:"",
+          type: formItem.type,
+          model: null,
+          required: formItem.required,
+          disabled: false,
+          name: formItem.title,
+          db: formItem.label,
+          placeholder: ""+formItem.placeholder,
+          class: formItem.column?`column-${formItem.column}-space`:"",
+          props: getColumnProps(formItem),//addOptions if available
+          errors: [],
+          rules: getRulesFunctions(formItem.rules||""),
+          options: getColumnOptions(formItem),
+          optionValue: "value",
+          optionLabel: "value",
+          invalid: false,
+        }
+        retColumns.push(column)
+      })
+      return retColumns
+    }
 
-    //   })
-    //   // console.log(formRows.value)
-    // }
+    function getColumnProps(formItem: FormItem): string[]{
+      let res = ["placeholder"]
+      if(formItem.options && formItem.options.length>0){
+        res.push("options")
+        res.push("optionValue")
+        res.push("optionLabel")
+      }
+      // if(formItem.width){
+      //   res.push("columnWidth")
+      // }
+      return res
+    }
 
-    // function saveForm() {
-    //   setTimeout(() => {//wait a bit so model is updated first
-    //     // console.log("saving from to session")
-    //     let data: any = []
-    //     formRows.value.forEach((row, idx) => {
-    //       data.push([])
-    //       row.form_items.forEach((item, itemIdx) => {
-    //         data[idx].push(item.model)
-    //       })
-    //     })
-    //     saveSessionData(JSON.stringify(data))
-    //     // console.log(data)
-    //   }, 400)
-    // }
+    function getColumnOptions(formItem: FormItem): string[]|object[]{
+      if(formItem.type === "select"){
+        if(formItem.title === "物件"){
+          return [] //TODO get /projects
+        }
+        if(formItem.title === "都道府県"){
+          return cityOptions
+        }
+      }
+      return formItem.options||[]
+    }
 
-    // function getRuleFunctions(data: FormItem): { (data: any): boolean | string }[] {
-    //   const res: { (data: any): boolean | string }[] = []
-    //   if (data.required) {
-    //     res.push(useValidation.required)
-    //   }
-    //   if (!data.rules)
-    //     return res
-    //   const rules = data.rules.replace(" ", "").split(",")
+    function getRulesFunctions(rules: string): Function[]{
+      const r:string[] = rules.replace(" ", "").split(",")
+      const res: Function[] = []
     //   if (rules && rules.length > 0) {
+      r.forEach((rule: string) => {
+        if(rule === "katakana"){
+          res.push(isKatakana)
+        }else if(rule === "email"){
+          res.push(isMail)
+        }else if(rule === "zipcode"){
+          res.push(isZip)
+        }else if(rule === "number"){
+          res.push(isNumber)
+        }else if(rule === "tel"){
+        
+        }else if(rule === "kana"){
+          res.push(isKatakana)
+        }else if(rule === "kankakukigou"){
+          res.push(isRomajiWithIrregulars)
+        }
+       
+      })
+      return res
+    }
 
-    //     rules.forEach((rule, idx) => {
-    //       if (rule === "email") {
-    //         res.push(useValidation.mailCheck)
-    //         // }else if(rule === "required"){
-    //         //   res.push(useValidation.required)
-    //         // }else if(rule === "password"){
-    //         //   res.push()
-    //       } else if (rule === "kankakukigou") {
-    //         res.push(useValidation.hankakukigouCheck)
-    //       } else if (rule === "kana") {
-    //         res.push(useValidation.kanaCheck)
-    //       } else if (rule === "zipcode") {
-    //         res.push(useValidation.zipCodeCheck)
-    //       } else if (rule === "tel") {
-    //         res.push(useValidation.phoneNumberCheck)
-    //       } else if (rule.startsWith("minlength")) {
-    //         let reg = /\(([0-9]+)\)/
-    //         let match = reg.exec(rule)
-    //         if (match && match.length > 0) {
-    //           let num = parseInt(match[1], 10)
-    //           res.push((data: string) => {
-    //             if (data.length >= num) {
-    //               return true
-    //             }
-    //             return `${num}文字以上を入力してください。`
-    //           })
-    //         }
-    //       } else if (rule.startsWith("maxlength")) {
-    //         let reg = /\(([0-9]+)\)/
-    //         let match = reg.exec(rule)
-    //         if (match && match.length > 0) {
-    //           let num = parseInt(match[1], 10)
-    //           res.push((data: string) => {
-    //             if (data.length <= num) {
-    //               return true
-    //             }
-    //             return `${num}文字以下に入れてください。`
-    //           })
-    //         }
-    //       }
-    //     })
-    //     return res
-    //   }
-    //   return []
-    // }
+    function setupForm(f: FormRow[]): void {
+      dynForm.value = {class: "",rows: getRows(f)}
+      // console.log(dynForm.value)
+    }
 
-    // const clearModel = () => {
-    //   // setupYubinBango()
-    //   // testYubin()
+    function setupExtraData(): void{
+      extraData.value.vacancy = vacancyID.value.toString()
+      extraData.value.date = date.value.toString()
+      extraData.value.time = time.value.toString()
+      extraData.value.room = roomID.value.toString()
+      extraData.value.form = formID.value.toString()
+    }
 
-    //   formRows.value.forEach((row, rowIdx) => {
-    //     row.form_items.forEach((item, itemIdx) => {
-    //       if (item.model) {
-    //         if (typeof item.model === "string") {
-    //           formRows.value[rowIdx].form_items[itemIdx].model = ""
-    //         } else if (typeof item.model === "number") {
-    //           formRows.value[rowIdx].form_items[itemIdx].model = null
-    //         } else if (item.type === "select") {
-    //           formRows.value[rowIdx].form_items[itemIdx].model = {label: "", value: ""}
-    //         }
-    //       }
-    //     })
-    //   })
-    //   saveForm()
-    //   // console.log(formRows.value)
-    // }
+    function saveForm(): void {
+      setTimeout(() => {//wait a bit so model is updated first
+        // console.log("saving from to session")
+        let saveData: any = {}
+        dynForm.value.rows.forEach(row => {
+          row.columns.forEach(column => {
+            if (typeof column.model === "boolean") {
+              saveData[column.db] = column.model ? "1" : "0"
+            } else {
+              if (column.model) saveData[column.db] = column.model.toString()
+            }
+          })
+        })
+        saveSessionData(JSON.stringify(saveData))
+        // console.log(data)
+      }, 400)
+    }
 
-    // const updateModel = (val: string | string[] | RadioData, indeces: Indeces) => {
-    //   // console.log("update model")
-    //   formRows.value[indeces.one].form_items[indeces.two].model = val;
-    //   validateField(val, indeces)
-    // }
+    function loadSession(): void{
+      if (hasSessionData()) {
+        // console.log("loading session data from browser")
+        let d = JSON.parse(getSessionData())
+        let f = getSessionFormID()
+        if (f === formID.value.toString()) {
+          modelData.value = d;
+        }
+      }
+    }
 
-    // const validateField = (val: string | string[] | RadioData, indeces: Indeces): void => {
-    //   const f = formRows.value[indeces.one].form_items[indeces.two]
-    //   for (let i = 0; i < formRules[indeces.one][indeces.two].length; i++) {
-    //     const rule = formRules[indeces.one][indeces.two][i]
-    //     let res = rule(val);
-    //     // console.log(res)
-    //     if (typeof res !== "boolean") {
-    //       f['error'] = res
-    //       return
-    //     }
-    //   }
-    //   f['error'] = ""
-    // }
+    const submit = (form: DynamicForm, config: Crud, extraData: any): Promise<any> => {
+      isLoading.value = true
+      return new Promise<any>((resolve, reject) => {
+        const formData = new FormData()
+        form.rows.forEach(row => {
+          row.columns.forEach(column => {
+            if (typeof column.model === "boolean") {
+              formData.append(column.db, column.model ? "1" : "0")
+            } else {
+              if (column.model) formData.append(column.db, column.model.toString())
+            }
+          })
+        })
 
-    // function checkAllErrors(): boolean {
-    //   let res = true
-    //   for (const row of formRows.value) {
-    //     for (const item of row.form_items) {
-    //       if (item.hasOwnProperty('error')) {
-    //         // console.log(item.error)
-    //         if (typeof item.error === "string" && item.error.length > 0) {
-    //           res = false
-    //         }
-    //       }
-    //     }
-    //   }
-    //   // console.log(res)
-    //   return res
-    // }
+        const keys = Object.keys(extraData)
+        keys.forEach(key => {
+          formData.append(key, extraData[key])
+        })
 
-    // function buildRequestData(): FormData {
-    //   const requestData: FormData = new FormData();
+        const ul = config.url.length - 1
+        if (config.url[ul] !== "/") config.url += "/"
+        config.data = formData
 
-    //   requestData.append("vacancy", vacancyID.value.toString())
-    //   // requestData.append("vacancy","444")
-    //   requestData.append("date", date.value.toString())
-    //   requestData.append("time", time.value.toString())
-    //   requestData.append("room", roomID.value.toString())
-    //   requestData.append("form", formID.value.toString())
-    //   // Fill the requestData with key-value pairs
-    //   formRows.value.forEach((row, rowIdx) => {
-    //     row.form_items.forEach((val, idx) => {
-    //       if (typeof val.model === "string") {
-    //         // console.log("appending"+formRows.value[idx].label+val)
-    //         requestData.append(formRows.value[rowIdx].form_items[idx].label, val.model)
-    //       } else if (typeof val.model === "number") {
-    //         // console.log("appending"+formRows.value[idx].label+val)
-    //         requestData.append(formRows.value[rowIdx].form_items[idx].label, val.model.toString())
-    //       } else if (Array.isArray(val.model)) {
-    //         let res = ""
-    //         for (let v of val.model) {
-    //           res += v + ","
-    //         }
-    //         requestData.append(formRows.value[rowIdx].form_items[idx].label, res)
-    //       } else if (typeof val.model === "object" && val.model !== null) {
-    //         if (val.model.value) {
-    //           requestData.append(formRows.value[rowIdx].form_items[idx].label, val.model.value as string)
-    //         }
-    //       }
+        try {
+          axios(config).then((response) => {
+            isLoading.value = false
+            resolve(response)
+            reject(false)
+          }).catch(error => {
+            resolve(error.response)
+          })
+        } catch (e) {
+          console.log("error: " + e)
+          reject(false)
+        }
+      })
+    }
 
-    //     })
+    const onError = (): void => {
+      isLoading.value = false;
+      console.error("Server could not accept response")
+      store.SET_ERROR({title: "エラー", text: "サーバーのエラーが発生しました。"})
+      goTo("Room")
+      // console.log("error")
+      // store.SET_ERROR({title: "エラー", text: "サーバーのエラーが発生しました。"}) // text: response.data.info
+      // goTo("Room")
+    }
+    const onComplete = (response: any): void => {
+      isLoading.value = false;
+      // console.log("complete",response)
+      removeSessionData()
+      goTo('Thanks')
+    }
 
-    //   })
-    //   // console.log(requestData)
-    //   return requestData
-    // }
-
-    // const checkForm = () => {
-    //   if (!showErrors.value) {//actively validate
-    //     showErrors.value = true;
-    //     formRows.value.forEach((row, idx) => {
-    //       row.form_items.forEach((val, rowIdx) => {
-    //         validateField(val.model, {one: idx, two: rowIdx})
-    //       })
-    //     })
-    //   }
-    //   if (checkAllErrors()) {
-    //     const requestData = buildRequestData()
-
-    //     // console.log("ready to send")
-    //     // for (var [key, value] of requestData.entries()) {
-    //     //   console.log(key, value);
-    //     // }
-    //     isLoading.value = true;
-    //     axios.request({
-    //       method: "post",
-    //       baseURL: ENV.API,
-    //       url: "applicants/",
-    //       data: requestData,
-    //     }).then((response: any) => {
-    //       isLoading.value = false;
-    //       // console.log(response)
-    //       if (response.data && response.data.status) {
-    //         // console.log(response.data.status)
-    //         const status = response.data.status.toString()
-    //         if (status === "OK") {
-    //           removeSessionData()
-    //           goTo('Thanks')
-    //         } else if (status.toLowerCase() === "refused") {
-    //           store.SET_ERROR({title: "エラー", text: response.data.info})
-    //           goTo("Room")
-    //         }
-    //       }
-    //     }).catch((error: Error) => {
-    //       isLoading.value = false;
-    //       console.error("Server could not accept response:" + error)
-    //       store.SET_ERROR({title: "エラー", text: "サーバーのエラーが発生しました。"})
-    //       goTo("Room")
-    //     })
-
-    //     // document.querySelector("#theForm").submit()
-    //   }
-    // }
-
-    // function testYubin(){
-    //   const zip = document.querySelector("#zip")
-    //   new YubinBangoCore(zip, (addr: any)=>{
-    //     console.log(addr)
-    //   })
-    // }
-
-    const dateAndTime = computed(() => {
+    const dateAndTime:ComputedRef<string> = computed(() => {
       if (date.value && time.value) {
         let dateN = date.value.split('-')
         let timeN = time.value.split(':')
@@ -475,7 +367,7 @@ export default defineComponent({
       return ""
     })
 
-    const goTo = (where: string) => {
+    const goTo = (where: string): void => {
       const param = {rid: ""}
       if (where === 'Room') {
         param.rid = roomID.value.toString()
@@ -486,18 +378,23 @@ export default defineComponent({
       })
     }
 
+    watch(() => dynForm.value, val =>{
+      if(Object.keys(val).length>0 && isPageLoaded){
+        // console.log("form changed")
+        saveForm()
+      }
+    },{deep:true})
+
     onMounted(() => {
       init()
     })
 
     return {
-      dynForm,
-
-      showErrors, isLoading, formRules,
-      formElem, date, time, pageTitle,
-      formRows, dateAndTime,
-      // getComp, updateModel,
-      // checkForm, saveForm, clearModel,
+      date, time, pageTitle, dateAndTime,
+      dynForm, modelData,
+      extraData,config,
+      isLoading, 
+      submit, onError, onComplete,
       goTo,
     }
   }
@@ -711,4 +608,173 @@ export default defineComponent({
 }
 
 /* --- Form end --- */
+.p-inputtext, .p-multiselect, .p-dropdown {
+  font-size: .8rem;
+  color: #495057;
+  background: rgba(241, 242, 246, 0.4);
+  padding: 0 0 0 8px;
+  border: 1px solid #ced4da;
+  width: 100%;
+  transition: background-color 0.15s, border-color 0.15s, box-shadow 0.15s;
+  appearance: none;
+  height: 38px;
+  border-radius: 0;
+}
+.p-inputtextarea {
+  padding: 8px;
+  height: 100px;
+}
+.p-inputtext::placeholder {
+  color: #b2bec3;
+}
+
+.p-inputtext:enabled:focus,
+.p-dropdown:not(.p-disabled).p-focus,
+.p-multiselect:not(.p-disabled).p-focus {
+  outline: 0 none;
+  outline-offset: 0;
+  box-shadow: none;
+  border-color: #6c5ce7;
+}
+
+.p-multiselect-panel .p-multiselect-header {
+  padding: 5px 4px 5px 8px;
+}
+.p-dropdown.p-invalid,
+.p-inputtext.p-invalid,
+.p-multiselect.p-invalid{
+  background-color: rgba(237, 76, 103, 0.1);
+}
+.p-dropdown,
+.p-multiselect-panel {
+  border: 1px solid #ced4da;
+}
+.p-dropdown .p-dropdown-label,
+.p-multiselect .p-multiselect-label {
+  padding: 0;
+  height: 100%;
+  align-items: center;
+  display: flex;
+  transition: background-color 0.15s, border-color 0.15s, box-shadow 0.15s;
+}
+
+.p-multiselect-panel .p-multiselect-items .p-multiselect-item,
+.p-dropdown-panel .p-dropdown-items .p-dropdown-item {
+  margin: 0;
+  font-size: .75rem;
+  padding-left: 8px;
+  border: 0 none;
+  color: #212529;
+  background: transparent;
+  transition: box-shadow 0.15s;
+  border-radius: 0;
+}
+
+/* #df.dynamic-form {
+
+} */
+
+#df.dynamic-form .f-body {
+  padding: 8px 24px 24px 24px;
+  min-height: 248px;
+}
+
+/* placeholder
+==============*/
+#df.dynamic-form .f-body .placeholder {
+  position: absolute;
+  z-index: 1;
+  top: 20px;
+  left: 50%;
+  height: 100%;
+  transform: translateX(-50%);
+  width: calc(100% - 48px);
+}
+
+#df.dynamic-form .f-body .placeholder .p-skeleton {
+  margin-bottom: 10px;
+}
+
+/* rows
+==============*/
+#df.dynamic-form .f-body .ctx {
+  background-color: #FFFFFF;
+  position: relative;
+  z-index: 2;
+}
+
+#df.dynamic-form .f-body .ctx .f-row .f-name {
+  margin-bottom: 6px;
+  padding-left: 2px;
+  font-size: .85rem;
+}
+#df.dynamic-form .f-body .ctx .f-row .f-hint,
+#df.dynamic-form .f-body .ctx .f-row .f-error {
+  display: block;
+  height: 16px;
+  font-size: .6rem;
+  padding-left: 2px;
+  margin-top: 4px;
+}
+#df.dynamic-form .f-body .ctx .f-row .f-hint {
+  color: #8395a7;
+}
+#df.dynamic-form .f-body .ctx .f-row .f-r-column.f-warning .f-hint {
+  color: #f0932b;
+}
+#df.dynamic-form .f-body .ctx .f-row .f-error {
+  color: #ED4C67;
+}
+
+#df.dynamic-form .f-body .ctx .f-row .f-name .required {
+  margin-left: 4px;
+  margin-top: 1px;
+  color: #ED4C67;
+  font-size: .6rem;
+  display: block;
+}
+
+
+/* server side errors */
+#df.dynamic-form .f-body .ctx .ss-errors {
+  background-color: rgba(237, 76, 103, 0.1);
+  width: 100%;
+  padding: 10px;
+  font-size: .7rem;
+  color: red;
+}
+#df.dynamic-form .f-body .ctx .ss-errors li.sse {
+  margin-bottom: 5px;
+}
+#df.dynamic-form .f-body .ctx .ss-errors li.sse:last-child {
+  margin-bottom: 0;
+}
+
+/* actions
+=============*/
+#df.dynamic-form .f-body .ctx .actions {
+  margin-top: 24px;
+  width: 100%;
+}
+#df.dynamic-form .f-body .ctx .actions button.remove {
+  background-color: #FFFFFF;
+  color: #ED4C67;
+  width: 110px;
+  font-size: 1rem;
+  height: 40px;
+}
+#df.dynamic-form .f-body .ctx .actions button.submit {
+  height: 44px;
+  font-size: 1rem;
+  margin-left: 14px;
+  border-radius: 10px;
+  width: 110px;
+  color: #f5f6fa;
+  background: radial-gradient(circle, rgba(102, 105, 242, 1) 75%, rgba(88, 91, 210, 1) 100%);
+  transition: .3s;
+}
+#df.dynamic-form .f-body .ctx .actions button.submit:active {
+  transform: translateY(2px);
+}
+
 </style>

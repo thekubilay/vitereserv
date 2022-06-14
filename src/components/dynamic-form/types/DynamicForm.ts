@@ -32,21 +32,21 @@ interface PrimeVueFormType {
 }
 
 export interface DynamicFormRowColumn extends PrimeVueFormType, Styles {
-  type: string,
   component: any,
   db: string,
   model: model,
+  type: string,
   disabled: boolean,
   required: boolean,
-  placeholder?: string,
-  name?: string,
+  class?: string,
+  depth?: string,
+  errors: string[],
   for?: string,
   hint?: string,
   invalid: boolean,
-  depth?: string,
-  errors: string[],
+  name?: string,
+  placeholder?: string,
   props?: string[],
-  class?: string,
   rules?: Function[],
 }
 

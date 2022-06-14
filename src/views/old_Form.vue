@@ -97,10 +97,10 @@ export default defineComponent({
       hasSessionData,
       getSessionData,
       saveSessionData,
-      getSessionForm,
+      getSessionFormID,
       removeSessionData,
       checkVacancy,
-      setupYubinBango,
+      // setupYubinBango,
     } = FormsFunc()
 
     import("../components/DynamicInput.vue").then(val => {
@@ -157,7 +157,7 @@ export default defineComponent({
             let d_n = getSessionData()
             let d = JSON.parse(d_n)
             // console.log("data",d)
-            let f = getSessionForm()
+            let f = getSessionFormID()
             if (f === formID.value.toString()) {
               for (let i = 0; i < d.length; i++) {
                 d[i].forEach((item: any, idx: number) => {
@@ -179,7 +179,7 @@ export default defineComponent({
               document.getElementsByTagName('title')[0].innerHTML = (pageTitle.value)?pageTitle.value:"ビターブ｜予約システム作成・予約管理ならおまかせ｜viterve"
               isLoading.value = false
               // console.log("data", formRows.value)
-              setupYubinBango()
+              // setupYubinBango()
             })
             .catch((error2) => {
               isLoading.value = false

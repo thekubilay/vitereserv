@@ -56,7 +56,7 @@
 
 
           <div class="actions flex justify-end align-center">
-            <button v-if="Object.keys(data).length>0" @click="$emit('update:confirm', true)" class="remove">削除</button>
+            <!-- <button v-if="Object.keys(data).length>0" @click="$emit('update:confirm', true)" class="remove">削除</button> -->
             <button @click="submitter()" class="submit">登録</button>
           </div>
         </div>
@@ -74,9 +74,9 @@ import Skeleton from "primevue/skeleton";
 import {onBeforeMount, onBeforeUnmount, onMounted, PropType, ref, watch} from "vue";
 import {DynamicForm, DynamicFormRow, DynamicFormRowColumn} from "../types/DynamicForm";
 import {Crud} from "../types/Crud";
-import {changeTab, setProps} from "@/components/dynamic-form/helpers/events";
-import {useResetErrors, useSubmitValidation} from "@/components/dynamic-form/helpers/useValidation";
-import {pvcl} from "@/components/dynamic-form/helpers/usePrimeInputs";
+import {changeTab, setProps} from "../helpers/events";
+import {useResetErrors, useSubmitValidation} from "../helpers/useValidation";
+import {pvcl} from "../helpers/usePrimeInputs";
 
 interface Emits {
   (e: "update:modelValue", modelValue: boolean): void;

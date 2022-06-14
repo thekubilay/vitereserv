@@ -72,27 +72,29 @@ export default function() {
     }
   }
 
-  const hasSessionData = () => {
+  const hasSessionData = ():boolean => {
     // console.log("checkfor session",sessionStorage.getItem(dataName))
     return sessionStorage.getItem(dataName)!==null
   }
-  const saveSessionData = (data: any) => {
-    // console.log(data)
+  const saveSessionData = (data: any): void => {
+    // console.log("saving session data",data)
     sessionStorage.setItem(dataName, data)
     sessionStorage.setItem("form", formID.value.toString())
   }
   const getSessionData = (): any => {
     const data = sessionStorage.getItem(dataName)
-    // console.log(data)
+    // console.log("getting session data",data)
     return data
   }
-  const getSessionForm = () => {
+  const getSessionFormID = (): string| null => {
     return sessionStorage.getItem("form")
   }
-  const removeSessionData = () => {
+  const removeSessionData = (): void => {
+    // console.log("removeData")
     sessionStorage.removeItem(dataName)
     sessionStorage.removeItem("form")
   }
+
 
   // function setupYubinBango(){
   //   const zip = document.querySelector("#zip")
@@ -115,7 +117,7 @@ export default function() {
     hasSessionData,
     saveSessionData,
     getSessionData,
-    getSessionForm,
+    getSessionFormID,
     removeSessionData,
     // setupYubinBango,
   }
