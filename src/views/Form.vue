@@ -12,7 +12,10 @@
             <p>{{ dateAndTime }}&nbsp;<button class="return-btn" @click="goTo('Room')">日付変更</button>
             </p>
           </section>
-          <form method="post" action="" class="h-adr" id="form" name="theForm" ref="formElem">
+          <DynamicForm
+            :form="dynForm"
+          />
+          <!-- <form method="post" action="" class="h-adr" id="form" name="theForm" ref="formElem">
             <span class="p-country-name" style="display:none;">Japan</span>
 
             <div v-for="(row, rowIdx) in formRows" :key="rowIdx"
@@ -40,7 +43,7 @@
               </button>
             </div>
 
-          </form>
+          </form> -->
         </div>
       </div>
     </div>
@@ -50,10 +53,11 @@
 <script lang="ts">
 import {defineComponent, computed, shallowRef, onMounted, ref,} from "vue";
 import {FormItem, FormRow} from "@/types/Form";
+import DynamicForm from "../components/dynamic-form/templates/Form.vue"
 import axios from "axios";
 import ENV from "../config"
 import router from "@/router";
-import useValidation from "@/utils/useValidation";
+// import useValidation from "@/utils/useValidation";
 import FormsFunc from "./Forms"
 import useStore from "../helpers/useStore"
 import LoadingSpinner from "../components/loaders/LoadingSpinner.vue"
@@ -71,10 +75,15 @@ interface RadioData {
 
 export default defineComponent({
   components: {
-    LoadingSpinner,
+    LoadingSpinner, DynamicForm,
   },
   setup() {
     const {store} = useStore()
+    const dynForm = ref<any>({rows:[]});
+
+
+
+
     const formRows = ref<FormRow[]>([]);
     const formElem = ref<any>(null);
     // const formModel = ref<Array<Array<string|RadioData|string[]>>>([]);
@@ -100,39 +109,39 @@ export default defineComponent({
       getSessionForm,
       removeSessionData,
       checkVacancy,
-      setupYubinBango,
+      // setupYubinBango,
     } = FormsFunc()
 
-    import("../components/DynamicInput.vue").then(val => {
-      textComp.value = val.default;
-    })
-    import("../components/DynamicSelect.vue").then(val => {
-      selectComp.value = val.default;
-    })
-    import("../components/DynamicCheckBoxes.vue").then(val => {
-      checkComp.value = val.default;
-    })
-    import("../components/DynamicRadio.vue").then(val => {
-      radioComp.value = val.default;
-    })
-    import("../components/DynamicNumber.vue").then(val => {
-      numberComp.value = val.default;
-    })
-    const getComp = (name: string) => {
-      if (name === 'text') {
-        return textComp.value
-      } else if (name === 'select') {
-        return selectComp.value
-      } else if (name === 'checkbox') {
-        return checkComp.value
-      } else if (name === 'radio') {
-        return radioComp.value
-      } else if (name === 'number') {
-        return numberComp.value
-      } else {
-        return textComp.value
-      }
-    }
+    // import("../components/DynamicInput.vue").then(val => {
+    //   textComp.value = val.default;
+    // })
+    // import("../components/DynamicSelect.vue").then(val => {
+    //   selectComp.value = val.default;
+    // })
+    // import("../components/DynamicCheckBoxes.vue").then(val => {
+    //   checkComp.value = val.default;
+    // })
+    // import("../components/DynamicRadio.vue").then(val => {
+    //   radioComp.value = val.default;
+    // })
+    // import("../components/DynamicNumber.vue").then(val => {
+    //   numberComp.value = val.default;
+    // })
+    // const getComp = (name: string) => {
+    //   if (name === 'text') {
+    //     return textComp.value
+    //   } else if (name === 'select') {
+    //     return selectComp.value
+    //   } else if (name === 'checkbox') {
+    //     return checkComp.value
+    //   } else if (name === 'radio') {
+    //     return radioComp.value
+    //   } else if (name === 'number') {
+    //     return numberComp.value
+    //   } else {
+    //     return textComp.value
+    //   }
+    // }
 
     function init() {
       // 1. Check if vacancy, if not send back to calendar
@@ -145,12 +154,20 @@ export default defineComponent({
       axios.get<FormItem[]>(path)
         .then((response) => {
           const data = JSON.parse(JSON.stringify(response.data))
-          // console.log(data)
+          console.log(data)
+
+
+
+
+
+
+
+
           if (data.title) {
             pageTitle.value = data.title !== "null" ?  data.title.toString() : ""
           }
           //2.5 Setup form data
-          setupForm(data.form_rows)
+          // setupForm(data.form_rows)
           //3. Check for session data
           // console.log("session:",getSessionData())
           if (hasSessionData()) {
@@ -179,7 +196,7 @@ export default defineComponent({
               document.getElementsByTagName('title')[0].innerHTML = (pageTitle.value)?pageTitle.value:"ビターブ｜予約システム作成・予約管理ならおまかせ｜viterve"
               isLoading.value = false
               // console.log("data", formRows.value)
-              setupYubinBango()
+              // setupYubinBango()
             })
             .catch((error2) => {
               isLoading.value = false
@@ -196,249 +213,249 @@ export default defineComponent({
         })
     }
 
-    function setupForm(f: FormRow[]): void {
-      formRows.value = f
-      formRows.value.forEach((row, idx) => {
-        // formModel.value.push([])
-        formRules.push([])
-        row.form_items.forEach((item, itemIdx) => {
-          if (item.type === "text") {
-            item.model = null
-            // formModel.value[idx].push("_")
-          } else if (item.type === "select") {
-            item.model = {label: "", value: ""}
-            if (["city", "cities"].includes(item.label)) {
-              item.options = cityOptions
-            }
-            // formModel.value[idx].push({name: "", value: ""})
-          } else if (item.type === "number") {
-            item.model = null
-            // formModel.value[idx].push({name: "", value: ""})
-          } else {
-            item.model = null
-            // formModel.value[idx].push("_")
-          }
+    // function setupForm(f: FormRow[]): void {
+    //   formRows.value = f
+    //   formRows.value.forEach((row, idx) => {
+    //     // formModel.value.push([])
+    //     formRules.push([])
+    //     row.form_items.forEach((item, itemIdx) => {
+    //       if (item.type === "text") {
+    //         item.model = null
+    //         // formModel.value[idx].push("_")
+    //       } else if (item.type === "select") {
+    //         item.model = {label: "", value: ""}
+    //         if (["city", "cities"].includes(item.label)) {
+    //           item.options = cityOptions
+    //         }
+    //         // formModel.value[idx].push({name: "", value: ""})
+    //       } else if (item.type === "number") {
+    //         item.model = null
+    //         // formModel.value[idx].push({name: "", value: ""})
+    //       } else {
+    //         item.model = null
+    //         // formModel.value[idx].push("_")
+    //       }
 
-          let rules = getRuleFunctions(item)
-          formRules[idx][itemIdx] = rules
-          item['error'] = ''
-        })
+    //       let rules = getRuleFunctions(item)
+    //       formRules[idx][itemIdx] = rules
+    //       item['error'] = ''
+    //     })
 
-      })
-      // console.log(formRows.value)
-    }
+    //   })
+    //   // console.log(formRows.value)
+    // }
 
-    function saveForm() {
-      setTimeout(() => {//wait a bit so model is updated first
-        // console.log("saving from to session")
-        let data: any = []
-        formRows.value.forEach((row, idx) => {
-          data.push([])
-          row.form_items.forEach((item, itemIdx) => {
-            data[idx].push(item.model)
-          })
-        })
-        saveSessionData(JSON.stringify(data))
-        // console.log(data)
-      }, 400)
-    }
+    // function saveForm() {
+    //   setTimeout(() => {//wait a bit so model is updated first
+    //     // console.log("saving from to session")
+    //     let data: any = []
+    //     formRows.value.forEach((row, idx) => {
+    //       data.push([])
+    //       row.form_items.forEach((item, itemIdx) => {
+    //         data[idx].push(item.model)
+    //       })
+    //     })
+    //     saveSessionData(JSON.stringify(data))
+    //     // console.log(data)
+    //   }, 400)
+    // }
 
-    function getRuleFunctions(data: FormItem): { (data: any): boolean | string }[] {
-      const res: { (data: any): boolean | string }[] = []
-      if (data.required) {
-        res.push(useValidation.required)
-      }
-      if (!data.rules)
-        return res
-      const rules = data.rules.replace(" ", "").split(",")
-      if (rules && rules.length > 0) {
+    // function getRuleFunctions(data: FormItem): { (data: any): boolean | string }[] {
+    //   const res: { (data: any): boolean | string }[] = []
+    //   if (data.required) {
+    //     res.push(useValidation.required)
+    //   }
+    //   if (!data.rules)
+    //     return res
+    //   const rules = data.rules.replace(" ", "").split(",")
+    //   if (rules && rules.length > 0) {
 
-        rules.forEach((rule, idx) => {
-          if (rule === "email") {
-            res.push(useValidation.mailCheck)
-            // }else if(rule === "required"){
-            //   res.push(useValidation.required)
-            // }else if(rule === "password"){
-            //   res.push()
-          } else if (rule === "kankakukigou") {
-            res.push(useValidation.hankakukigouCheck)
-          } else if (rule === "kana") {
-            res.push(useValidation.kanaCheck)
-          } else if (rule === "zipcode") {
-            res.push(useValidation.zipCodeCheck)
-          } else if (rule === "tel") {
-            res.push(useValidation.phoneNumberCheck)
-          } else if (rule.startsWith("minlength")) {
-            let reg = /\(([0-9]+)\)/
-            let match = reg.exec(rule)
-            if (match && match.length > 0) {
-              let num = parseInt(match[1], 10)
-              res.push((data: string) => {
-                if (data.length >= num) {
-                  return true
-                }
-                return `${num}文字以上を入力してください。`
-              })
-            }
-          } else if (rule.startsWith("maxlength")) {
-            let reg = /\(([0-9]+)\)/
-            let match = reg.exec(rule)
-            if (match && match.length > 0) {
-              let num = parseInt(match[1], 10)
-              res.push((data: string) => {
-                if (data.length <= num) {
-                  return true
-                }
-                return `${num}文字以下に入れてください。`
-              })
-            }
-          }
-        })
-        return res
-      }
-      return []
-    }
+    //     rules.forEach((rule, idx) => {
+    //       if (rule === "email") {
+    //         res.push(useValidation.mailCheck)
+    //         // }else if(rule === "required"){
+    //         //   res.push(useValidation.required)
+    //         // }else if(rule === "password"){
+    //         //   res.push()
+    //       } else if (rule === "kankakukigou") {
+    //         res.push(useValidation.hankakukigouCheck)
+    //       } else if (rule === "kana") {
+    //         res.push(useValidation.kanaCheck)
+    //       } else if (rule === "zipcode") {
+    //         res.push(useValidation.zipCodeCheck)
+    //       } else if (rule === "tel") {
+    //         res.push(useValidation.phoneNumberCheck)
+    //       } else if (rule.startsWith("minlength")) {
+    //         let reg = /\(([0-9]+)\)/
+    //         let match = reg.exec(rule)
+    //         if (match && match.length > 0) {
+    //           let num = parseInt(match[1], 10)
+    //           res.push((data: string) => {
+    //             if (data.length >= num) {
+    //               return true
+    //             }
+    //             return `${num}文字以上を入力してください。`
+    //           })
+    //         }
+    //       } else if (rule.startsWith("maxlength")) {
+    //         let reg = /\(([0-9]+)\)/
+    //         let match = reg.exec(rule)
+    //         if (match && match.length > 0) {
+    //           let num = parseInt(match[1], 10)
+    //           res.push((data: string) => {
+    //             if (data.length <= num) {
+    //               return true
+    //             }
+    //             return `${num}文字以下に入れてください。`
+    //           })
+    //         }
+    //       }
+    //     })
+    //     return res
+    //   }
+    //   return []
+    // }
 
-    const clearModel = () => {
-      // setupYubinBango()
-      // testYubin()
+    // const clearModel = () => {
+    //   // setupYubinBango()
+    //   // testYubin()
 
-      formRows.value.forEach((row, rowIdx) => {
-        row.form_items.forEach((item, itemIdx) => {
-          if (item.model) {
-            if (typeof item.model === "string") {
-              formRows.value[rowIdx].form_items[itemIdx].model = ""
-            } else if (typeof item.model === "number") {
-              formRows.value[rowIdx].form_items[itemIdx].model = null
-            } else if (item.type === "select") {
-              formRows.value[rowIdx].form_items[itemIdx].model = {label: "", value: ""}
-            }
-          }
-        })
-      })
-      saveForm()
-      // console.log(formRows.value)
-    }
+    //   formRows.value.forEach((row, rowIdx) => {
+    //     row.form_items.forEach((item, itemIdx) => {
+    //       if (item.model) {
+    //         if (typeof item.model === "string") {
+    //           formRows.value[rowIdx].form_items[itemIdx].model = ""
+    //         } else if (typeof item.model === "number") {
+    //           formRows.value[rowIdx].form_items[itemIdx].model = null
+    //         } else if (item.type === "select") {
+    //           formRows.value[rowIdx].form_items[itemIdx].model = {label: "", value: ""}
+    //         }
+    //       }
+    //     })
+    //   })
+    //   saveForm()
+    //   // console.log(formRows.value)
+    // }
 
-    const updateModel = (val: string | string[] | RadioData, indeces: Indeces) => {
-      // console.log("update model")
-      formRows.value[indeces.one].form_items[indeces.two].model = val;
-      validateField(val, indeces)
-    }
+    // const updateModel = (val: string | string[] | RadioData, indeces: Indeces) => {
+    //   // console.log("update model")
+    //   formRows.value[indeces.one].form_items[indeces.two].model = val;
+    //   validateField(val, indeces)
+    // }
 
-    const validateField = (val: string | string[] | RadioData, indeces: Indeces): void => {
-      const f = formRows.value[indeces.one].form_items[indeces.two]
-      for (let i = 0; i < formRules[indeces.one][indeces.two].length; i++) {
-        const rule = formRules[indeces.one][indeces.two][i]
-        let res = rule(val);
-        // console.log(res)
-        if (typeof res !== "boolean") {
-          f['error'] = res
-          return
-        }
-      }
-      f['error'] = ""
-    }
+    // const validateField = (val: string | string[] | RadioData, indeces: Indeces): void => {
+    //   const f = formRows.value[indeces.one].form_items[indeces.two]
+    //   for (let i = 0; i < formRules[indeces.one][indeces.two].length; i++) {
+    //     const rule = formRules[indeces.one][indeces.two][i]
+    //     let res = rule(val);
+    //     // console.log(res)
+    //     if (typeof res !== "boolean") {
+    //       f['error'] = res
+    //       return
+    //     }
+    //   }
+    //   f['error'] = ""
+    // }
 
-    function checkAllErrors(): boolean {
-      let res = true
-      for (const row of formRows.value) {
-        for (const item of row.form_items) {
-          if (item.hasOwnProperty('error')) {
-            // console.log(item.error)
-            if (typeof item.error === "string" && item.error.length > 0) {
-              res = false
-            }
-          }
-        }
-      }
-      // console.log(res)
-      return res
-    }
+    // function checkAllErrors(): boolean {
+    //   let res = true
+    //   for (const row of formRows.value) {
+    //     for (const item of row.form_items) {
+    //       if (item.hasOwnProperty('error')) {
+    //         // console.log(item.error)
+    //         if (typeof item.error === "string" && item.error.length > 0) {
+    //           res = false
+    //         }
+    //       }
+    //     }
+    //   }
+    //   // console.log(res)
+    //   return res
+    // }
 
-    function buildRequestData(): FormData {
-      const requestData: FormData = new FormData();
+    // function buildRequestData(): FormData {
+    //   const requestData: FormData = new FormData();
 
-      requestData.append("vacancy", vacancyID.value.toString())
-      // requestData.append("vacancy","444")
-      requestData.append("date", date.value.toString())
-      requestData.append("time", time.value.toString())
-      requestData.append("room", roomID.value.toString())
-      requestData.append("form", formID.value.toString())
-      // Fill the requestData with key-value pairs
-      formRows.value.forEach((row, rowIdx) => {
-        row.form_items.forEach((val, idx) => {
-          if (typeof val.model === "string") {
-            // console.log("appending"+formRows.value[idx].label+val)
-            requestData.append(formRows.value[rowIdx].form_items[idx].label, val.model)
-          } else if (typeof val.model === "number") {
-            // console.log("appending"+formRows.value[idx].label+val)
-            requestData.append(formRows.value[rowIdx].form_items[idx].label, val.model.toString())
-          } else if (Array.isArray(val.model)) {
-            let res = ""
-            for (let v of val.model) {
-              res += v + ","
-            }
-            requestData.append(formRows.value[rowIdx].form_items[idx].label, res)
-          } else if (typeof val.model === "object" && val.model !== null) {
-            if (val.model.value) {
-              requestData.append(formRows.value[rowIdx].form_items[idx].label, val.model.value as string)
-            }
-          }
+    //   requestData.append("vacancy", vacancyID.value.toString())
+    //   // requestData.append("vacancy","444")
+    //   requestData.append("date", date.value.toString())
+    //   requestData.append("time", time.value.toString())
+    //   requestData.append("room", roomID.value.toString())
+    //   requestData.append("form", formID.value.toString())
+    //   // Fill the requestData with key-value pairs
+    //   formRows.value.forEach((row, rowIdx) => {
+    //     row.form_items.forEach((val, idx) => {
+    //       if (typeof val.model === "string") {
+    //         // console.log("appending"+formRows.value[idx].label+val)
+    //         requestData.append(formRows.value[rowIdx].form_items[idx].label, val.model)
+    //       } else if (typeof val.model === "number") {
+    //         // console.log("appending"+formRows.value[idx].label+val)
+    //         requestData.append(formRows.value[rowIdx].form_items[idx].label, val.model.toString())
+    //       } else if (Array.isArray(val.model)) {
+    //         let res = ""
+    //         for (let v of val.model) {
+    //           res += v + ","
+    //         }
+    //         requestData.append(formRows.value[rowIdx].form_items[idx].label, res)
+    //       } else if (typeof val.model === "object" && val.model !== null) {
+    //         if (val.model.value) {
+    //           requestData.append(formRows.value[rowIdx].form_items[idx].label, val.model.value as string)
+    //         }
+    //       }
 
-        })
+    //     })
 
-      })
-      // console.log(requestData)
-      return requestData
-    }
+    //   })
+    //   // console.log(requestData)
+    //   return requestData
+    // }
 
-    const checkForm = () => {
-      if (!showErrors.value) {//actively validate
-        showErrors.value = true;
-        formRows.value.forEach((row, idx) => {
-          row.form_items.forEach((val, rowIdx) => {
-            validateField(val.model, {one: idx, two: rowIdx})
-          })
-        })
-      }
-      if (checkAllErrors()) {
-        const requestData = buildRequestData()
+    // const checkForm = () => {
+    //   if (!showErrors.value) {//actively validate
+    //     showErrors.value = true;
+    //     formRows.value.forEach((row, idx) => {
+    //       row.form_items.forEach((val, rowIdx) => {
+    //         validateField(val.model, {one: idx, two: rowIdx})
+    //       })
+    //     })
+    //   }
+    //   if (checkAllErrors()) {
+    //     const requestData = buildRequestData()
 
-        // console.log("ready to send")
-        // for (var [key, value] of requestData.entries()) {
-        //   console.log(key, value);
-        // }
-        isLoading.value = true;
-        axios.request({
-          method: "post",
-          baseURL: ENV.API,
-          url: "applicants/",
-          data: requestData,
-        }).then((response: any) => {
-          isLoading.value = false;
-          // console.log(response)
-          if (response.data && response.data.status) {
-            // console.log(response.data.status)
-            const status = response.data.status.toString()
-            if (status === "OK") {
-              removeSessionData()
-              goTo('Thanks')
-            } else if (status.toLowerCase() === "refused") {
-              store.SET_ERROR({title: "エラー", text: response.data.info})
-              goTo("Room")
-            }
-          }
-        }).catch((error: Error) => {
-          isLoading.value = false;
-          console.error("Server could not accept response:" + error)
-          store.SET_ERROR({title: "エラー", text: "サーバーのエラーが発生しました。"})
-          goTo("Room")
-        })
+    //     // console.log("ready to send")
+    //     // for (var [key, value] of requestData.entries()) {
+    //     //   console.log(key, value);
+    //     // }
+    //     isLoading.value = true;
+    //     axios.request({
+    //       method: "post",
+    //       baseURL: ENV.API,
+    //       url: "applicants/",
+    //       data: requestData,
+    //     }).then((response: any) => {
+    //       isLoading.value = false;
+    //       // console.log(response)
+    //       if (response.data && response.data.status) {
+    //         // console.log(response.data.status)
+    //         const status = response.data.status.toString()
+    //         if (status === "OK") {
+    //           removeSessionData()
+    //           goTo('Thanks')
+    //         } else if (status.toLowerCase() === "refused") {
+    //           store.SET_ERROR({title: "エラー", text: response.data.info})
+    //           goTo("Room")
+    //         }
+    //       }
+    //     }).catch((error: Error) => {
+    //       isLoading.value = false;
+    //       console.error("Server could not accept response:" + error)
+    //       store.SET_ERROR({title: "エラー", text: "サーバーのエラーが発生しました。"})
+    //       goTo("Room")
+    //     })
 
-        // document.querySelector("#theForm").submit()
-      }
-    }
+    //     // document.querySelector("#theForm").submit()
+    //   }
+    // }
 
     // function testYubin(){
     //   const zip = document.querySelector("#zip")
@@ -474,11 +491,13 @@ export default defineComponent({
     })
 
     return {
+      dynForm,
+
       showErrors, isLoading, formRules,
       formElem, date, time, pageTitle,
       formRows, dateAndTime,
-      getComp, updateModel,
-      checkForm, saveForm, clearModel,
+      // getComp, updateModel,
+      // checkForm, saveForm, clearModel,
       goTo,
     }
   }

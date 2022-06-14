@@ -94,17 +94,17 @@ export default function() {
     sessionStorage.removeItem("form")
   }
 
-  function setupYubinBango(){
-    const zip = document.querySelector("#zip")
-    const add1 = document.querySelector("#address1")
-    // console.log("yubin",zip,add1)
-    if(zip){
-      zip.classList.add("p-postal-code")
-    }
-    if(add1){
-      add1.classList.add("p-region")
-    }
-  }
+  // function setupYubinBango(){
+  //   const zip = document.querySelector("#zip")
+  //   const add1 = document.querySelector("#address1")
+  //   // console.log("yubin",zip,add1)
+  //   if(zip){
+  //     zip.classList.add("p-postal-code")
+  //   }
+  //   if(add1){
+  //     add1.classList.add("p-region")
+  //   }
+  // }
 
   return {
     vacancyID,
@@ -117,6 +117,6 @@ export default function() {
     getSessionData,
     getSessionForm,
     removeSessionData,
-    setupYubinBango,
+    // setupYubinBango,
   }
 }
