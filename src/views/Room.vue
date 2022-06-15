@@ -1,5 +1,5 @@
 <template>
-    <div id="index" class="main">
+    <div id="index" class="main flex-column">
       <transition name="slide-fade" appear>
         <div v-if="isNotification"
               id="notification" class="notification">
@@ -8,7 +8,7 @@
           <p class="body-text">{{errorMessage.text}}</p>
         </div>
       </transition>
-
+      <!-- <VitHeader/> -->
       <LoadingSpinner v-model="isLoading" />
       <div id="overlay" ref="overlay"></div>
       <div class="template__Wrapper">
@@ -187,6 +187,7 @@
           </div><!-- calendar-wrapper -->
         </div>
       </div>
+      <!-- <VitFooter/> -->
     </div>
 </template>
 
@@ -200,11 +201,13 @@ import axios from "axios";
 import ENV from "../config"
 import calendarServiceClass from "../helpers/CalendarService";
 import LoadingSpinner from "../components/loaders/LoadingSpinner.vue"
+import VitFooter from "../components/Footer.vue"
+import VitHeader from "../components/Header.vue"
 import moment from "moment";
 
 export default defineComponent({
   components: {
-    LoadingSpinner
+    LoadingSpinner, VitFooter, VitHeader
   },
   setup() {
     const route = useRoute()
@@ -436,6 +439,10 @@ export default defineComponent({
   transform: translateX(10px);
   opacity: 0;
 }
+
+#index .template__Wrapper {
+  flex-grow: 1;
+}
 </style>
 <style>
 
@@ -546,7 +553,7 @@ export default defineComponent({
   height: 34px;
   line-height: 1.2;
   text-align: start;
-  background-color: #fff;
+  /* background-color: #fff; */
   padding-bottom: 30px;
 }
 

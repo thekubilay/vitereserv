@@ -1,6 +1,7 @@
 <template>
-  <div id="request" class="form_page">
-    <div class="template__Wrapper ">
+  <div id="request" class="form_page flex-column">
+    <!-- <VitHeader/> -->
+    <div class="template__Wrapper">
       <div class="container relative">
         <LoadingSpinner v-model="isLoading" />
         <!-- <h1 class="header-text">ご予約内容の入力</h1> -->
@@ -9,7 +10,7 @@
             <h2>{{ pageTitle || "名前なし" }}</h2>
             <!-- <p></p>
             <p>ご利用日時</p> -->
-            <p>{{ dateAndTime }}&nbsp;<button class="return-btn" @click="goTo('Room')">日付変更</button>
+            <p>{{ dateAndTime }}&nbsp;<div class="page-btn-wrap"><button class="tb-page-button" @click="goTo('Room')"><i class="pi pi-calendar"></i>日付変更</button></div>
             </p>
           </section>
           <Form
@@ -26,18 +27,21 @@
         </div>
       </div>
     </div>
+    <!-- <VitFooter/> -->
   </div>
 </template>
 
 <script lang="ts">
 import {defineComponent, computed, onMounted, ref, watch, ComputedRef} from "vue";
+import {useRouter} from "vue-router";
 import {FormItem, FormRow} from "@/types/Form";
 import {DynamicFormRow, DynamicForm} from "../components/dynamic-form/types/DynamicForm"
 import {Crud} from "../components/dynamic-form/types/Crud"
 import Form from "../components/dynamic-form/templates/Form.vue"
+import VitFooter from "../components/Footer.vue"
+import VitHeader from "../components/Header.vue"
 import axios from "axios";
 import ENV from "../config"
-import router from "@/router";
 
 import FormsFunc from "./Forms"
 import useStore from "../helpers/useStore"
@@ -55,13 +59,14 @@ interface Extra {
 
 export default defineComponent({
   components: {
-    LoadingSpinner, Form,
+    LoadingSpinner, Form, VitFooter, VitHeader
   },
   setup() {
     const {store} = useStore()
     const dynForm = ref<DynamicForm>({} as DynamicForm);
     const pageTitle = ref<string>("");
     const subTitle = ref<string>("");
+    const router = useRouter();
     const extraData = ref<Extra>({vacancy: "",});
     const config = ref<Crud>({method: "POST", url: ENV.API+"applicants/"})
     const isLoading = ref<boolean>(false)
@@ -173,7 +178,7 @@ export default defineComponent({
       rows.forEach((row:FormRow, idx: number) => {
         retRows.push(
           {
-            class: row.column?`column-${row.column}`:"",
+            class: (row.column?`column-${row.column}`:"")+" "+row.classes,
             columns: getColumns(row.form_items),
             margin: "0 0 16px 0",
           }
@@ -350,10 +355,12 @@ export default defineComponent({
       // goTo("Room")
     }
     const onComplete = (response: any): void => {
-      isLoading.value = false;
-      // console.log("complete",response)
-      removeSessionData()
-      goTo('Thanks')
+      setTimeout(()=>{
+        isLoading.value = false;
+        // console.log("complete",response)
+        removeSessionData()
+        goTo('Thanks')
+      },600)
     }
 
     const dateAndTime:ComputedRef<string> = computed(() => {
@@ -401,16 +408,41 @@ export default defineComponent({
 
 })
 </script>
+<style scoped>
+/* .container[theme="dark"] {
+  background-color: #16181ad1;;
+} */
+p .page-btn-wrap{
+  display: inline;
+  margin-left: 5px;
+}
+
+</style>
 
 <style>
 
+/* -------- Dynamic form CSS -------------*/
+
+@import '../assets/css/dynamic-form.css';
+
+p .page-btn-wrap{
+  display: inline;
+  margin-left: 5px;
+}
+
 #request {
   color: rgb(32, 64, 97);
-  height: 100%;
+  /* height: 100%; */
+  flex-grow: 1;
 }
 
 #request .w100 {
   width: 100%
+}
+
+#request .template__Wrapper{
+  flex-grow: 1;
+  transition: background-color 0.15s, border-color 0.15s, color 0.15s;
 }
 
 #request button.return-btn {
@@ -447,8 +479,10 @@ export default defineComponent({
   margin-bottom: 20px;
 }
 
+
+
 /* ---- Form ---- */
-#request .form-row {
+/* #request .form-row {
   margin-bottom: 20px;
 }
 
@@ -457,7 +491,6 @@ export default defineComponent({
   margin-bottom: 6px;
   font-weight: 600;
   align-items: center;
-  /* color: rgb(54,71,89); */
 }
 
 #request .hissu {
@@ -488,15 +521,10 @@ export default defineComponent({
 }
 
 #request span.is-danger {
-  /* display: block; */
-  /* position: absolute;
-  right: 10px;
-  top: -5px; */
   padding: 0px 3px 0px 0;
   border-radius: 0px;
   font-size: .7rem;
   color: #ec5700;
-  /* color: white; */
 }
 
 #request .p-dropdown {
@@ -504,10 +532,6 @@ export default defineComponent({
   width: 100%;
   margin-right: 0;
   font: inherit;
-  /* border-width: 0 !important; */
-  /* border: 1px solid #ccc;
-  box-sizing: border-box; */
-  /* border-color: #ccc; */
   border-radius: 0px;
   background-color: rgba(245, 243, 250, 0.6);
 }
@@ -567,25 +591,24 @@ export default defineComponent({
 #request .checkbox-wrapper label {
   font-size: 0.8rem;
   margin-left: 4px;
-}
+} */
 
 
 /* ---Button--- */
 
-#request button.submit-button {
+/* #request button.submit-button {
   width: 200px;
   color: #f5f6fa;
   background: radial-gradient(circle, rgba(102, 105, 242, 1) 75%, rgba(88, 91, 210, 1) 100%);
   height: 44px;
   font-weight: 500;
   border-radius: 0px;
-  /* padding: 6px 12px; */
   font-size: 1rem;
 }
 
 #request .form-button-wrapper {
   margin-top: 50px;
-}
+} */
 
 @media screen and (max-width: 767px) {
   #request .form-row .form-row-wrapper {
@@ -608,173 +631,7 @@ export default defineComponent({
 }
 
 /* --- Form end --- */
-.p-inputtext, .p-multiselect, .p-dropdown {
-  font-size: .8rem;
-  color: #495057;
-  background: rgba(241, 242, 246, 0.4);
-  padding: 0 0 0 8px;
-  border: 1px solid #ced4da;
-  width: 100%;
-  transition: background-color 0.15s, border-color 0.15s, box-shadow 0.15s;
-  appearance: none;
-  height: 38px;
-  border-radius: 0;
-}
-.p-inputtextarea {
-  padding: 8px;
-  height: 100px;
-}
-.p-inputtext::placeholder {
-  color: #b2bec3;
-}
-
-.p-inputtext:enabled:focus,
-.p-dropdown:not(.p-disabled).p-focus,
-.p-multiselect:not(.p-disabled).p-focus {
-  outline: 0 none;
-  outline-offset: 0;
-  box-shadow: none;
-  border-color: #6c5ce7;
-}
-
-.p-multiselect-panel .p-multiselect-header {
-  padding: 5px 4px 5px 8px;
-}
-.p-dropdown.p-invalid,
-.p-inputtext.p-invalid,
-.p-multiselect.p-invalid{
-  background-color: rgba(237, 76, 103, 0.1);
-}
-.p-dropdown,
-.p-multiselect-panel {
-  border: 1px solid #ced4da;
-}
-.p-dropdown .p-dropdown-label,
-.p-multiselect .p-multiselect-label {
-  padding: 0;
-  height: 100%;
-  align-items: center;
-  display: flex;
-  transition: background-color 0.15s, border-color 0.15s, box-shadow 0.15s;
-}
-
-.p-multiselect-panel .p-multiselect-items .p-multiselect-item,
-.p-dropdown-panel .p-dropdown-items .p-dropdown-item {
-  margin: 0;
-  font-size: .75rem;
-  padding-left: 8px;
-  border: 0 none;
-  color: #212529;
-  background: transparent;
-  transition: box-shadow 0.15s;
-  border-radius: 0;
-}
-
-/* #df.dynamic-form {
-
-} */
-
-#df.dynamic-form .f-body {
-  padding: 8px 24px 24px 24px;
-  min-height: 248px;
-}
-
-/* placeholder
-==============*/
-#df.dynamic-form .f-body .placeholder {
-  position: absolute;
-  z-index: 1;
-  top: 20px;
-  left: 50%;
-  height: 100%;
-  transform: translateX(-50%);
-  width: calc(100% - 48px);
-}
-
-#df.dynamic-form .f-body .placeholder .p-skeleton {
-  margin-bottom: 10px;
-}
-
-/* rows
-==============*/
-#df.dynamic-form .f-body .ctx {
-  background-color: #FFFFFF;
-  position: relative;
-  z-index: 2;
-}
-
-#df.dynamic-form .f-body .ctx .f-row .f-name {
-  margin-bottom: 6px;
-  padding-left: 2px;
-  font-size: .85rem;
-}
-#df.dynamic-form .f-body .ctx .f-row .f-hint,
-#df.dynamic-form .f-body .ctx .f-row .f-error {
-  display: block;
-  height: 16px;
-  font-size: .6rem;
-  padding-left: 2px;
-  margin-top: 4px;
-}
-#df.dynamic-form .f-body .ctx .f-row .f-hint {
-  color: #8395a7;
-}
-#df.dynamic-form .f-body .ctx .f-row .f-r-column.f-warning .f-hint {
-  color: #f0932b;
-}
-#df.dynamic-form .f-body .ctx .f-row .f-error {
-  color: #ED4C67;
-}
-
-#df.dynamic-form .f-body .ctx .f-row .f-name .required {
-  margin-left: 4px;
-  margin-top: 1px;
-  color: #ED4C67;
-  font-size: .6rem;
-  display: block;
-}
 
 
-/* server side errors */
-#df.dynamic-form .f-body .ctx .ss-errors {
-  background-color: rgba(237, 76, 103, 0.1);
-  width: 100%;
-  padding: 10px;
-  font-size: .7rem;
-  color: red;
-}
-#df.dynamic-form .f-body .ctx .ss-errors li.sse {
-  margin-bottom: 5px;
-}
-#df.dynamic-form .f-body .ctx .ss-errors li.sse:last-child {
-  margin-bottom: 0;
-}
-
-/* actions
-=============*/
-#df.dynamic-form .f-body .ctx .actions {
-  margin-top: 24px;
-  width: 100%;
-}
-#df.dynamic-form .f-body .ctx .actions button.remove {
-  background-color: #FFFFFF;
-  color: #ED4C67;
-  width: 110px;
-  font-size: 1rem;
-  height: 40px;
-}
-#df.dynamic-form .f-body .ctx .actions button.submit {
-  height: 44px;
-  font-size: 1rem;
-  margin-left: 14px;
-  border-radius: 10px;
-  width: 110px;
-  color: #f5f6fa;
-  background: radial-gradient(circle, rgba(102, 105, 242, 1) 75%, rgba(88, 91, 210, 1) 100%);
-  transition: .3s;
-}
-#df.dynamic-form .f-body .ctx .actions button.submit:active {
-  transform: translateY(2px);
-}
 
 </style>

@@ -1,19 +1,50 @@
 <template>
-  <main id="main" class="relative">
+  <main id="main" class="relative flex-column">
+    <VitHeader v-model:theme="theme"/>
     <router-view />
+    <VitFooter/>
   </main>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, ref, watch, onBeforeMount, onMounted } from 'vue';
 import Form from "./views/Form.vue"
 import Room from "./views/Room.vue"
-
+import VitFooter from "./components/Footer.vue"
+import VitHeader from "./components/Header.vue"
 export default defineComponent({
-  components: {Form, Room},
+  components: {Form, Room, VitHeader, VitFooter},
   setup(){
+    const theme = ref<string>("light")
+    // const html: HTMLElement|null = document.querySelector("html")
 
-    return {}
+    // onMounted(() => {
+    //   if(html){
+    //     html.setAttribute("theme",theme.value)
+    //   }
+    // })
+
+    onBeforeMount((): void => {
+      const storageTheme: any = localStorage.getItem("theme")
+      const browserTheme: string = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? "dark" : "light"
+
+      if (!storageTheme){
+        theme.value = browserTheme
+      } else theme.value = storageTheme
+
+      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+        theme.value = event.matches ? "dark" : "light";
+        localStorage.setItem("theme", theme.value)
+      });
+    })
+
+    watch(theme, val => {
+      localStorage.setItem("theme", val)
+      document.getElementsByTagName("html")[0].setAttribute("theme", val)
+    })
+    return {
+      theme
+    }
   }
 })
 </script>
