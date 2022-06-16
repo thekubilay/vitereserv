@@ -5,7 +5,7 @@ export interface Room {
   body: string,
   company: number,
   holidays: string,
-  seperated_holidays: SeparatedHoliday[],
+  separate_holidays: SeparatedHoliday[],
   vacancies: Vacancy[],
   form: number,
   active: boolean,

@@ -48,7 +48,7 @@
               <div class="weekday-wrapper flex-column sp-times">
                 <div class="week-cell-header flex">
                 </div>
-                <div class="week-cell__contents flex column justify-start align-center">
+                <div class="week-cell__contents flex-column justify-space-between align-center">
                   <div v-for="(time, index) in betweenHours" :key="index" class="sec sp-sec">
                     <div class="btn_select">
                       <p class="sp-time">
@@ -67,7 +67,7 @@
                   <div class="date">{{ item.date.slice(5, item.date.length) }}</div>
                 </div>
 
-                <div class="week-cell__contents flex column justify-start align-center">
+                <div class="week-cell__contents flex-column justify-space-between align-center">
                   <!-- 休日の場合 -->
                   <div v-if="holidays.includes(item.day) || separatedHolidaysCheck(item.date)" class="sec holiday">
                     <p class="holiday flex align-center justify-center">
@@ -75,24 +75,26 @@
                     </p>
                   </div>
 
-                  <div v-else-if="pastTimeCheck(item.timestamp)" class="sec empty">
+                  <!-- <div v-else-if="pastTimeCheck(item.timestamp)" class="sec empty">
                     <div class="btn_select disable" style="height: 100%">
                       <div class="icon-wrapper noflame">
-                        <!-- <figure class="icon cross">
+                        <figure class="icon cross">
                           <svg fill="#c2c2c2" viewBox="0 0 512 512">
                             <path
                               d="M321.83,256,498.37,79.46a46.55,46.55,0,1,0-65.83-65.83L256,190.17,79.46,13.63A46.55,46.55,0,0,0, 13.63,79.46L190.17,256,13.63,432.54a46.55,46.55,0,0,0,65.83,65.83L256,321.83,432.54,498.37a46.55,46.55, 0,0,0,65.83-65.83Z"
                             ></path>
                           </svg>
-                        </figure> -->
+                        </figure>
                       </div>
                     </div>
-                  </div>
+                  </div> -->
 
                   <template v-else-if="room && betweenHours.length > 0">
                     <div v-for="(time, index) in betweenHours" :key="index" class="sec">
                       <!-- マル -->
-                      <div v-if="findHourBefore(time, item.date) && vacanciesCheck(item.date, time).mark==='circle'" class="btn_select" @click="goToForm(item.date, time, room)">
+                      <div v-if="findHourBefore(time, item.date) && vacanciesCheck(item.date, time).mark==='circle'" 
+                            class="btn_select sec-circle" 
+                            @click="goToForm(item.date, time, room)">
                         <p class="time">
                           <span>{{ getPrepTime(time) }}</span>
                         </p>
@@ -111,7 +113,9 @@
                       </div>
                       <!-- 三角 -->
 
-                      <div v-else-if="findHourBefore(time, item.date) && vacanciesCheck(item.date, time).mark==='triangle'" class="btn_select" @click="goToForm(item.date, time.time, room)">
+                      <div v-else-if="findHourBefore(time, item.date) && vacanciesCheck(item.date, time).mark==='triangle'" 
+                            class="btn_select sec-triangle" 
+                            @click="goToForm(item.date, time, room)">
                         <p class="time">
                           <span>{{ getPrepTime(time) }}</span>
                         </p>
@@ -237,21 +241,20 @@ export default defineComponent({
     const mainColor: string = "rgb(99, 102, 241)"
     const betweenHours = ref<string[]>([])
 
-    const findHourBefore = (param:any, date:string): boolean => {
-
+    const findHourBefore = (param:any, date:string):boolean => {
       // const now: any = moment()
       // const timeFormatted: any = new Date (new Date().toDateString() + ' ' + param.time)
       // const time: any = moment(moment(timeFormatted))
 
-      // const isTimeNotOver: boolean = parseInt(param?.time.replace(":", "")) - parseInt(now) >= 100;
-      // const varDate = new Date(date.replace("年","-").replace("月","-").replace("日",""));
+      // const isTimeNotOver: boolean = parseInt(param?.replace(":", "")) - parseInt(now) >= 100;
+      // const varDate = new Date(date.replaceAll("/","-"));
       // const today = new Date();
-
       // if (varDate >= today){
       //   return true
       // } else {
       //   return time.diff(now, "hours") >= 0;
       // }
+      return true
     }
 
     const formatDate = (val:string):string => {
@@ -259,7 +262,7 @@ export default defineComponent({
     }
 
     const formatTime = (val:string):string => {
-      return val.slice( 0, -3 )
+      return val.slice( -9, -4 )
     }
 
     const changeWeek = (num:number):void => {
@@ -275,8 +278,8 @@ export default defineComponent({
     }
 
     const separatedHolidaysCheck = (date:string):Boolean => {
-      if(room.value && room.value.seperated_holidays){
-        return room.value.seperated_holidays.some((element: SeparatedHoliday) => formatDate(String(element.date)) === date)
+      if(room.value && room.value.separate_holidays){
+        return room.value.separate_holidays.some((element: SeparatedHoliday) => formatDate(String(element.date)) === date)
       }
       return false
     }
@@ -288,7 +291,7 @@ export default defineComponent({
     const vacanciesCheck = (date:string, time:string):Mark=> {
       const vacancy = findVacancy(date, time)
       if(vacancy) {
-
+        console.log(vacancy)
         const left:number = vacancy.limit - vacancy.applicants.length;
         if(left > vacancy.status_triangle){
           return {id: vacancy.id, mark: "circle"}
@@ -349,7 +352,7 @@ export default defineComponent({
 
     function findVacancy(date:string, time:string):any{
       return vacancies.value.find((element:Vacancy) => {
-        return (formatDate(element.date) === date) && (formatTime(element.time) === time)
+        return (formatDate(element.date) === date) && (formatTime(element.date_time_start) === time)
       })
     }
 
@@ -423,6 +426,7 @@ export default defineComponent({
   width: 350px;
   background-color: #e4e5ff;
   box-shadow: rgb(149 157 165 / 20%) 0px 8px 24px;
+  z-index: 10;
 }
 .notification .title {
   padding: 7px 15px;
@@ -480,7 +484,7 @@ export default defineComponent({
 }
 /* --- Header --- */
 #index .header-container{
-  margin-bottom: 30px;
+  /* padding-bottom: 10px; */
 }
 
 
@@ -596,13 +600,14 @@ export default defineComponent({
   line-height: 1.2;
   padding-bottom: 10px;
   border-bottom: 1px solid #555;
+  background-color: #eef2f5;
 }
 
 #index .week-cell-header::before {
   position: absolute;
   content: "";
   right: 0;
-  top: 0;
+  top: 15%;
   width: 1px;
   height: 70%;
   background-color: #555;
@@ -692,20 +697,20 @@ export default defineComponent({
 }
 #index .calendar-outer .week-cell__contents .sec.holiday{
   height: 100%;
-  width: 90%;
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 400;
   margin: 0;
-  background-color: #6366f10f;
-  border-left: 2px solid black;
 }
 
 
 #index .sec.holiday p{
-  /* width: 90px; */
-  margin: 0;
+  width: 90%;
+  height: 99%;
+  /* margin: 0; */
+  background-color: #6366f10f;
 }
 
 #index .calendar-outer .week-cell__contents .sec.holiday{
@@ -725,6 +730,9 @@ export default defineComponent({
   flex-direction: column;
   align-items: start;
   padding: 5px;
+  width: 90%;
+  height: 90%;
+  margin: 5% auto;
   border-left: 2px solid black;
 }
 #index .weekday-wrapper:not(.sp-times) .sec .btn_select:hover{
