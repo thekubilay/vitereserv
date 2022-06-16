@@ -82,16 +82,16 @@
 
           <div class="calender-wrapper">
             <section class="calendar-outer flex justify-space-between">
+
               <div class="weekday-wrapper flex-column sp-times">
                 <div class="week-cell-header flex">
-
                 </div>
                 <div class="week-cell__contents flex column justify-start align-center">
-                  <div v-for="(time, index) in room?.times" :key="index" class="sec sp-sec">
+                  <div v-for="(time, index) in betweenHours" :key="index" class="sec sp-sec">
                     <div class="btn_select">
                       <p class="sp-time">
                         <span>
-                          {{time.time}}
+                          {{time}}
                         </span>
                       </p>
                     </div>
@@ -100,7 +100,7 @@
               </div>
 
               <div v-for="(item, idx) in weekDatesObjs" :key="idx" class="weekday-wrapper flex-column">
-                <div class="week-cell-header flex justify-space-between align-start">
+                <div class="week-cell-header flex-column justify-center align-center">
                   <div class="day">{{ item.day }}</div>
                   <div class="date">{{ item.date.slice(5, item.date.length) }}</div>
                 </div>
@@ -127,12 +127,12 @@
                     </div>
                   </div>
 
-                  <template v-else-if="room && room.times && room.times.length > 0">
-                    <div v-for="(time, index) in room.times" :key="index" class="sec">
+                  <template v-else-if="room && betweenHours.length > 0">
+                    <div v-for="(time, index) in betweenHours" :key="index" class="sec">
                       <!-- マル -->
-                      <div v-if="findHourBefore(time, item.date) && vacanciesCheck(item.date, time.time).mark==='circle'" class="btn_select" @click="goToForm(item.date, time.time, room)">
+                      <div v-if="findHourBefore(time, item.date) && vacanciesCheck(item.date, time).mark==='circle'" class="btn_select" @click="goToForm(item.date, time.time, room)">
                         <p class="time">
-                          <span>{{ getPrepTime(time.time) }}</span>
+                          <span>{{ getPrepTime(time) }}</span>
                         </p>
                         <div class="icon-wrapper">
                           <figure class="icon circle">
@@ -143,12 +143,11 @@
                             </svg>
                           </figure>
                         </div>
-
                       </div>
                       <!-- 三角 -->
-                      <div v-else-if="findHourBefore(time, item.date) && vacanciesCheck(item.date, time.time).mark==='triangle'" class="btn_select" @click="goToForm(item.date, time.time, room)">
+                      <div v-else-if="findHourBefore(time, item.date) && vacanciesCheck(item.date, time).mark==='triangle'" class="btn_select" @click="goToForm(item.date, time.time, room)">
                         <p class="time">
-                          <span>{{ getPrepTime(time.time) }}</span>
+                          <span>{{ getPrepTime(time) }}</span>
                         </p>
                         <div class="icon-wrapper">
                           <figure class="icon triangle">
@@ -159,12 +158,11 @@
                             </svg>
                           </figure>
                         </div>
-
                       </div>
 
                       <div v-else class="btn_select disable">
                         <p class="time">
-                          <span>{{ getPrepTime(time.time) }}</span>
+                          <span>{{ getPrepTime(time) }}</span>
                         </p>
                         <div class="icon-wrapper noflame">
                           <figure class="icon cross">
@@ -175,7 +173,6 @@
                             </svg>
                           </figure>
                         </div>
-
                       </div>
                     </div>
                   </template>
@@ -227,22 +224,23 @@ export default defineComponent({
     const isNotification = ref<boolean>(false)
     const isLoading = ref<boolean>(false)
     const mainColor: string = "rgb(99, 102, 241)"
+    const betweenHours = ref<string[]>([])
 
     const findHourBefore = (param:any, date:string): boolean => {
 
-      const now: any = moment()
-      const timeFormatted: any = new Date (new Date().toDateString() + ' ' + param.time)
-      const time: any = moment(moment(timeFormatted))
+      // const now: any = moment()
+      // const timeFormatted: any = new Date (new Date().toDateString() + ' ' + param.time)
+      // const time: any = moment(moment(timeFormatted))
 
-      const isTimeNotOver: boolean = parseInt(param?.time.replace(":", "")) - parseInt(now) >= 100;
-      const varDate = new Date(date.replace("年","-").replace("月","-").replace("日",""));
-      const today = new Date();
+      // const isTimeNotOver: boolean = parseInt(param?.time.replace(":", "")) - parseInt(now) >= 100;
+      // const varDate = new Date(date.replace("年","-").replace("月","-").replace("日",""));
+      // const today = new Date();
 
-      if (varDate >= today){
-        return true
-      } else {
-        return time.diff(now, "hours") >= 0;
-      }
+      // if (varDate >= today){
+      //   return true
+      // } else {
+      //   return time.diff(now, "hours") >= 0;
+      // }
     }
 
     const formatDate = (val:string):string => {
@@ -323,6 +321,21 @@ export default defineComponent({
       store.SET_ERROR(null)
     }
 
+    const getBetweenHours = (start:string, end:string):void => {
+      const hours: string[] = []
+      let startIdx, endIdx;
+      for (let i = 0; i < 24; i++) {
+        hours.push(moment(new Date().setHours(0, 0, 0, 0)).add(i, 'hours').format('HH:mm'))
+      }
+      hours.findIndex((hour, idx) => {
+        if (start=== hour) startIdx = idx
+        else if (end === hour) endIdx = idx
+        else return;
+      })
+      betweenHours.value = hours.slice(startIdx, endIdx)
+    }
+
+
     function findVacancy(date:string, time:string):any{
       return vacancies.value.find((element:Vacancy) => {
         return (formatDate(element.date) === date) && (formatTime(element.time) === time)
@@ -345,6 +358,8 @@ export default defineComponent({
         vacancies.value = data.vacancies
         document.getElementsByTagName('title')[0].innerHTML = (room.value)?room.value.name:"ビターブ｜予約システム作成・予約管理ならおまかせ｜viterve"
         isLoading.value = false
+        getBetweenHours(data.settings.time_start, data.settings.time_end)
+        // betweenHours.value = data.times
       })
       .catch((eroor) => {
         isLoading.value = false
@@ -381,7 +396,7 @@ export default defineComponent({
     })
 
     return {
-      overlay, calendarService, currentWeek, weekDatesObjs, room, holidays, vacancies, isNotification, errorMessage, isLoading, mainColor,
+      overlay, calendarService, currentWeek, weekDatesObjs, room, holidays, vacancies, isNotification, errorMessage, isLoading, mainColor, betweenHours,
       formatDate, changeWeek, separatedHolidaysCheck, vacanciesCheck, goToForm, pastTimeCheck, closeNotification, getPrepTime, findHourBefore,
     };
   },
@@ -540,8 +555,7 @@ export default defineComponent({
 
 /* --- Content --- */
 #index .weekday-wrapper {
-  margin-right: 0px;
-  /* transition: all 0.3s; */
+  width: calc((100% - 60px) / 7);
 }
 
 #index .week-cell__contents{
@@ -549,12 +563,22 @@ export default defineComponent({
 }
 
 #index .week-cell-header {
+  position: relative;
   width: auto;
-  height: 34px;
+  height: 55px;
   line-height: 1.2;
-  text-align: start;
-  /* background-color: #fff; */
-  padding-bottom: 30px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #555;
+}
+
+#index .week-cell-header::before {
+  position: absolute;
+  content: "";
+  right: 0;
+  top: 0;
+  width: 1px;
+  height: 70%;
+  background-color: #555;
 }
 
 #index .week-cell-header .day{
@@ -569,6 +593,23 @@ export default defineComponent({
 
 /* time content cells */
 
+#index .calendar-outer .sp-times {
+  width: 60px;
+}
+#index .calendar-outer .sp-times .week-cell__contents .sec {
+    height: 100px;
+    width: 100%;
+    margin: 0px auto 0px;
+    text-align: center;
+}
+
+#index .calendar-outer .week-cell__contents .sec {
+    height: 100px;
+    width: 100%;
+    margin: 0px auto 0px;
+    text-align: center;
+}
+
 #index .calendar-outer .week-cell__contents .icon-wrapper{
   padding-bottom: 10px;
   background-color: transparent;
@@ -576,8 +617,8 @@ export default defineComponent({
 }
 
 #index .calendar-outer .week-cell__contents .icon {
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
 }
 #index .calendar-outer .week-cell__contents .icon.circle svg {
   padding: 0;
@@ -592,16 +633,17 @@ export default defineComponent({
 
 #index .calendar-outer .week-cell__contents p.sp-time {
   display: inline;
-  font-size: 1.2rem;
+  font-size: 1.0rem;
+  font-weight: bold;
   line-height: 1.3;
   margin: 0px 0 10px 0;
 }
 
 #index .calendar-outer .week-cell__contents p.time {
   display: inline;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   line-height: 1.3;
-  margin: 0px 0 10px 0;
+  margin: 0px 0 5px 0;
   transition: all 0.3s;
 }
 
@@ -610,23 +652,26 @@ export default defineComponent({
 }
 
 #index .calendar-outer .week-cell__contents .sec {
-  min-height: 70px;
-  min-width: 110px;
-  margin: 0px auto 10px;
+  height: 100px;
+  width: 100%;
+  margin: 0px auto 0px;
   text-align: center;
+  border-right: 1px solid #555;
+  border-bottom: 1px solid #555;
 }
 #index .calendar-outer .week-cell__contents .sp-sec .space{
   height: 60px;
 }
 #index .calendar-outer .week-cell__contents .sec.holiday{
   height: 100%;
+  width: 90%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 400;
   margin: 0;
   background-color: #6366f10f;
-  border-top: 2px solid black;
+  border-left: 2px solid black;
 }
 
 
@@ -647,19 +692,19 @@ export default defineComponent({
 
 
 
-#index .sec .btn_select{
+#index .weekday-wrapper:not(.sp-times) .sec .btn_select{
   display: flex;
   flex-direction: column;
   align-items: start;
-  padding: 10px 0;
-  border-top: 2px solid black;
+  padding: 5px;
+  border-left: 2px solid black;
 }
-#index .sec .btn_select:hover{
+#index .weekday-wrapper:not(.sp-times) .sec .btn_select:hover{
   color: rgb(208, 85, 68);
   background-color: #f8f8f6;
   border-color: rgb(208, 85, 68);
 }
-#index .sec .btn_select:hover p.time{
+#index .weekday-wrapper .sec .btn_select:hover p.time{
   margin-left: 10px;
 }
 
@@ -670,17 +715,17 @@ export default defineComponent({
 
 
 @media screen and (max-width: 970px) {
-  #index .calendar-outer .week-cell__contents .sec {
+  /* #index .calendar-outer .week-cell__contents .sec {
     min-width: 95px;
-  }
+  } */
 }
 
 
-@media screen and (min-width: 767px) {
+/* @media screen and (min-width: 767px) {
   #index .calendar-outer .sp-times {
     display: none;
   }
-}
+} */
 
 @media screen and (max-width: 767px) {
   #index h1 .title{

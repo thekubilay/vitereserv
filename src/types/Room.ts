@@ -7,15 +7,19 @@ export interface Room {
   holidays: string,
   seperated_holidays: SeparatedHoliday[],
   vacancies: Vacancy[],
-  times: Time[],
-  salon: null | number,
   form: number,
-  user: number[],
-  [key:string]:string|number|number[]|null|SeparatedHoliday[]|Vacancy[]|Time[]
+  active: boolean,
+  rest: boolean,
+  settings: Settings,
+  email_template?: number,
+  users: number[]
+  [key:string]:string|number|number[]|null|SeparatedHoliday[]|Vacancy[]|Time[]|boolean|Settings|undefined
 }
+
 export interface SeparatedHoliday {
   id: number,
   date: Date|string,
+  room: number
 }
 export interface Vacancy {
   id: number,
@@ -23,8 +27,10 @@ export interface Vacancy {
   limit: number,
   status_triangle: number,
   tel?: boolean,
-  time: string,
-  applicants: number[]
+  date_time_start: string,
+  date_time_end: string,
+  applicants: number[],
+  room: number
 }
 export interface Time {
   id: number,
@@ -34,4 +40,11 @@ export interface Time {
 export interface Error {
   title: string,
   text: string
+}
+
+export interface Settings {
+  id: number,
+  time_start: string,
+  time_end: string,
+  room: number
 }
