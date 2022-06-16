@@ -108,9 +108,21 @@ html[theme="dark"] header#app_header {
   box-shadow: 0px 0px 10px 3px rgba(0,0,0,0.35);
 }
 
+html[theme="dark"] header svg .text path{
+  fill: #A4B0BE;
+}
+
 /* ----- Footer ------ */
-html[theme="dark"] footer {
-  /* box-shadow: 0px -5px 10px 3px rgba(255,255,255,0.15); */
+/* html[theme="dark"] footer {
+  box-shadow: 0px -5px 10px 3px rgba(255,255,255,0.15);
+} */
+html[theme="dark"] footer .corporation-link,
+html[theme="dark"] footer .copyright{
+  background-color: #141417;
+  color: #A4B0BE;
+}
+html[theme="dark"] footer svg .text path{
+  fill: #A4B0BE;
 }
 
 /* ------ Page content ------ */

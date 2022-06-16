@@ -1,8 +1,4 @@
-<template>
-  <footer class="footer-container">
-    <div class="corporation-link text-center">
-      <a :href="corporationLinkAddress" target="_blank">
-      <svg xmlns="http://www.w3.org/2000/svg" width="179.98" height="31.294" viewBox="0 0 179.98 31.294">
+<svg xmlns="http://www.w3.org/2000/svg" width="179.98" height="31.294" viewBox="0 0 179.98 31.294">
   <g class="text"><path
     d="M58.83,21h4.79a1.72,1.72,0,0,0,1.72-1.72v-8.23a1.7,1.7,0,0,0-1.69-1.71H59.24l-2.79-.06v.06h-.94V4.893A1.94,1.94,0,0,0,53.78,3h-.41a1.94,1.94,0,0,0-1.73,1.94V5H43a1.74,1.74,0,0,0-1.79,1.56v.3A1.739,1.739,0,0,0,43,8.223h8.66v1.12H49.21l-2.7-.06v.06h-3a1.711,1.711,0,0,0-1.72,1.7v8.18A1.719,1.719,0,0,0,43.449,21c.027,0,.054,0,.081,0H48.3l-6.41,5.88a1.74,1.74,0,0,0-.1,2.44l.28.3a1.73,1.73,0,0,0,2.43.11l7.14-6.55V29a1.739,1.739,0,0,0,1.73,1.73h.41A1.739,1.739,0,0,0,55.51,29v-5.87l7.12,6.55a1.739,1.739,0,0,0,2.44-.11l.27-.3a1.729,1.729,0,0,0-.11-2.44Zm-7.19-3.21H46v-1h5.68Zm0-4.12H46v-1.21h5.69Zm3.87-1.16h5.68v1.16H55.51Zm0,4.26h5.68v1H55.51Z"
     fill="#231815" />
@@ -92,68 +88,3 @@
   <path
     d="M18.66,7.593c-5.86,0-10.61,3.79-10.61,8.41s4.75,8.44,10.61,8.44S29.26,20.7,29.26,16,24.52,7.593,18.66,7.593Zm.06,16.8h-.1c.05-5.49-5.82-11.7-8.89-12.75l.07-.08a22.586,22.586,0,0,0,8.86,1.59,22.522,22.522,0,0,0,8.88-1.6l.06.09C24.47,12.713,18.64,18.9,18.72,24.393Z"
     fill="#44af35" /></svg>
-        <!-- <img :src="imgSrc" :alt="imgAlt" :width="imgWidth" :height="imgHeight"> -->
-      </a>
-    </div>
-    <div class="copyright">
-      <span class="word-keep">
-        Copyright © TOKYU LAND CORPORATION All rights reserved.
-      </span>
-    </div>
-  </footer>
-</template>
-
-<script lang="ts">
-import {defineComponent, ref} from "vue";
-export default defineComponent({
-  setup(){
-    const corporationLinkAddress = "https://www.tokyu-land.co.jp"
-    const imgSrc = "/col.svg"
-    const imgAlt = "東急不動産"
-    const imgWidth = "180"
-    const imgHeight = "31"
-
-    return {
-      corporationLinkAddress,
-      imgSrc, imgAlt, imgWidth, imgHeight,
-    }
-  }
-})
-</script>
-<style scoped>
-footer{
-  display: block;
-  margin: 0;
-  padding: 0;
-  border: 0;
-  box-sizing: border-box;
-  font-family: "Noto Sans CJK JP", "Yu Gothic", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Sans Emoji";
-  font-size: 1.4rem;
-  font-weight: 500;
-  line-height: 1;
-  color: #333;
-  flex-shrink: 0;
-  /* -webkit-font-feature-settings: "pkna";
-  font-feature-settings: "pkna"; */
-}
-
-footer .corporation-link {
-  padding: 32px 16px;
-}
-footer .corporation-link a {
-  color: #006d9e;
-  transition: opacity .8s ease-out;
-  -webkit-tap-highlight-color: rgba(238, 223, 227, 0.2);
-  text-decoration: none;
-}
-
-footer .copyright {
-  padding: 16px;
-  background: #cbcbcb;
-  font-family: acumin-pro-extra-condensed, sans-serif;
-  font-size: 0.75rem;
-  font-style: normal;
-  text-align: center;
-  letter-spacing: .1em;
-}
-</style>

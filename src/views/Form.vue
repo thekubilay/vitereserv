@@ -10,7 +10,11 @@
             <h2>{{ pageTitle || "名前なし" }}</h2>
             <!-- <p></p>
             <p>ご利用日時</p> -->
-            <p>{{ dateAndTime }}&nbsp;<div class="page-btn-wrap"><button class="tb-page-button" @click="goTo('Room')"><i class="pi pi-calendar"></i>日付変更</button></div>
+            <p>{{ dateAndTime }}&nbsp;<div class="page-btn-wrap">
+              <button class="tb-page-button" @click="goTo('Room')">
+                <i class="pi pi-calendar"></i>
+                <span class="btn-text">日付変更</span> 
+              </button></div>
             </p>
           </section>
           <Form
