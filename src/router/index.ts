@@ -21,7 +21,7 @@ let routes: Array<RouteRecordRaw> = [
   {
     path: '/404', 
     name: 'Error',
-    component: () => import('../views/Home.vue')
+    component: () => import('../views/Error.vue')
   },
   {
     path: '/thanks',
@@ -37,17 +37,22 @@ const router = createRouter({
 })
 
 router.beforeEach((to,from) => {
-  axios.request({
-    method: "get",
-    baseURL: ENV.API,
-    url: "rooms/" + to.params.rid + "/",
-    params: {week: 1}
-  })
-  .then((response) => {
-    if(!response.data.active) {
-      router.push({ name: "Error"})
-    }
-  })
+  if(to.params.rid){
+    axios.request({
+      method: "get",
+      baseURL: ENV.API,
+      url: "rooms/" + to.params.rid + "/",
+      params: {week: 1}
+    })
+    .then((response) => {
+      if(!response.data.active) {
+        router.push({ name: "Error"})
+      }
+    })
+    .catch(() => {
+      router.push({name: "Error"})
+    })
+  }
 })
 
 export default router;
