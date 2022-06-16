@@ -97,6 +97,9 @@ html[theme="dark"] .back-btn-wrap .back-btn {
   background-color: #16181a !important;
   color: #eeeeee !important;
 }
+html[theme="dark"] .back-btn-wrap .back-btn .pi {
+  color: #526ae5;
+}
 /* ------------- */
 
 /* ------ Header ------ */
@@ -116,13 +119,31 @@ html[theme="dark"] header svg .text path{
 /* html[theme="dark"] footer {
   box-shadow: 0px -5px 10px 3px rgba(255,255,255,0.15);
 } */
+html[theme="dark"] footer {
+  background-color: #141417;
+  color: #A4B0BE;
+}
+html[theme="dark"] footer .inner-footer section:not(:first-of-type){
+  border-top: solid 1px #A4B0BE;
+}
+
 html[theme="dark"] footer .corporation-link,
 html[theme="dark"] footer .copyright{
   background-color: #141417;
   color: #A4B0BE;
 }
+
+html[theme="dark"] footer .corporation-link a {
+  background-color: #f5f5f7;
+  display: inline-block;
+  border-radius: 10px;
+}
+
 html[theme="dark"] footer svg .text path{
   fill: #A4B0BE;
+}
+html[theme="dark"] footer .legal-links a{
+  color: #A4B0BE;
 }
 
 /* ------ Page content ------ */
@@ -144,6 +165,30 @@ html[theme="dark"] .template__Wrapper .container li span{
 }
 
 /* ------ Room ------ */
-html[theme="dark"] #index .sec .btn_select:hover figure.cross svg{
-  fill: #1e2023;
+
+html[theme="dark"] #index .sec .btn_select:hover{
+  background-color: #16181ad1;
+}
+html[theme="dark"] #index .sec .btn_select:hover figure.circle svg{
+  fill: #fff;
+}
+
+html[theme="dark"] #index .sec .btn_select:not(.disable):hover{
+  color: #2ecc71; /*rgb(208, 85, 68);*/
+  border-color: #2ecc71; /*rgb(208, 85, 68);*/
+  /* background-color: #f8f8f6; */
+  
+}
+
+html[theme="dark"] #index .header-container p.room-body-summary {
+  background-color: #4141416f
+}
+html[theme="dark"] #index .sec figure.cross svg{
+  fill: #A4b0be;
+}
+
+@media screen and (max-width: 767px){
+  html[theme="dark"] #index .icon-list {
+    background-color: #6366f10d;
+  }
 }

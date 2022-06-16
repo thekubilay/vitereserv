@@ -89,3 +89,6 @@ button.back-btn span.btn-text {
   margin-left: 2px;
   line-height: 1;
 }
+button.back-btn i {
+  color: #526ae5;
+}
