@@ -304,7 +304,7 @@ ul {
     width: 100%;
     font-family: 'Noto Sans JP',Poppins,-apple-system, BlinkMacSystemFont,Segoe UI, Roboto,Oxygen, Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,sans-serif;
     color: #333;
-    overflow: hidden;
+    /* overflow: hidden; */
     opacity: 0;
     transition: opacity 1.5s;
     animation: fade 1.5s;
@@ -312,6 +312,7 @@ ul {
 .home > .hero {
     position: relative;
     width: 100%;
+    overflow-x: hidden;
 	/* height: 100vh; */
     padding-bottom: 30px;
 	background-color: rgb(213,213,238);

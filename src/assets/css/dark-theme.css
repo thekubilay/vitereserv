@@ -139,8 +139,12 @@ html[theme="dark"] footer .corporation-link a {
   border-radius: 10px;
 }
 
+html[theme="dark"] footer .corporation-link .corporation-logo{
+  display: none;
+}
+
 html[theme="dark"] footer svg .text path{
-  fill: #A4B0BE;
+  /* fill: #A4B0BE; */
 }
 html[theme="dark"] footer .legal-links a{
   color: #A4B0BE;
@@ -170,7 +174,7 @@ html[theme="dark"] #index .sec .btn_select:hover{
   background-color: #16181ad1;
 }
 html[theme="dark"] #index .sec .btn_select:hover figure.circle svg{
-  fill: #fff;
+  /* fill: #fff; */
 }
 
 html[theme="dark"] #index .sec .btn_select:not(.disable):hover{
@@ -184,6 +188,7 @@ html[theme="dark"] #index .header-container p.room-body-summary {
   background-color: #4141416f
 }
 html[theme="dark"] #index .sec figure.cross svg{
+  stroke: #A4b0be;
   fill: #A4b0be;
 }
 

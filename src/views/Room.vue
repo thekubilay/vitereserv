@@ -136,11 +136,14 @@
                         </p>
                         <div class="icon-wrapper">
                           <figure class="icon circle">
-                            <svg fill="#6366f1" viewBox="0 0 512 512">
+                            <svg stroke="#6366f1" fill="none" viewBox="0 0 40.00 40.00">
+                              <circle class="cls-1" cx="20" cy="20" r="15" />
+                            </svg>
+                            <!-- <svg fill="#6366f1" viewBox="0 0 512 512">
                               <path
                                 d="M256,78.77c97.73,0,177.23,79.51,177.23,177.23S353.73,433.23,256,433.23,78.77,353.73,78.77,256,158.27,78.77, 256,78.77M256,0C114.62,0,0,114.62,0,256S114.62,512,256,512,512,397.38,512,256,397.38,0,256,0Z"
                               ></path>
-                            </svg>
+                            </svg> -->
                           </figure>
                         </div>
 
@@ -168,11 +171,15 @@
                         </p>
                         <div class="icon-wrapper noflame">
                           <figure class="icon cross">
-                            <svg fill="#edebe7" viewBox="0 0 512 512">
+                            <svg stroke="#edebe7" fill="none" stroke-linecap="round" viewBox="0 0 40 40">
+                              <line class="cls-1" x1="5" y1="5" x2="35" y2="35" />
+                              <line class="cls-1" x1="35" y1="5" x2="5" y2="35" />
+                            </svg>
+                            <!-- <svg fill="#edebe7" viewBox="0 0 512 512">
                               <path
                                 d="M321.83,256,498.37,79.46a46.55,46.55,0,1,0-65.83-65.83L256,190.17,79.46,13.63A46.55,46.55,0,0,0, 13.63,79.46L190.17,256,13.63,432.54a46.55,46.55,0,0,0,65.83,65.83L256,321.83,432.54,498.37a46.55,46.55, 0,0,0,65.83-65.83Z"
                               ></path>
-                            </svg>
+                            </svg> -->
                           </figure>
                         </div>
 
@@ -443,11 +450,9 @@ export default defineComponent({
 #index .template__Wrapper {
   flex-grow: 1;
 }
-</style>
-<style>
 
 #index {
-  height: 100%;
+  /* height: 100%; */
   background-color: white;
 }
 #index .container{
@@ -458,10 +463,8 @@ export default defineComponent({
   margin-bottom: 30px;
 }
 
-/*
-#index .header-container h1.heading {
-
-} */
+</style>
+<style>
 
 #index .header-container h1 .title {
   display: inline-block;
@@ -576,8 +579,9 @@ export default defineComponent({
 }
 
 #index .calendar-outer .week-cell__contents .icon {
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
+  stroke-width: 5px;
 }
 #index .calendar-outer .week-cell__contents .icon.circle svg {
   padding: 0;

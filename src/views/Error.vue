@@ -15,6 +15,7 @@
 <style scoped>
 #error{
   height: 100%;
+  overflow-x: hidden;
 }
 .container.inner {
   height: 100%;
@@ -35,5 +36,17 @@ span.error-number{
   color: #eaecee;
   background: white;
   display: inline-block;
+}
+
+@media screen and (max-width: 575px){
+  h1.error-header {
+    font-size: 1.8rem;
+  }
+  .container section {
+    padding: 10px;
+  }
+  span.error-number {
+    font-size: 13rem;
+  }
 }
 </style>

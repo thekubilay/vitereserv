@@ -10,9 +10,10 @@
       </section> -->
       <!-- <section class="link-nav"></section> -->
       <section class="corporation-link text-center">
-        <a :href="corporationLinkAddress" target="_blank">
+        <a :href="corporationLinkAddress" target="_blank" class="corporation-logo">
           <img :src="imgSrc" :alt="imgAlt" :width="imgWidth" :height="imgHeight">
         </a>
+        <p class="corporation-name">東急不動産</p>
       </section>
       <section class="legal">
         <div class="copyright">
@@ -163,14 +164,16 @@ footer section.corporation-link a {
   -webkit-tap-highlight-color: rgba(238, 223, 227, 0.2);
   text-decoration: none;
 }
-/*
-footer .copyright {
-  padding: 16px;
-  background: #cbcbcb;
-  font-family: acumin-pro-extra-condensed, sans-serif;
-  font-size: 0.75rem;
-  font-style: normal;
-  text-align: center;
-  letter-spacing: .1em;
-} */
+
+footer section.corporation-link .corporation-name {
+  line-height: 1;
+  font-size: 1.8rem;
+  font-weight: 500;
+  padding: 10px;
+}
+
+html[theme="light"] footer section.corporation-link .corporation-name{
+  display: none;
+}
+
 </style>
