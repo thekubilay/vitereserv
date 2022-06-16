@@ -477,6 +477,7 @@ p .page-btn-wrap{
 
 #request section.header-subtext {
   margin-bottom: 60px;
+  /* padding: 0 24px */
 }
 
 #request section.header-subtext h2 {

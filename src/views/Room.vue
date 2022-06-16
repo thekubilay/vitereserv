@@ -69,7 +69,9 @@
                   <i class="pi pi-angle-left"></i>
                 </button>
 
-                <span class="week-text" v-if="weekDatesObjs"> {{ weekDatesObjs[0].date }}（日） 〜 {{ weekDatesObjs[6].date }}（土） </span>
+                <span class="week-text" v-if="weekDatesObjs">
+                  {{ weekDatesObjs[0].date+" "}}<span>(日)</span> 〜  {{ weekDatesObjs[6].date+" "}}<span>(土)</span>
+                </span>
 
                 <button class="flex justify-center align-center arrow next" @click="changeWeek(1)">
                   <i class="pi pi-angle-right"></i>
@@ -130,7 +132,7 @@
                   <template v-else-if="room && room.times && room.times.length > 0">
                     <div v-for="(time, index) in room.times" :key="index" class="sec">
                       <!-- マル -->
-                      <div v-if="findHourBefore(time, item.date) && vacanciesCheck(item.date, time.time).mark==='circle'" class="btn_select" @click="goToForm(item.date, time.time, room)">
+                      <div v-if="findHourBefore(time, item.date) && vacanciesCheck(item.date, time.time).mark==='circle'" class="btn_select circle" @click="goToForm(item.date, time.time, room)">
                         <p class="time">
                           <span>{{ getPrepTime(time.time) }}</span>
                         </p>
@@ -149,7 +151,7 @@
 
                       </div>
                       <!-- 三角 -->
-                      <div v-else-if="findHourBefore(time, item.date) && vacanciesCheck(item.date, time.time).mark==='triangle'" class="btn_select" @click="goToForm(item.date, time.time, room)">
+                      <div v-else-if="findHourBefore(time, item.date) && vacanciesCheck(item.date, time.time).mark==='triangle'" class="btn_select triangle" @click="goToForm(item.date, time.time, room)">
                         <p class="time">
                           <span>{{ getPrepTime(time.time) }}</span>
                         </p>
@@ -447,6 +449,7 @@ export default defineComponent({
   opacity: 0;
 }
 
+/* ルーム */
 #index .template__Wrapper {
   flex-grow: 1;
 }
@@ -461,6 +464,21 @@ export default defineComponent({
 /* --- Header --- */
 #index .header-container{
   margin-bottom: 30px;
+}
+
+#index .selected-week-wrapper .arrow{
+  cursor: pointer;
+  padding: 0px;
+  margin: 0 5px;
+  border: 1px solid #A4B0BE;
+  border-radius: 5px;
+  height: 20px;
+  width: 35px;
+  transition: 0.3s;
+}
+#index .selected-week-wrapper .arrow i {
+  font-size: 1.0rem;
+  color: #6365f1a7;
 }
 
 </style>
@@ -489,22 +507,13 @@ export default defineComponent({
   margin-left: 20px
 }
 #index .selected-week-wrapper span.week-text{
-  color: #8d8a8a;
+  /* color: #8d8a8a; */
+  color: #555555;
   font-weight: 400;
   padding-bottom: 2px;
 }
-#index .selected-week-wrapper .arrow{
-  cursor: pointer;
-  padding: 0px;
-  margin: 0 5px;
-  /*border: 2px solid black;*/
-  height: 39px;
-  width: 33px;
-  transition: 0.3s;
-}
-#index .selected-week-wrapper .arrow i {
-  font-size: 2rem;
-  color: #8c8c8c;
+#index .selected-week-wrapper span.week-text > span{
+  font-weight:600;
 }
 
 

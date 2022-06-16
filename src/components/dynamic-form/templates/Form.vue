@@ -27,14 +27,17 @@
         <div v-else class="ctx flex-column align-start">
           <div v-for="(row, idx) in reform.rows" :key="idx" :style="{margin: row.margin}" :class="row.class"
                class="f-row">
-            <div v-for="(column, cid) in row.columns" :key="column.db" :class="[column.class]" class="f-r-column">
+            <div v-for="(column, cid) in row.columns" :key="column.db" :class="[column.class]" :style="{width:column.columnWidth}" class="f-r-column">
 
               <span v-if="column.name" class="f-name flex align-center">
                 {{ column.name }}
                 <span v-if="column.required" class="required">[必須]</span>
               </span>
 
-              <component @change="useTypeValidation($event, idx, cid)" :is="column.component" v-model="column.model"
+              <component @change="useTypeValidation($event, idx, cid)"
+                         :is="column.component"
+                         v-model="column.model"
+                         :style="{height:column.inputHeight, border:column.border, borderRadius:column.borderRadius}"
                          v-bind="setProps(column)"
                          :class="{'p-invalid':column.invalid}"/>
 
@@ -45,6 +48,10 @@
             </div>
           </div>
 
+          <div class="extra-row">
+            <slot name="row"></slot>
+          </div>
+
           <!--     server side errors    -->
           <transition name="slideDown" mode="in-out">
             <div v-if="serverSideErrors.length" class="ss-errors">
@@ -53,7 +60,6 @@
               </ul>
             </div>
           </transition>
-
 
           <div class="actions flex justify-end align-center">
             <!-- <button v-if="Object.keys(data).length>0" @click="$emit('update:confirm', true)" class="remove">削除</button> -->
@@ -73,10 +79,10 @@
 import Skeleton from "primevue/skeleton";
 import {onBeforeMount, onBeforeUnmount, onMounted, PropType, ref, watch} from "vue";
 import {DynamicForm, DynamicFormRow, DynamicFormRowColumn} from "../types/DynamicForm";
+import {changeTab, setProps} from "@/components/dynamic-form/helpers/events";
+import {useResetErrors, useSubmitValidation} from "@/components/dynamic-form/helpers/useValidation";
+import {pvcl} from "@/components/dynamic-form/helpers/usePrimeInputs";
 import {Crud} from "../types/Crud";
-import {changeTab, setProps} from "../helpers/events";
-import {useResetErrors, useSubmitValidation} from "../helpers/useValidation";
-import {pvcl} from "../helpers/usePrimeInputs";
 
 interface Emits {
   (e: "update:modelValue", modelValue: boolean): void;

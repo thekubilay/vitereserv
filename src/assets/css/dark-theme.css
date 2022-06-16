@@ -85,7 +85,7 @@ html[theme="dark"] .p-menu .p-menuitem-link:not(.p-disabled):hover {
 
 
 
-/* Dark theme for back button */
+/* ----- Back button ----- */
 html[theme="dark"] #form .rows-wrapper .row .btn-wrapper,
 html[theme="dark"] .back-btn-wrap {
   background-color: #030303 !important;
@@ -170,6 +170,10 @@ html[theme="dark"] .template__Wrapper .container li span{
 
 /* ------ Room ------ */
 
+html[theme="dark"] #index .header-container h1.heading {
+  color: #ccd3db;
+}
+
 html[theme="dark"] #index .sec .btn_select:hover{
   background-color: #16181ad1;
 }
@@ -181,7 +185,6 @@ html[theme="dark"] #index .sec .btn_select:not(.disable):hover{
   color: #2ecc71; /*rgb(208, 85, 68);*/
   border-color: #2ecc71; /*rgb(208, 85, 68);*/
   /* background-color: #f8f8f6; */
-  
 }
 
 html[theme="dark"] #index .header-container p.room-body-summary {
@@ -191,6 +194,20 @@ html[theme="dark"] #index .sec figure.cross svg{
   stroke: #A4b0be;
   fill: #A4b0be;
 }
+
+html[theme="dark"] #index .selected-week-wrapper .arrow{
+  border-color: #030303;
+  background-color: #16181a;
+}
+
+html[theme="dark"] #index .selected-week-wrapper span.week-text{
+  color: #A4B0BE;
+}
+
+html[theme="dark"] #index .week-cell__contents .time{
+  font-weight: 400;
+}
+
 
 @media screen and (max-width: 767px){
   html[theme="dark"] #index .icon-list {

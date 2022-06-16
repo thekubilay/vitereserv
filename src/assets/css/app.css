@@ -92,3 +92,13 @@ button.back-btn span.btn-text {
 button.back-btn i {
   color: #526ae5;
 }
+
+@media screen and (max-width: 767px){
+  .back-btn-wrap{
+    height: 42px;
+  }
+  button.back-btn i {
+    position: relative;
+    transform: translateY(-4px);
+  }
+}
