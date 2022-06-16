@@ -1,4 +1,6 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router"
+import ENV from "../config"
+import axios from "axios"
 
 let routes: Array<RouteRecordRaw> = [
   {
@@ -35,7 +37,17 @@ const router = createRouter({
 })
 
 router.beforeEach((to,from) => {
-
+  axios.request({
+    method: "get",
+    baseURL: ENV.API,
+    url: "rooms/" + to.params.rid + "/",
+    params: {week: 1}
+  })
+  .then((response) => {
+    if(!response.data.active) {
+      router.push({ name: "Error"})
+    }
+  })
 })
 
 export default router;
