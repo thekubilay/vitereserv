@@ -21,60 +21,20 @@
             </h1>
             <p v-if="room?.body && room?.body !== 'null'" class="room-body-summary">{{room?.body}}</p>
               <!-- ご予約内容の選択 -->
-            <div class="header-subtext flex justify-space-between">
+            <div class="header-subtext flex justify-center align-center">
               <!-- <h2 v-if="room">{{ room.name }}</h2> -->
-              <ul class="icon-list flex flex-wrap">
-                <li class="flex align-center">
-                  <svg
-                    width="12"
-                    height="12"
-                    fill="#6366f1"
-                    viewBox="0 0 512 512"
-                  >
-                    <path d="M256,78.77c97.73,0,177.23,79.51,177.23,177.23S353.73,433.23,256,433.23,78.77,353.73,78.77,256,158.27,78.77, 256,78.77M256,0C114.62,0,0,114.62,0,256S114.62,512,256,512,512,397.38,512,256,397.38,0,256,0Z"></path>
-                  </svg>
-                  <span class="">予約できます</span>
-                </li>
-                <li class="flex align-center">
-                  <svg
-                    width="14"
-                    height="12"
-                    fill="#6366f1"
-                    fill-opacity="0.7"
-                    viewBox="0 0 512 512"
-                  >
-                    <path
-                      d="M408.95,482.41H103.05c-37.76,0-72.41-20.12-90.43-52.49A97.36,97.36,0,0,1,15,330.06L172.31, 76.18a98.47,98.47,0,0,1,167.38,0L497,330.06a97.36,97.36,0,0,1,2.37,99.86C481.35,462.29,446.7,482.41, 408.95,482.41ZM256,108.34a19.42,19.42,0,0,0-16.75,9.32L81.94,371.54a19.14,19.14,0,0,0-.52,20.07c4.2, 7.55,12.29,12.05,21.63,12.05H408.95c9.34,0,17.43-4.5,21.63-12.05a19.14,19.14,0,0,0-.52-20.07L272.75, 117.66A19.42,19.42,0,0,0,256,108.34Z"
-                    ></path>
-                  </svg>
-                  <span class="">残りわずか</span>
-                </li>
-                <li class="flex align-center">
-                  <svg
-                    width="9"
-                    height="9"
-                    fill="#e0deda"
-                    viewBox="0 0 512 512"
-                  >
-                    <path
-                      d="M321.83,256,498.37,79.46a46.55,46.55,0,1,0-65.83-65.83L256,190.17,79.46,13.63A46.55,46.55,0,0,0, 13.63,79.46L190.17,256,13.63,432.54a46.55,46.55,0,0,0,65.83,65.83L256,321.83,432.54,498.37a46.55,46.55, 0,0,0,65.83-65.83Z"
-                    ></path>
-                  </svg>
-                  <span class="">予約できません</span>
-                </li>
-              </ul>
                <div class="selected-week-wrapper flex align-center">
 
                 <button class="flex justify-center align-center arrow prev" @click="changeWeek(-1)">
-                  <i class="pi pi-angle-left"></i>
+                  <i class="pi pi-chevron-left"></i>
                 </button>
 
-                <span class="week-text" v-if="weekDatesObjs">
+                <!-- <span class="week-text" v-if="weekDatesObjs">
                   {{ weekDatesObjs[0].date+" "}}<span>(日)</span> 〜  {{ weekDatesObjs[6].date+" "}}<span>(土)</span>
-                </span>
+                </span> -->
 
                 <button class="flex justify-center align-center arrow next" @click="changeWeek(1)">
-                  <i class="pi pi-angle-right"></i>
+                  <i class="pi pi-chevron-right"></i>
                 </button>
 
               </div>
@@ -192,7 +152,48 @@
 
               </div>
             </section>
-
+            <div class="calendar-legend flex justify-end">
+              <ul class="icon-list flex flex-wrap">
+                <li class="flex align-center">
+                  <svg
+                    width="12"
+                    height="12"
+                    fill="#6366f1"
+                    viewBox="0 0 512 512"
+                  >
+                    <path d="M256,78.77c97.73,0,177.23,79.51,177.23,177.23S353.73,433.23,256,433.23,78.77,353.73,78.77,256,158.27,78.77, 256,78.77M256,0C114.62,0,0,114.62,0,256S114.62,512,256,512,512,397.38,512,256,397.38,0,256,0Z"></path>
+                  </svg>
+                  <span class="">予約できます</span>
+                </li>
+                <li class="flex align-center">
+                  <svg
+                    width="14"
+                    height="12"
+                    fill="#6366f1"
+                    fill-opacity="0.7"
+                    viewBox="0 0 512 512"
+                  >
+                    <path
+                      d="M408.95,482.41H103.05c-37.76,0-72.41-20.12-90.43-52.49A97.36,97.36,0,0,1,15,330.06L172.31, 76.18a98.47,98.47,0,0,1,167.38,0L497,330.06a97.36,97.36,0,0,1,2.37,99.86C481.35,462.29,446.7,482.41, 408.95,482.41ZM256,108.34a19.42,19.42,0,0,0-16.75,9.32L81.94,371.54a19.14,19.14,0,0,0-.52,20.07c4.2, 7.55,12.29,12.05,21.63,12.05H408.95c9.34,0,17.43-4.5,21.63-12.05a19.14,19.14,0,0,0-.52-20.07L272.75, 117.66A19.42,19.42,0,0,0,256,108.34Z"
+                    ></path>
+                  </svg>
+                  <span class="">残りわずか</span>
+                </li>
+                <li class="flex align-center">
+                  <svg
+                    width="9"
+                    height="9"
+                    fill="#e0deda"
+                    viewBox="0 0 512 512"
+                  >
+                    <path
+                      d="M321.83,256,498.37,79.46a46.55,46.55,0,1,0-65.83-65.83L256,190.17,79.46,13.63A46.55,46.55,0,0,0, 13.63,79.46L190.17,256,13.63,432.54a46.55,46.55,0,0,0,65.83,65.83L256,321.83,432.54,498.37a46.55,46.55, 0,0,0,65.83-65.83Z"
+                    ></path>
+                  </svg>
+                  <span class="">予約できません</span>
+                </li>
+              </ul>
+            </div>
           </div><!-- calendar-wrapper -->
         </div>
       </div>
@@ -466,19 +467,53 @@ export default defineComponent({
   margin-bottom: 30px;
 }
 
-#index .selected-week-wrapper .arrow{
+
+
+#index .selected-week-wrapper{
+  height: 34px;
+  background-color: #e2e6e9;
+  border-radius: 6px;
+  padding: 2px;
+}
+#index .selected-week-wrapper span.week-text{
+  /* color: #8d8a8a; */
+  color: #555555;
+  font-weight: 400;
+  padding-bottom: 2px;
+}
+#index .selected-week-wrapper span.week-text > span{
+  font-weight:600;
+}
+
+#index .selected-week-wrapper .arrow {
+  height: 100%;
+  padding: 0 10px;
+  background-color: #fff;
+  border-radius: 4px;
   cursor: pointer;
-  padding: 0px;
-  margin: 0 5px;
-  border: 1px solid #A4B0BE;
-  border-radius: 5px;
-  height: 20px;
-  width: 35px;
+  width: 60px;
   transition: 0.3s;
 }
+#index .selected-week-wrapper .arrow:first-of-type {
+  margin-right: 2px;
+}
 #index .selected-week-wrapper .arrow i {
-  font-size: 1.0rem;
-  color: #6365f1a7;
+  font-size: 0.9rem;
+  position: relative;
+  top: 1px;
+  color: #778beb;
+}
+
+#index .selected-week-wrapper .arrow:active{
+  transform: translateY(2px);
+}
+
+#index .selected-week-wrapper .arrow:hover{
+  background-color: rgb(99, 102, 241,0.05);
+}
+
+#index .selected-week-wrapper .arrow:hover i{
+  color: rgb(99, 102, 241);
 }
 
 </style>
@@ -502,35 +537,14 @@ export default defineComponent({
 }
 
 
-
-#index .selected-week-wrapper{
-  margin-left: 20px
-}
-#index .selected-week-wrapper span.week-text{
-  /* color: #8d8a8a; */
-  color: #555555;
-  font-weight: 400;
-  padding-bottom: 2px;
-}
-#index .selected-week-wrapper span.week-text > span{
-  font-weight:600;
-}
-
-
-#index .selected-week-wrapper .arrow:active{
-  transform: translateY(2px);
-}
-
-#index .selected-week-wrapper .arrow:hover{
-  background-color: rgb(99, 102, 241,0.05);
-}
-
-#index .selected-week-wrapper .arrow:hover i{
-  color: rgb(99, 102, 241);
-}
-
 #index .header-subtext{
   margin-top: 14px;
+  height: 44px;
+  background-color: #eef2f5;
+}
+
+#index .calendar-wrapper {
+  margin-top: 10px;
 }
 
 #index .icon-list {
@@ -538,7 +552,7 @@ export default defineComponent({
   font-weight: 300;
   margin: 0;
   padding: 10px 10px 10px 0;
-  border-left: 4px solid rgb(99, 102, 241);
+  /* border-left: 4px solid rgb(99, 102, 241); */
   background-color: rgb(99, 102, 241,0.05);
 }
 #index .icon-list li {
