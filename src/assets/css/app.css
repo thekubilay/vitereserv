@@ -57,7 +57,16 @@ body #splash {
 }
 
 /* Back button */
-button.tb-page-button {
+
+.back-btn-wrap {
+  height: 34px;
+  background-color: #e2e6e9;
+  border-radius: 6px;
+  padding: 2px;
+  display: inline-block;
+}
+
+button.back-btn {
   height: 100%;
   padding: 0 10px;
   background-color: #FFFFFF;
@@ -65,15 +74,15 @@ button.tb-page-button {
   color: #778beb;
 }
 
-button.tb-page-button:hover {
+button.back-btn:hover {
   background-color: #f0f2f3;
 }
 
-button.tb-page-button:active {
+button.back-btn:active {
   transform: translateY(1px);
 }
 
-button.tb-page-button span.btn-text {
+button.back-btn span.btn-text {
   display: inline-block;
   position: relative;
   bottom: 1px;

@@ -87,13 +87,13 @@ html[theme="dark"] .p-menu .p-menuitem-link:not(.p-disabled):hover {
 
 /* Dark theme for back button */
 html[theme="dark"] #form .rows-wrapper .row .btn-wrapper,
-html[theme="dark"] .page-btn-wrap {
+html[theme="dark"] .back-btn-wrap {
   background-color: #030303 !important;
 
 }
 html[theme="dark"] #form .rows-wrapper .row .btn-wrapper button.add-item,
 /* html[theme="dark"] .page-toolbar a.prev, */
-html[theme="dark"] .page-btn-wrap .tb-page-button {
+html[theme="dark"] .back-btn-wrap .back-btn {
   background-color: #16181a !important;
   color: #eeeeee !important;
 }
