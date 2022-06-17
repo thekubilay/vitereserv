@@ -97,11 +97,11 @@
                     <div v-for="(time, index) in betweenHours" :key="index" class="sec">
                       <!-- マル -->
                       <div v-if="findHourBefore(time, item.date) && vacanciesCheck(item.date, time).mark==='circle'" 
-                            class="btn_select sec-circle" 
+                            class="flex-column justify-center btn_select sec-circle" 
                             @click="goToForm(item.date, time, room)">
-                        <p class="time">
+                        <!-- <p class="time">
                           <span>{{ getPrepTime(time) }}</span>
-                        </p>
+                        </p> -->
                         <div class="icon-wrapper">
                           <figure class="icon circle">
                             <svg stroke="#6366f1" fill="none" viewBox="0 0 40.00 40.00">
@@ -118,11 +118,11 @@
                       <!-- 三角 -->
 
                       <div v-else-if="findHourBefore(time, item.date) && vacanciesCheck(item.date, time).mark==='triangle'" 
-                            class="btn_select sec-triangle" 
+                            class="flex-column justify-center btn_select sec-triangle" 
                             @click="goToForm(item.date, time, room)">
-                        <p class="time">
+                        <!-- <p class="time">
                           <span>{{ getPrepTime(time) }}</span>
-                        </p>
+                        </p> -->
                         <div class="icon-wrapper">
                           <figure class="icon triangle">
                             <svg fill="#6366f1" fill-opacity="0.7" viewBox="0 0 512 512">
@@ -134,10 +134,10 @@
                         </div>
                       </div>
 
-                      <div v-else class="btn_select disable">
-                        <p class="time">
+                      <div v-else class="flex-column justify-center btn_select disable">
+                        <!-- <p class="time">
                           <span>{{ getPrepTime(time) }}</span>
-                        </p>
+                        </p> -->
                         <div class="icon-wrapper noflame">
                           <figure class="icon cross">
                             <svg stroke="#edebe7" fill="none" stroke-linecap="round" viewBox="0 0 40 40">
@@ -495,7 +495,7 @@ export default defineComponent({
 }
 /* --- Header --- */
 #index .header-container{
-  margin-bottom: 10px;
+  /* margin-bottom: 10px; */
 }
 
 
@@ -612,6 +612,8 @@ export default defineComponent({
 
 #index .weekday-wrapper .week-cell__contents{
   transition: all 0.3s;
+  height: 100%;
+  border-top: 1px solid #f1f2f6;
 }
 
 #index .weekday-wrapper .week-cell-header {
@@ -620,7 +622,9 @@ export default defineComponent({
   height: 55px;
   line-height: 1.2;
   padding-bottom: 5px;
-  border-bottom: 1px solid #555;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #f1f2f6;
+  background-color: #f5f6fa66;
 }
 
 #index .weekday-wrapper .week-cell-header::before {
@@ -653,29 +657,36 @@ export default defineComponent({
 #index .calendar-outer .sp-times {
   width: 60px;
 }
+
+#index .weekday-wrapper .sp-times .week-cell__contents {
+    border-top: none;
+}
+
 #index .calendar-outer .sp-times .week-cell__contents .sec {
-    height: 100px;
-    width: 100%;
-    margin: 0px auto 0px;
-    text-align: center;
+  height: 75px;
+  width: 100%;
+  margin: 0px auto 0px;
+  text-align: center;
+  border-bottom: none;
 }
 
 #index .calendar-outer .week-cell__contents .sec {
-    height: 100px;
-    width: 100%;
-    margin: 0px auto 0px;
-    text-align: center;
+  height: 75px;
+  width: 100%;
+  margin: 0px auto 0px;
+  text-align: center;
+  border-right: 1px solid #f1f2f6;
+  border-bottom: 1px solid #f1f2f6;
 }
 
 #index .calendar-outer .week-cell__contents .icon-wrapper{
-  padding-bottom: 10px;
   background-color: transparent;
   width: 100%;
 }
 
 #index .calendar-outer .week-cell__contents .icon {
-  width: 40px;
-  height: 40px;
+  width: 45px;
+  height: 45px;
   stroke-width: 5px;
 }
 #index .calendar-outer .week-cell__contents .icon.circle svg {
@@ -690,11 +701,11 @@ export default defineComponent({
 }
 
 #index .calendar-outer .week-cell__contents p.sp-time {
-  display: inline;
+  /* display: inline; */
   font-size: 1.0rem;
   font-weight: bold;
   line-height: 1.3;
-  margin: 0px 0 10px 0;
+  margin: -10px 0 10px 0;
 }
 
 #index .calendar-outer .week-cell__contents p.time {
@@ -705,21 +716,10 @@ export default defineComponent({
   transition: all 0.3s;
 }
 
-#index .calendar-outer .week-cell__contents{
-  height: 100%;
-}
-
-#index .calendar-outer .week-cell__contents .sec {
-  height: 100px;
-  width: 100%;
-  margin: 0px auto 0px;
-  text-align: center;
-  border-right: 1px solid #555;
-  border-bottom: 1px solid #555;
-}
 #index .calendar-outer .week-cell__contents .sp-sec .space{
   height: 60px;
 }
+
 #index .calendar-outer .week-cell__contents .sec.holiday{
   height: 100%;
   width: 100%;
@@ -728,6 +728,7 @@ export default defineComponent({
   justify-content: center;
   font-weight: 400;
   margin: 0;
+  background-color: #cad3c833;
 }
 
 
@@ -735,7 +736,6 @@ export default defineComponent({
   width: 90%;
   height: 99%;
   /* margin: 0; */
-  background-color: #6366f10f;
 }
 
 #index .calendar-outer .week-cell__contents .sec.holiday{
@@ -751,35 +751,33 @@ export default defineComponent({
 
 
 #index .weekday-wrapper:not(.sp-times) .sec .btn_select{
-  display: flex;
-  flex-direction: column;
-  align-items: start;
   padding: 5px;
   width: 90%;
   height: 90%;
-  margin: 5% auto;
+  margin: 2.5% auto;
   color: #555;
   /* border-left: 2px solid black; */
 }
 
 #index .weekday-wrapper:not(.sp-times) .sec .btn_select.sec-circle {
-  background-color: #fff;
-  border-left: 4px solid #16a085;
-}
-
-#index .weekday-wrapper:not(.sp-times) .sec .btn_select.sec-circle svg{
-  stroke: #16a085;
-}
-
-#index .weekday-wrapper:not(.sp-times) .sec .btn_select.sec-circle:hover{
   color: #fff;
   background-color: #2ecc71;
   border-left: 4px solid #16a085;
 }
 
-#index .weekday-wrapper:not(.sp-times) .sec .btn_select.sec-circle:hover svg {
+#index .weekday-wrapper:not(.sp-times) .sec .btn_select.sec-circle svg{
   stroke: #fff;
 }
+
+#index .weekday-wrapper:not(.sp-times) .sec .btn_select.sec-circle:hover{
+  color: #fff;
+  background-color: #16a085;
+}
+
+#index .weekday-wrapper:not(.sp-times) .sec .btn_select.sec-circle:hover svg {
+  
+}
+
 
 #index .weekday-wrapper .sec .btn_select.sec-circle:hover p.time{
   margin-left: 10px;
