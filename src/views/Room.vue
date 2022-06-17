@@ -562,11 +562,11 @@ export default defineComponent({
 
 #index .header-container h1 .title {
   display: inline-block;
-  font-size: 2rem;
+  font-size: 1.8rem;
 }
 #index .header-container h1 .sub-title {
   display: inline-block;
-  font-size: 1.2rem;
+  font-size: 1.0rem;
   font-weight: 500;
 }
 #index .header-container p.room-body-summary{

@@ -40,8 +40,7 @@ router.beforeEach((to,from) => {
   if(to.params.rid){
     axios.request({
       method: "get",
-      baseURL: ENV.API,
-      url: "rooms/" + to.params.rid + "/",
+      url: ENV.API + "rooms/" + to.params.rid + "/",
       params: {week: 1}
     })
     .then((response) => {
