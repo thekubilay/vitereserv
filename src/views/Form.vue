@@ -155,7 +155,7 @@ export default defineComponent({
             .then((response2) => {
               // console.log("vacancy:",response2.data)
               date.value = response2.data.date
-              time.value = response2.data.time
+              time.value = response2.data.date_time_start.slice( -9, -4 )
               document.getElementsByTagName('title')[0].innerHTML = (pageTitle.value)?pageTitle.value:"ビターブ｜予約システム作成・予約管理ならおまかせ｜viterve"
               isLoading.value = false
               isPageLoaded = true
@@ -165,8 +165,8 @@ export default defineComponent({
               isLoading.value = false
               isPageLoaded = true
               store.SET_ERROR({title: "エラー", text: "サーバーのエラーが発生しました。"})
-              console.log("vacancy problem")
-              goTo("Room")
+              console.log(error2)
+              // goTo("Room")
             })
           // isLoading.value = false
         })
