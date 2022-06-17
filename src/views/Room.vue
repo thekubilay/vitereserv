@@ -11,7 +11,7 @@
       <!-- <VitHeader/> -->
       <LoadingSpinner v-model="isLoading" />
       <div id="overlay" ref="overlay"></div>
-      <div class="template__Wrapper">
+      <div v-if="!isRest" class="template__Wrapper">
         <div class="container">
           <div class="header-container">
 
@@ -205,6 +205,10 @@
         </div>
       </div>
       <!-- <VitFooter/> -->
+      <div v-else-if="isRest" class="maintenance">
+      <p>ただいまメンテナンス中です。</p>
+      <p>少々お待ちください。</p>
+      </div>
     </div>
 </template>
 
@@ -246,6 +250,7 @@ export default defineComponent({
     const mainColor: string = "rgb(99, 102, 241)"
     const betweenHours = ref<string[]>([])
     const currentDate = ref<string | null>(null)
+    const isRest = ref<boolean>(false)
 
 
     const currentWeekForDisplay = computed(() => {
@@ -381,6 +386,7 @@ export default defineComponent({
       .then((response) => {
         const data = JSON.parse(JSON.stringify(response.data))
         room.value = data
+        isRest.value = data.rest
         holidays.value = data.holidays.includes(",") ? data.holidays.split(",") : [data.holidays]
         vacancies.value = data.vacancies
         document.getElementsByTagName('title')[0].innerHTML = (room.value)?room.value.name:"ビターブ｜予約システム作成・予約管理ならおまかせ｜viterve"
@@ -424,7 +430,7 @@ export default defineComponent({
     })
 
     return {
-      overlay, calendarService, currentWeek, weekDatesObjs, room, holidays, vacancies, isNotification, errorMessage, isLoading, mainColor, betweenHours, currentWeekForDisplay, currentDate,
+      overlay, calendarService, currentWeek, weekDatesObjs, room, holidays, vacancies, isNotification, errorMessage, isLoading, mainColor, betweenHours, currentWeekForDisplay, currentDate, isRest,
       formatDate, changeWeek, separatedHolidaysCheck, vacanciesCheck, goToForm, pastTimeCheck, closeNotification, getPrepTime, findHourBefore,
     };
   },
@@ -817,6 +823,19 @@ export default defineComponent({
   color: #edebe7;
 }
 
+
+
+
+/* maintenance */
+#index .maintenance {
+  width: 100%;
+  height: 70vh
+}
+
+#index .maintenance p{
+  text-align: center;
+  margin: 30px auto;
+}
 
 
 @media screen and (max-width: 970px) {
