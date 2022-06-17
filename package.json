@@ -4,7 +4,7 @@
   "version": "1.0.1",
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc --noEmit && vite build",
+    "build": "vue-tsc --noEmit && vite build --base=/viterve-test/",
     "preview": "vite preview"
   },
   "dependencies": {

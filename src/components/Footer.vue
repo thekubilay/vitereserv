@@ -42,10 +42,12 @@
 
 <script lang="ts">
 import {defineComponent, ref} from "vue";
+import logoImg from "/col.svg"
+
 export default defineComponent({
   setup(){
     const corporationLinkAddress = "https://www.tokyu-land.co.jp"
-    const imgSrc = "/col.svg"
+    const imgSrc = logoImg
     const imgAlt = "東急不動産"
     const imgWidth = "180"
     const imgHeight = "31"

@@ -49,7 +49,7 @@
           <div class="calender-wrapper">
             <section class="calendar-outer flex justify-space-between">
 
-              <div class="weekday-wrapper flex-column sp-times">
+              <div class="times-wrapper flex-column">
                 <div class="week-cell-header flex">
                 </div>
                 <div class="week-cell__contents flex-column justify-space-between align-center">
@@ -66,12 +66,13 @@
               </div>
 
               <div v-for="(item, idx) in weekDatesObjs" :key="idx" class="weekday-wrapper flex-column">
-                <div class="week-cell-header flex-column justify-center align-center">
+                <div class="week-cell-header flex-column justify-center align-center"
+                     :class="{today: item.date === currentDate}">
                   <div class="day">{{ item.day }}</div>
                   <div class="date">{{ item.date.slice(5, item.date.length) }}</div>
                 </div>
 
-                <div class="week-cell__contents flex-column justify-space-between align-center">
+                <div class="week-cell__contents flex-column justify-space-around align-center">
                   <!-- 休日の場合 -->
                   <div v-if="holidays.includes(item.day) || separatedHolidaysCheck(item.date)" class="sec holiday">
                     <p class="holiday flex align-center justify-center">
@@ -94,7 +95,7 @@
                   </div> -->
 
                   <template v-else-if="room && betweenHours.length > 0">
-                    <div v-for="(time, index) in betweenHours" :key="index" class="sec">
+                    <div v-for="(time, index) in betweenHours" :key="index" class="sec flex-column justify-center align-center">
                       <!-- マル -->
                       <div v-if="findHourBefore(time, item.date) && vacanciesCheck(item.date, time).mark==='circle'" 
                             class="flex-column justify-center btn_select sec-circle" 
@@ -244,6 +245,7 @@ export default defineComponent({
     const isLoading = ref<boolean>(false)
     const mainColor: string = "rgb(99, 102, 241)"
     const betweenHours = ref<string[]>([])
+    const currentDate = ref<string | null>(null)
 
 
     const currentWeekForDisplay = computed(() => {
@@ -406,6 +408,7 @@ export default defineComponent({
       calendarService.value = new calendarServiceClass();
       currentWeek.value = calendarService.value.currentWeek
       weekDatesObjs.value = calendarService.value.getWeekDatesAsObject(currentWeek.value as number)
+      currentDate.value = calendarService.value.currentDate.replace("年","/").replace("月","/").replace("日","")
       getRooms();
       if(store.error){
         Object.assign(errorMessage, store.error)
@@ -421,7 +424,7 @@ export default defineComponent({
     })
 
     return {
-      overlay, calendarService, currentWeek, weekDatesObjs, room, holidays, vacancies, isNotification, errorMessage, isLoading, mainColor, betweenHours, currentWeekForDisplay,
+      overlay, calendarService, currentWeek, weekDatesObjs, room, holidays, vacancies, isNotification, errorMessage, isLoading, mainColor, betweenHours, currentWeekForDisplay, currentDate,
       formatDate, changeWeek, separatedHolidaysCheck, vacanciesCheck, goToForm, pastTimeCheck, closeNotification, getPrepTime, findHourBefore,
     };
   },
@@ -512,7 +515,7 @@ export default defineComponent({
   position: absolute;
   left: 10px;
   font-size: 1rem;
-  font-weight: 500;
+  font-weight: 700;
   color: #5b5ede;
   border-radius: 6px;
 }
@@ -613,15 +616,13 @@ export default defineComponent({
 #index .weekday-wrapper .week-cell__contents{
   transition: all 0.3s;
   height: 100%;
-  border-top: 1px solid #f1f2f6;
 }
 
 #index .weekday-wrapper .week-cell-header {
   position: relative;
   width: auto;
-  height: 55px;
+  height: 65px;
   line-height: 1.2;
-  padding-bottom: 5px;
   margin-bottom: 10px;
   border-bottom: 1px solid #f1f2f6;
   background-color: #f5f6fa66;
@@ -634,7 +635,7 @@ export default defineComponent({
   top: 15%;
   width: 1px;
   height: 70%;
-  background-color: #555;
+  background-color: #f1f2f6;
 }
 
 #index .weekday-wrapper:first-child .week-cell-header::before,
@@ -642,37 +643,67 @@ export default defineComponent({
   display: none;
 }
 
-#index .week-cell-header .day{
-  font-weight: bold;
+#index .week-cell-header .day {
+  font-weight: 500;
+}
+#index .week-cell-header.today .day {
+  background-color: #6366f1;
+  color: #fff;
+  border-radius: 50%;
+  padding: 4px 5px 5px;
+  line-height: 1;
 }
 
 #index .week-cell-header .date{
-  font-weight: 300;
+  color: #757383;
+  font-weight: 500;
   font-size: 0.8rem;
-  margin-top: 2px;
+  margin-top: 5px;
 }
 
 /* time content cells */
-
-#index .calendar-outer .sp-times {
+#index .calendar-outer .times-wrapper {
   width: 60px;
 }
 
-#index .weekday-wrapper .sp-times .week-cell__contents {
-    border-top: none;
+#index .calendar-outer .times-wrapper .week-cell-header {
+    position: relative;
+    width: auto;
+    height: 65px;
+    line-height: 1.2;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #f1f2f6;
+    background-color: #f5f6fa66;
 }
 
-#index .calendar-outer .sp-times .week-cell__contents .sec {
+#index .calendar-outer .times-wrapper .week-cell__contents {
+    border-top: none;
+    height: 100%;
+}
+
+#index .calendar-outer .times-wrapper .week-cell__contents .sec {
   height: 75px;
   width: 100%;
   margin: 0px auto 0px;
   text-align: center;
   border-bottom: none;
+  border-right: 1px solid #f1f2f6;
 }
 
+#index .calendar-outer .times-wrapper .week-cell__contents p.sp-time {
+  font-size: 1.0rem;
+  line-height: 1.3;
+  margin: -10px 0 10px 0;
+}
+
+
+/* day content cells */
 #index .calendar-outer .week-cell__contents .sec {
-  height: 75px;
+  height: 100%;
+  min-height: 75px;
   width: 100%;
+  padding: 3px 3px;
   margin: 0px auto 0px;
   text-align: center;
   border-right: 1px solid #f1f2f6;
@@ -696,16 +727,8 @@ export default defineComponent({
 #index .calendar-outer .week-cell__contents .icon.circle svg,
 #index .calendar-outer .week-cell__contents .icon.triangle svg,
 #index .calendar-outer .week-cell__contents .icon.cross svg{
-  width: auto;
-  height: auto;
-}
-
-#index .calendar-outer .week-cell__contents p.sp-time {
-  /* display: inline; */
-  font-size: 1.0rem;
-  font-weight: bold;
-  line-height: 1.3;
-  margin: -10px 0 10px 0;
+  width: 100%;
+  height: 100%;
 }
 
 #index .calendar-outer .week-cell__contents p.time {
@@ -748,34 +771,41 @@ export default defineComponent({
   height: 100%;
 }
 
-
-
-#index .weekday-wrapper:not(.sp-times) .sec .btn_select{
-  padding: 5px;
-  width: 90%;
-  height: 90%;
-  margin: 2.5% auto;
-  color: #555;
-  /* border-left: 2px solid black; */
+#index .weekday-wrapper .week-cell__contents {
+  border-top: 1px solid #f1f2f6;
 }
 
-#index .weekday-wrapper:not(.sp-times) .sec .btn_select.sec-circle {
+#index .weekday-wrapper .sec .btn_select{
+  width: 100%;
+  height: 100%;
+  color: #555;
+}
+
+#index .weekday-wrapper .sec .btn_select.sec-circle {
   color: #fff;
   background-color: #2ecc71;
   border-left: 4px solid #16a085;
 }
 
-#index .weekday-wrapper:not(.sp-times) .sec .btn_select.sec-circle svg{
+/* #index .weekday-wrapper .sec .btn_select.disable {
+  color: #8b8b8b;
+  background-color: #eef2f5;
+  border-left: 4px solid #bfbfc1;
+} */
+
+#index .weekday-wrapper .sec .btn_select.sec-circle svg{
   stroke: #fff;
+  margin: 0;
 }
 
-#index .weekday-wrapper:not(.sp-times) .sec .btn_select.sec-circle:hover{
+#index .weekday-wrapper .sec .btn_select.disable svg{
+  stroke: #d5d5d5;
+  margin: 0;
+}
+
+#index .weekday-wrapper .sec .btn_select.sec-circle:hover{
   color: #fff;
   background-color: #16a085;
-}
-
-#index .weekday-wrapper:not(.sp-times) .sec .btn_select.sec-circle:hover svg {
-  
 }
 
 
@@ -783,7 +813,7 @@ export default defineComponent({
   margin-left: 10px;
 }
 
-#index .weekday-wrapper:not(.sp-times) .sec .btn_select.disable {
+#index .weekday-wrapper .sec .btn_select.disable {
   color: #edebe7;
 }
 
