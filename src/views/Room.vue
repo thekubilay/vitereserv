@@ -380,7 +380,6 @@ export default defineComponent({
         const data = JSON.parse(JSON.stringify(response.data))
         room.value = data
         holidays.value = data.holidays.includes(",") ? data.holidays.split(",") : [data.holidays]
-        console.log(holidays.value)
         vacancies.value = data.vacancies
         document.getElementsByTagName('title')[0].innerHTML = (room.value)?room.value.name:"ビターブ｜予約システム作成・予約管理ならおまかせ｜viterve"
         isLoading.value = false

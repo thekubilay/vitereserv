@@ -50,7 +50,7 @@ router.beforeEach((to,from) => {
       }
     })
     .catch(() => {
-      router.push({name: "Error"})
+      // router.push({name: "Error"})
     })
   }
 })
