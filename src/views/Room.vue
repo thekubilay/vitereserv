@@ -23,7 +23,11 @@
               <!-- ご予約内容の選択 -->
             <div class="header-subtext flex justify-center align-center">
               <!-- <h2 v-if="room">{{ room.name }}</h2> -->
-               <div class="selected-week-wrapper flex align-center">
+               <div class="selected-week-wrapper flex align-center justify-center">
+
+                 <p v-if="weekDatesObjs" class="currentWeek">
+                  {{currentWeekForDisplay}} 〜 
+                 </p>
 
                 <button class="flex justify-center align-center arrow prev" @click="changeWeek(-1)">
                   <i class="pi pi-chevron-left"></i>
@@ -204,7 +208,7 @@
 </template>
 
 <script lang="ts">
-import { reactive, defineComponent, onMounted, ref } from "vue";
+import { reactive, defineComponent, onMounted, ref, computed } from "vue";
 import useStore from "@/helpers/useStore"
 import {useRouter, useRoute} from "vue-router";
 import { Room, SeparatedHoliday, Vacancy, Error } from "@/types/Room"
@@ -240,6 +244,14 @@ export default defineComponent({
     const isLoading = ref<boolean>(false)
     const mainColor: string = "rgb(99, 102, 241)"
     const betweenHours = ref<string[]>([])
+
+
+    const currentWeekForDisplay = computed(() => {
+      if(weekDatesObjs.value){
+        return weekDatesObjs.value[0].date+ "  (" + weekDatesObjs.value[0].day + ")"
+      }
+      return ""
+    })
 
     const findHourBefore = (param:any, date:string):boolean => {
       // const now: any = moment()
@@ -291,11 +303,10 @@ export default defineComponent({
     const vacanciesCheck = (date:string, time:string):Mark=> {
       const vacancy = findVacancy(date, time)
       if(vacancy) {
-        console.log(vacancy)
         const left:number = vacancy.limit - vacancy.applicants.length;
-        if(left > vacancy.status_triangle){
+        if(left > Number(vacancy.status_triangle)){
           return {id: vacancy.id, mark: "circle"}
-        }else if(left <= vacancy.status_triangle && left > 0){
+        }else if(left <= Number(vacancy.status_triangle) && left > 0){
           return {id: vacancy.id, mark: "triangle"}
         }else if(left  <= 0) {
           return {id: vacancy.id, mark: "cross"}
@@ -410,7 +421,7 @@ export default defineComponent({
     })
 
     return {
-      overlay, calendarService, currentWeek, weekDatesObjs, room, holidays, vacancies, isNotification, errorMessage, isLoading, mainColor, betweenHours,
+      overlay, calendarService, currentWeek, weekDatesObjs, room, holidays, vacancies, isNotification, errorMessage, isLoading, mainColor, betweenHours, currentWeekForDisplay,
       formatDate, changeWeek, separatedHolidaysCheck, vacanciesCheck, goToForm, pastTimeCheck, closeNotification, getPrepTime, findHourBefore,
     };
   },
@@ -484,19 +495,29 @@ export default defineComponent({
 }
 /* --- Header --- */
 #index .header-container{
-  /* padding-bottom: 10px; */
+  margin-bottom: 10px;
 }
 
 
 
 #index .selected-week-wrapper{
+  position: relative;
+  width: 100%;
   height: 34px;
-  background-color: #e2e6e9;
+  /* background-color: #e2e6e9; */
   border-radius: 6px;
   padding: 2px;
 }
+#index .selected-week-wrapper .currentWeek{
+  position: absolute;
+  left: 10px;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #5b5ede;
+  border-radius: 6px;
+}
+
 #index .selected-week-wrapper span.week-text{
-  /* color: #8d8a8a; */
   color: #555555;
   font-weight: 400;
   padding-bottom: 2px;
@@ -589,21 +610,20 @@ export default defineComponent({
   width: calc((100% - 60px) / 7);
 }
 
-#index .week-cell__contents{
+#index .weekday-wrapper .week-cell__contents{
   transition: all 0.3s;
 }
 
-#index .week-cell-header {
+#index .weekday-wrapper .week-cell-header {
   position: relative;
   width: auto;
   height: 55px;
   line-height: 1.2;
-  padding-bottom: 10px;
+  padding-bottom: 5px;
   border-bottom: 1px solid #555;
-  background-color: #eef2f5;
 }
 
-#index .week-cell-header::before {
+#index .weekday-wrapper .week-cell-header::before {
   position: absolute;
   content: "";
   right: 0;
@@ -611,6 +631,11 @@ export default defineComponent({
   width: 1px;
   height: 70%;
   background-color: #555;
+}
+
+#index .weekday-wrapper:first-child .week-cell-header::before,
+#index .weekday-wrapper:last-child .week-cell-header::before {
+  display: none;
 }
 
 #index .week-cell-header .day{
@@ -733,19 +758,35 @@ export default defineComponent({
   width: 90%;
   height: 90%;
   margin: 5% auto;
-  border-left: 2px solid black;
+  color: #555;
+  /* border-left: 2px solid black; */
 }
-#index .weekday-wrapper:not(.sp-times) .sec .btn_select:hover{
-  color: rgb(208, 85, 68);
-  background-color: #f8f8f6;
-  border-color: rgb(208, 85, 68);
+
+#index .weekday-wrapper:not(.sp-times) .sec .btn_select.sec-circle {
+  background-color: #fff;
+  border-left: 4px solid #16a085;
 }
-#index .weekday-wrapper .sec .btn_select:hover p.time{
+
+#index .weekday-wrapper:not(.sp-times) .sec .btn_select.sec-circle svg{
+  stroke: #16a085;
+}
+
+#index .weekday-wrapper:not(.sp-times) .sec .btn_select.sec-circle:hover{
+  color: #fff;
+  background-color: #2ecc71;
+  border-left: 4px solid #16a085;
+}
+
+#index .weekday-wrapper:not(.sp-times) .sec .btn_select.sec-circle:hover svg {
+  stroke: #fff;
+}
+
+#index .weekday-wrapper .sec .btn_select.sec-circle:hover p.time{
   margin-left: 10px;
 }
 
-#index .weekday-wrapper:hover .week-cell-header{
-  border-color: rgb(208, 85, 68);
+#index .weekday-wrapper:not(.sp-times) .sec .btn_select.disable {
+  color: #edebe7;
 }
 
 
