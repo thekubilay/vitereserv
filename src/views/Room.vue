@@ -611,6 +611,9 @@ export default defineComponent({
   border-radius: 10px;
   color: white;
 }
+.calendar-dates-header .header-date.today.addafter::after {
+  display: none;
+}
 
 /* .calendar-dates-header .header-date .month {} */
 .calendar-dates-header .header-date .day {
@@ -676,10 +679,11 @@ button.arrow i {
 
 #index .selected-week-wrapper .arrow:active{
   transform: translateY(2px);
+  /* background-color: rgb(99, 102, 241,0.05); */
 }
 
 #index .selected-week-wrapper .arrow:hover{
-  background-color: rgb(99, 102, 241,0.05);
+  background-color: rgb(250, 250, 250);
 }
 
 #index .selected-week-wrapper .arrow:hover i{
@@ -1024,7 +1028,7 @@ button.arrow i {
   }
 } */
 
-@media screen and (max-width: 767px) {
+@media screen and (max-width: 414px) {
   #index h1 .title{
     text-align: center;
     font-size: 1.5rem;

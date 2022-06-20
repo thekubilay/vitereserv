@@ -91,7 +91,7 @@ export default defineComponent({
 	.st1{fill:url(#SVGID_1_);}
 	.st2{fill:#000333;}
 header#app_header {
-  z-index: 12;
+  z-index: 20;
   position: fixed;
   width: 100%;
   min-height: 66px;
