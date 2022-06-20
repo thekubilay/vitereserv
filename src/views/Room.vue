@@ -645,7 +645,7 @@ button.arrow.next {
 button.arrow i {
   position: relative;
   top: 1px;
-  font-size: 0.9rem;
+  font-size: 1rem;
   font-weight: 500;
 }
 /* #index .calendar__header .arrow {
@@ -923,10 +923,7 @@ button.arrow i {
   justify-content: center;
   font-weight: 400;
   margin: 0;
-  /* background-color: #cad3c833; */
-  /* background-color: #ecf0f1; */
-  background-color: #f1f2f6;
-  /* background-color: #f5f6fa; */
+  background-color: #f1f2f652;
 }
 
 
