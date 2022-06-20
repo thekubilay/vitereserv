@@ -7,23 +7,30 @@
         <!-- <h1 class="header-text">ご予約内容の入力</h1> -->
         <div class="relative">
           <section class="flex-column header-subtext">
-            <h2 class="flex-column">
+            <h1 class="flex-column">
               <span class="page-title">
                 {{ pageTitle || "名前なし" }}
               </span>
-              <span v-if="subTitle && subTitle!='null'" class="page-subtitle">
+              <!-- <span v-if="subTitle && subTitle!='null'" class="page-subtitle">
                 {{ subTitle}}
-              </span>
-            </h2>
+              </span> -->
+            </h1>
             <!-- <p></p>
             <p>ご利用日時</p> -->
-            <p>{{ dateAndTime }}&nbsp;
+            <p>
+              <span class="timeslot">
+                {{ date.split('-')[0]}}<span>年</span>{{ date.split('-')[1]}}月{{ date.split('-')[2]}}日
+                &nbsp;
+                {{ time.split(':')[0]}}:{{ time.split(':')[1]}}
+                &nbsp;
+              </span>
             <div class="back-btn-wrap">
               <button class="back-btn" @click="goTo('Room')">
                 <i class="pi pi-calendar"></i>
                 <span class="btn-text">日付変更</span> 
               </button></div>
             </p>
+            <p v-if="subTitle && subTitle !== 'null'" class="room-body-summary">{{subTitle}}</p>
           </section>
           <Form
             v-if="Object.keys(dynForm).length > 0"
@@ -161,19 +168,26 @@ export default defineComponent({
           axios.get<any>(ENV.API + "vacancies/" + vacancyID.value + "/")
             .then((response2) => {
               // console.log("vacancy:",response2.data)
-              date.value = response2.data.date
-              time.value = response2.data.date_time_start.slice( -9, -4 )
-              document.getElementsByTagName('title')[0].innerHTML = (pageTitle.value)?pageTitle.value:"ビターブ｜予約システム作成・予約管理ならおまかせ｜viterve"
-              isLoading.value = false
-              isPageLoaded = true
-              setupExtraData()
+              if(parseInt(response2.data.applicants.length) < parseInt(response2.data.limit)){
+                date.value = response2.data.date
+                time.value = response2.data.date_time_start.slice( -9, -4 )
+                document.getElementsByTagName('title')[0].innerHTML = (pageTitle.value)?pageTitle.value:"ビターブ｜予約システム作成・予約管理ならおまかせ｜viterve"
+                isLoading.value = false
+                isPageLoaded = true
+                setupExtraData()
+              }else{
+                isLoading.value = false
+                isPageLoaded = true
+                store.SET_ERROR({title: "エラー", text: "サーバーのエラーが発生しました。"})
+                goTo("Room")
+                }
             })
             .catch((error2) => {
               isLoading.value = false
               isPageLoaded = true
               store.SET_ERROR({title: "エラー", text: "サーバーのエラーが発生しました。"})
               console.log(error2)
-              // goTo("Room")
+              goTo("Room")
             })
           // isLoading.value = false
         })
@@ -242,9 +256,9 @@ export default defineComponent({
 
     function getColumnOptions(formItem: FormItem): string[]|object[]{
       if(formItem.type === "select"){
-        if(formItem.title === "物件"){
-          return [] //TODO get /projects
-        }
+        // if(formItem.title === "物件"){
+        //   return [] //TODO get /projects
+        // }
         if(formItem.title === "都道府県"){
           return cityOptions
         }
@@ -484,11 +498,15 @@ p .page-btn-wrap{
 }
 
 #request section.header-subtext {
-  margin-bottom: 60px;
+  margin-bottom: 50px;
   /* padding: 0 24px */
 }
+#request section.header-subtext .timeslot {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
 
-#request section.header-subtext h2 {
+#request section.header-subtext h1 {
   font-size: 1.6rem;
   margin-bottom: 20px;
 }
@@ -503,6 +521,13 @@ p .page-btn-wrap{
   display: inline-block;
 }
 
+p.room-body-summary{
+  font-size: 0.75rem;
+  margin-top: 20px;
+  background-color: #faebd76f;
+  padding: 10px;
+  border-left: 4px solid #f0932b;
+}
 
 /* ---- Form ---- */
 /* #request .form-row {

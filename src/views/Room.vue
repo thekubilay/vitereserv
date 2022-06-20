@@ -486,7 +486,7 @@ export default defineComponent({
   width: 350px;
   background-color: #e4e5ff;
   box-shadow: rgb(149 157 165 / 20%) 0px 8px 24px;
-  z-index: 10;
+  z-index: 99;
 }
 .notification .title {
   padding: 7px 15px;
