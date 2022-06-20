@@ -439,14 +439,14 @@ header .title-wrapper p {
 
 header .back-calendar i{
   /* font-size: 60px; */
-  font-size: 32px;
+  /* font-size: 32px; */
   color: #2ECC71;
 }
 header .back-calendar {
   /* height: 80px;
   width: 80px; */
-  height: 60px;
-  width: 60px;
+  /* height: 60px;
+  width: 60px; */
   padding: 6px;
   background-color: #D7FDC9;
   border-radius: 4px;
