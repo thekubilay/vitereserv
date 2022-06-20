@@ -390,18 +390,7 @@ index
         margin: 20px auto 15px;
     }
 }
-#index .calendar__header .arrow {
-    width: 30px;
-    height: 30px;
-    cursor: pointer;
-    border: 1px solid #c7c7c7;
-    /* border-radius: 4px; */
-    background-color: #fafafa;
-}
-#index .calendar__header .arrow.disable {
-    opacity: 0.3;
-    pointer-events: none;
-}
+
 #index .calendar__header span {
     margin: 0 10px;
 }

@@ -201,12 +201,12 @@ html[theme="dark"] #index .header-subtext{
 html[theme="dark"] #index .selected-week-wrapper{
   background-color: #030303;
 }
-html[theme="dark"] #index .selected-week-wrapper .arrow{
+/* html[theme="dark"] #index .selected-week-wrapper .arrow{
   background-color: #16181a;
 }
 html[theme="dark"] #index .selected-week-wrapper .arrow i {
   color: #a8a8a8;
-}
+} */
 
 html[theme="dark"] #index .selected-week-wrapper span.week-text{
   color: #A4B0BE;

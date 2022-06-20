@@ -183,7 +183,7 @@ export default defineComponent({
       rows.forEach((row:FormRow, idx: number) => {
         retRows.push(
           {
-            class: (row.column?`column-${row.column}`:"")+" "+row.classes,
+            class: (row.column?`column-${row.column}`:"")+" "+row.classes+" "+(row.column==1?'flex justify-space-between':''),
             columns: getColumns(row.form_items),
             margin: "0 0 16px 0",
           }
@@ -212,7 +212,7 @@ export default defineComponent({
           rules: getRulesFunctions(formItem.rules||""),
           options: getColumnOptions(formItem),
           optionValue: "value",
-          optionLabel: "value",
+          optionLabel: "label",
           invalid: false,
         }
         retColumns.push(column)
@@ -439,6 +439,7 @@ p .page-btn-wrap{
   color: rgb(32, 64, 97);
   /* height: 100%; */
   flex-grow: 1;
+  padding-top: 66px;
 }
 
 #request .w100 {

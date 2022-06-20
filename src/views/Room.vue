@@ -19,21 +19,21 @@
               <span class="title block header-text">{{room?.name||"ご予約内容の選択"}}</span>
               <span v-if="room?.header && room?.header !== 'null'" class="sub-title block">{{room?.header}}</span>
             </h1>
-            <p v-if="room?.body && room?.body !== 'null'" class="room-body-summary">{{room?.body}}</p>
+            <!-- <p v-if="room?.body && room?.body !== 'null'" class="room-body-summary">{{room?.body}}</p> -->
               <!-- ご予約内容の選択 -->
             <div class="header-subtext flex justify-center align-center">
               <!-- <h2 v-if="room">{{ room.name }}</h2> -->
                <div class="selected-week-wrapper flex align-center justify-center">
 
-                 <p v-if="weekDatesObjs" class="currentWeek">
+                 <!-- <p v-if="weekDatesObjs" class="currentWeek">
                   {{currentWeekForDisplay}} 〜 
-                 </p>
+                 </p> -->
 
                 <button class="flex justify-center align-center arrow prev" @click="changeWeek(-1)">
                   <i class="pi pi-chevron-left"></i>
                 </button>
-
-                <!-- <span class="week-text" v-if="weekDatesObjs">
+                <!-- 
+                <span class="week-text" v-if="weekDatesObjs">
                   {{ weekDatesObjs[0].date+" "}}<span>(日)</span> 〜  {{ weekDatesObjs[6].date+" "}}<span>(土)</span>
                 </span> -->
 
@@ -46,15 +46,37 @@
           </div>
 
 
-          <div class="calender-wrapper">
+          <div class="calendar-wrapper">
+            <div class="calendar-dates-header flex justify-space-between align-center">
+              <div class="header-btn-wrapper flex justify-center align-center">
+                <button class="flex justify-center align-center arrow prev" @click="changeWeek(-1)">
+                   <i class="pi pi-chevron-left"></i>
+                 </button>
+              </div>
+              <div class="header-date flex-column align-center justify-center" v-for="(weekday, idx) in weekDatesObjs" 
+                  :class="{addafter: idx+1!=weekDatesObjs?.length,today: weekday.date === currentDate}"
+                  >
+                <div class="header-date-inner flex-column align-center justify-center">
+                  <span class="month">{{weekday.month}}</span>
+                  <span class="day">{{weekday.date.split('/')[2]}}</span>
+                  <span class="weekday">{{weekday.day}}</span>
+                </div>
+              </div>
+              <div class="header-btn-wrapper flex justify-center align-center">
+                <button class="flex justify-center align-center arrow next" @click="changeWeek(1)">
+                  <i class="pi pi-chevron-right"></i>
+                </button>
+              </div>
+            </div>
+
             <section class="calendar-outer flex justify-space-between">
 
               <div class="times-wrapper flex-column">
-                <div class="week-cell-header flex">
-                </div>
-                <div class="week-cell__contents flex-column justify-space-between align-center">
-                  <div v-for="(time, index) in betweenHours" :key="index" class="sec sp-sec">
-                    <div class="btn_select">
+                <!-- <div class="week-cell-header flex">
+                </div> -->
+                <div class="times-cells flex-column justify-space-between align-center">
+                  <div v-for="(time, index) in betweenHours" :key="index" class="time-cell">
+                    <div>
                       <p class="sp-time">
                         <span>
                           {{time}}
@@ -66,11 +88,11 @@
               </div>
 
               <div v-for="(item, idx) in weekDatesObjs" :key="idx" class="weekday-wrapper flex-column">
-                <div class="week-cell-header flex-column justify-center align-center"
+                <!-- <div class="week-cell-header flex-column justify-center align-center"
                      :class="{today: item.date === currentDate}">
                   <div class="day">{{ item.day }}</div>
                   <div class="date">{{ item.date.slice(5, item.date.length) }}</div>
-                </div>
+                </div> -->
 
                 <div class="week-cell__contents flex-column justify-space-around align-center">
                   <!-- 休日の場合 -->
@@ -158,21 +180,39 @@
                 </div>
 
               </div>
+
+              <div class="times-wrapper right flex-column">
+                <!-- <div class="week-cell-header flex">
+                </div> -->
+                <div class="times-cells flex-column justify-space-between align-center">
+                  <div v-for="(time, index) in betweenHours" :key="index" class="time-cell">
+                    <div>
+                      <p class="sp-time">
+                        <span>
+                          {{time}}
+                        </span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </section>
+
+
             <div class="calendar-legend flex justify-end">
               <ul class="icon-list flex flex-wrap">
                 <li class="flex align-center">
                   <svg
                     width="12"
                     height="12"
-                    fill="#6366f1"
+                    fill="#a6cb90"
                     viewBox="0 0 512 512"
                   >
                     <path d="M256,78.77c97.73,0,177.23,79.51,177.23,177.23S353.73,433.23,256,433.23,78.77,353.73,78.77,256,158.27,78.77, 256,78.77M256,0C114.62,0,0,114.62,0,256S114.62,512,256,512,512,397.38,512,256,397.38,0,256,0Z"></path>
                   </svg>
                   <span class="">予約できます</span>
                 </li>
-                <li class="flex align-center">
+                <!-- <li class="flex align-center">
                   <svg
                     width="14"
                     height="12"
@@ -185,7 +225,7 @@
                     ></path>
                   </svg>
                   <span class="">残りわずか</span>
-                </li>
+                </li> -->
                 <li class="flex align-center">
                   <svg
                     width="9"
@@ -438,6 +478,7 @@ export default defineComponent({
 </script>
 
 <style scoped>
+
 .notification {
   position: fixed;
   top: 20px;
@@ -491,13 +532,12 @@ export default defineComponent({
 }
 
 /* ルーム */
-#index .template__Wrapper {
-  flex-grow: 1;
-}
 
 #index {
   /* height: 100%; */
   background-color: white;
+  flex-grow: 1;
+  padding-top: 66px;
 }
 #index .container{
   max-width:1160px;
@@ -512,8 +552,9 @@ export default defineComponent({
 #index .selected-week-wrapper{
   position: relative;
   width: 100%;
-  height: 34px;
+  height: 44px;
   /* background-color: #e2e6e9; */
+  background-color: #eef2f5;;
   border-radius: 6px;
   padding: 2px;
 }
@@ -535,13 +576,84 @@ export default defineComponent({
   font-weight:600;
 }
 
+/* ---- Calendar header ---- */
+/* .calendar-dates-header {
+  border-bottom: 1px solid #f1f2f6;
+} */
+.calendar-dates-header .header-btn-wrapper {
+  width: 60px;
+}
+.calendar-dates-header .header-date {
+  height: 120px;
+  width: calc((100% - 60px) / 7);
+  min-width: 40px;
+  margin: 15px 0;
+  position: relative;
+}
+.calendar-dates-header .header-date.addafter::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  height: 40%;
+  width: 2px;
+  border-radius: 30px;
+  background-color: #f1f2f6;
+}
+.calendar-dates-header .header-date .header-date-inner {
+  padding: 10px;
+}
+.calendar-dates-header .header-date.today .header-date-inner {
+  background-color: #6366f1;
+  border-radius: 10px;
+  color: white;
+}
+
+/* .calendar-dates-header .header-date .month {} */
+.calendar-dates-header .header-date .day {
+  font-size: 1.6rem;
+  font-weight: 600;
+}
+/* .calendar-dates-header .header-date .weekday {} */
+button.arrow {
+  cursor: pointer;
+  min-width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  /* background-color: #fafafa; */
+  background-color: rgb(244, 246, 249);
+}
+button.arrow.disable {
+  opacity: 0.3;
+  pointer-events: none;
+}
+/* button.arrow.prev {
+
+}
+button.arrow.next {
+
+} */
+button.arrow i {
+  position: relative;
+  top: 1px;
+  font-size: 0.7rem;
+  font-weight: 500;
+}
+/* #index .calendar__header .arrow {
+    width: 30px;
+    height: 30px;
+    
+    border: 1px solid #c7c7c7;
+    background-color: #fafafa;
+} */
+
 #index .selected-week-wrapper .arrow {
   height: 100%;
   padding: 0 10px;
   background-color: #fff;
   border-radius: 4px;
   cursor: pointer;
-  width: 60px;
+  /* width: 60px; */
+  width: 50%;
   transition: 0.3s;
 }
 #index .selected-week-wrapper .arrow:first-of-type {
@@ -565,8 +677,17 @@ export default defineComponent({
 #index .selected-week-wrapper .arrow:hover i{
   color: rgb(99, 102, 241);
 }
-
+.calendar-legend {
+  margin-right: 60px;
+}
+@media screen and (max-width: 515px){
+  .calendar-legend {
+  margin: 0;
+}
+}
 </style>
+
+
 <style>
 
 #index .header-container h1 .title {
@@ -588,9 +709,9 @@ export default defineComponent({
 
 
 #index .header-subtext{
+  display: none;
   margin-top: 14px;
   height: 44px;
-  background-color: #eef2f5;
 }
 
 #index .calendar-wrapper {
@@ -603,7 +724,7 @@ export default defineComponent({
   margin: 0;
   padding: 10px 10px 10px 0;
   /* border-left: 4px solid rgb(99, 102, 241); */
-  background-color: rgb(99, 102, 241,0.05);
+  /* background-color: rgb(99, 102, 241,0.05); */
 }
 #index .icon-list li {
   margin-left: 8px;
@@ -673,34 +794,60 @@ export default defineComponent({
 }
 
 #index .calendar-outer .times-wrapper .week-cell-header {
-    position: relative;
-    width: auto;
-    height: 65px;
-    line-height: 1.2;
-    padding-bottom: 5px;
-    margin-bottom: 10px;
-    border-bottom: 1px solid #f1f2f6;
-    background-color: #f5f6fa66;
+    /* position: relative;
+    width: auto; */
+    /* height: 65px; */
+    /* line-height: 1.2; */
+    /* padding-bottom: 5px; */
+    /* margin-bottom: 10px; */
+    /* border-bottom: 1px solid #f1f2f6; */
+    /* background-color: #f5f6fa66; */
 }
 
-#index .calendar-outer .times-wrapper .week-cell__contents {
+/* #index .calendar-outer .times-wrapper .week-cell__contents {
     border-top: none;
     height: 100%;
-}
+} */
 
-#index .calendar-outer .times-wrapper .week-cell__contents .sec {
+/* #index .calendar-outer .times-wrapper .week-cell__contents .sec { */
+#index .calendar-outer .times-wrapper .times-cells .time-cell{
   height: 75px;
   width: 100%;
   margin: 0px auto 0px;
   text-align: center;
-  border-bottom: none;
-  border-right: 1px solid #f1f2f6;
+  border-top: 1px solid #f1f2f6;
+  /* border-bottom: none; */
+  /* border-right: 1px solid #f1f2f6; */
+  position: relative;
+  z-index: 12;
+}
+#index .calendar-outer .times-wrapper .times-cells .time-cell::after{
+  content: "";
+  position: absolute;
+  top: -1px;
+  width: 90%;
+  right: 10%;
+  height: 1px;
+  background-color: white;
+}
+#index .calendar-outer .times-wrapper.right .times-cells .time-cell::after{
+  right: auto;
+  left: 10%;
 }
 
-#index .calendar-outer .times-wrapper .week-cell__contents p.sp-time {
-  font-size: 1.0rem;
+
+/* #index .calendar-outer .times-wrapper .week-cell__contents p.sp-time { */
+#index .calendar-outer .times-wrapper .times-cells p.sp-time {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: rgb(145, 145, 145);
   line-height: 1.3;
-  margin: -10px 0 10px 0;
+  /* margin: -10px 0 10px 0; */
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 15;
 }
 
 
@@ -757,7 +904,10 @@ export default defineComponent({
   justify-content: center;
   font-weight: 400;
   margin: 0;
-  background-color: #cad3c833;
+  /* background-color: #cad3c833; */
+  /* background-color: #ecf0f1; */
+  background-color: #f1f2f6;
+  /* background-color: #f5f6fa; */
 }
 
 
@@ -765,12 +915,9 @@ export default defineComponent({
   width: 90%;
   height: 99%;
   /* margin: 0; */
-}
-
-#index .calendar-outer .week-cell__contents .sec.holiday{
   font-size: 1.4rem;
   font-weight: bold;
-  color: #d5d5d5;
+  color: #dfe4ea;
 }
 
 #index .calendar-outer .week-cell__contents .sec.empty{
@@ -789,8 +936,10 @@ export default defineComponent({
 
 #index .weekday-wrapper .sec .btn_select.sec-circle {
   color: #fff;
-  background-color: #2ecc71;
-  border-left: 4px solid #16a085;
+  /* background-color: #2ecc71; */
+  background-color: rgb(231,244,226);
+  border-radius: 8px;
+  /* border-left: 4px solid #16a085; */
 }
 
 /* #index .weekday-wrapper .sec .btn_select.disable {
@@ -800,18 +949,26 @@ export default defineComponent({
 } */
 
 #index .weekday-wrapper .sec .btn_select.sec-circle svg{
-  stroke: #fff;
+  /* stroke: #fff; */
+  stroke: rgb(166,203,144);
   margin: 0;
 }
 
 #index .weekday-wrapper .sec .btn_select.disable svg{
-  stroke: #d5d5d5;
+  /* stroke: #d5d5d5; */
+  /* clouds */
+  /* stroke: #ecf0f1; */
+  /* lynx white */
+  stroke: #f5f6fa; 
   margin: 0;
 }
 
 #index .weekday-wrapper .sec .btn_select.sec-circle:hover{
   color: #fff;
   background-color: #16a085;
+}
+#index .weekday-wrapper .sec .btn_select.sec-circle:hover svg{
+  stroke: #fff;
 }
 
 
@@ -860,6 +1017,7 @@ export default defineComponent({
     text-align: center
   }
   #index .header-subtext{
+    display: block;
     align-items: center;
     justify-content: center;
     flex-direction: column-reverse;
@@ -965,6 +1123,21 @@ export default defineComponent({
   }
   #index .sec .btn_select:hover p.time{
     margin-left: 0px;
+  }
+  /*  */
+
+  #index .calendar-dates-header {
+    padding-left: 45px;
+  }
+  #index .calendar-outer .times-wrapper {
+    min-width: 45px;
+  }
+
+  #index .calendar-outer .times-wrapper.right {
+    display: none;
+  }
+  .calendar-dates-header .header-btn-wrapper {
+    display: none;
   }
 }
 
