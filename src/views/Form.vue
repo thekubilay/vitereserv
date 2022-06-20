@@ -7,7 +7,14 @@
         <!-- <h1 class="header-text">ご予約内容の入力</h1> -->
         <div class="relative">
           <section class="flex-column header-subtext">
-            <h2>{{ pageTitle || "名前なし" }}</h2>
+            <h2 class="flex-column">
+              <span class="page-title">
+                {{ pageTitle || "名前なし" }}
+              </span>
+              <span v-if="subTitle && subTitle!='null'" class="page-subtitle">
+                {{ subTitle}}
+              </span>
+            </h2>
             <!-- <p></p>
             <p>ご利用日時</p> -->
             <p>{{ dateAndTime }}&nbsp;
@@ -52,7 +59,7 @@ import FormsFunc from "./Forms"
 import useStore from "../helpers/useStore"
 import LoadingSpinner from "@/components/loaders/LoadingSpinner.vue"
 import { DynamicFormRowColumn } from "@/components/dynamic-form/types/DynamicForm";
-import { isRomaji, isKatakana, isMail, isZip, isRomajiWithIrregulars, isNumber } from "@/components/dynamic-form/helpers/useRules";
+import { isRomaji, isKatakana, isMail, isZip, isRomajiWithIrregulars, isNumber, phoneNumberCheck } from "@/components/dynamic-form/helpers/useRules";
 
 interface Extra {
   vacancy?: string,
@@ -259,7 +266,7 @@ export default defineComponent({
         }else if(rule === "number"){
           res.push(isNumber)
         }else if(rule === "tel"){
-        
+          res.push(phoneNumberCheck)
         }else if(rule === "kana"){
           res.push(isKatakana)
         }else if(rule === "kankakukigou"){
@@ -402,7 +409,7 @@ export default defineComponent({
     })
 
     return {
-      date, time, pageTitle, dateAndTime,
+      date, time, pageTitle, subTitle, dateAndTime,
       dynForm, modelData,
       extraData,config,
       isLoading, 
@@ -486,6 +493,15 @@ p .page-btn-wrap{
   margin-bottom: 20px;
 }
 
+#request section.header-subtext .page-title {
+  font-size: 1.8rem;
+  display: inline-block;
+}
+#request section.header-subtext .page-subtitle {
+  font-size: 1.0rem;
+  font-weight: 500;
+  display: inline-block;
+}
 
 
 /* ---- Form ---- */

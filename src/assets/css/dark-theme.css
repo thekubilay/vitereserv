@@ -143,9 +143,9 @@ html[theme="dark"] footer .corporation-link .corporation-logo{
   display: none;
 }
 
-html[theme="dark"] footer svg .text path{
-  /* fill: #A4B0BE; */
-}
+/* html[theme="dark"] footer svg .text path{
+  fill: #A4B0BE;
+} */
 html[theme="dark"] footer .legal-links a{
   color: #A4B0BE;
 }
@@ -177,9 +177,9 @@ html[theme="dark"] #index .header-container h1.heading {
 html[theme="dark"] #index .sec .btn_select:hover{
   background-color: #16181ad1;
 }
-html[theme="dark"] #index .sec .btn_select:hover figure.circle svg{
-  /* fill: #fff; */
-}
+/* html[theme="dark"] #index .sec .btn_select:hover figure.circle svg{
+  fill: #fff;
+} */
 
 html[theme="dark"] #index .sec .btn_select:not(.disable):hover{
   color: #2ecc71; /*rgb(208, 85, 68);*/

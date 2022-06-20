@@ -9,7 +9,6 @@
         </div>
       </transition>
       <!-- <VitHeader/> -->
-      <LoadingSpinner v-model="isLoading" />
       <div id="overlay" ref="overlay"></div>
       <div v-if="!isRest" class="template__Wrapper">
         <div class="container">
@@ -19,7 +18,7 @@
               <span class="title block header-text">{{room?.name||"ご予約内容の選択"}}</span>
               <span v-if="room?.header && room?.header !== 'null'" class="sub-title block">{{room?.header}}</span>
             </h1>
-            <!-- <p v-if="room?.body && room?.body !== 'null'" class="room-body-summary">{{room?.body}}</p> -->
+            <p v-if="room?.body && room?.body !== 'null'" class="room-body-summary">{{room?.body}}</p>
               <!-- ご予約内容の選択 -->
             <div class="header-subtext flex justify-center align-center">
               <!-- <h2 v-if="room">{{ room.name }}</h2> -->
@@ -47,7 +46,7 @@
 
 
           <div class="calendar-wrapper">
-            <div class="calendar-dates-header flex justify-space-between align-center">
+            <div class="calendar-dates-header flex justify-space-between align-center" v-if="!isLoading">
               <div class="header-btn-wrapper flex justify-center align-center">
                 <button class="flex justify-center align-center arrow prev" @click="changeWeek(-1)">
                    <i class="pi pi-chevron-left"></i>
@@ -69,8 +68,8 @@
               </div>
             </div>
 
-            <section class="calendar-outer flex justify-space-between">
-
+            <section class="calendar-outer flex justify-space-between" style="position:relative;">
+              <LoadingSpinner v-model="isLoading" relative/>
               <div class="times-wrapper flex-column">
                 <!-- <div class="week-cell-header flex">
                 </div> -->
@@ -87,7 +86,7 @@
                 </div>
               </div>
 
-              <div v-for="(item, idx) in weekDatesObjs" :key="idx" class="weekday-wrapper flex-column">
+              <div v-for="(item, idx) in weekDatesObjs" :key="idx" class="weekday-wrapper flex-column" :class="{first : idx === 0}">
                 <!-- <div class="week-cell-header flex-column justify-center align-center"
                      :class="{today: item.date === currentDate}">
                   <div class="day">{{ item.day }}</div>
@@ -119,7 +118,7 @@
                   <template v-else-if="room && betweenHours.length > 0">
                     <div v-for="(time, index) in betweenHours" :key="index" class="sec flex-column justify-center align-center">
                       <!-- マル -->
-                      <div v-if="findHourBefore(time, item.date) && vacanciesCheck(item.date, time).mark==='circle'" 
+                      <div v-if="findHourBefore(time, item.date) && vacanciesCheck(item.date, time).mark==='circle' && !pastTimeCheck(item.timestamp)" 
                             class="flex-column justify-center btn_select sec-circle" 
                             @click="goToForm(item.date, time, room)">
                         <!-- <p class="time">
@@ -199,7 +198,7 @@
             </section>
 
 
-            <div class="calendar-legend flex justify-end">
+            <div class="calendar-legend flex justify-end" v-if="!isLoading">
               <ul class="icon-list flex flex-wrap">
                 <li class="flex align-center">
                   <svg
@@ -541,6 +540,11 @@ export default defineComponent({
 }
 #index .container{
   max-width:1160px;
+  min-width: 400px;
+}
+
+#index .calendar-outer {
+
 }
 /* --- Header --- */
 #index .header-container{
@@ -614,17 +618,21 @@ export default defineComponent({
   font-weight: 600;
 }
 /* .calendar-dates-header .header-date .weekday {} */
-button.arrow {
+.header-btn-wrapper button.arrow {
   cursor: pointer;
   min-width: 50px;
   height: 50px;
   border-radius: 50%;
   /* background-color: #fafafa; */
   background-color: rgb(244, 246, 249);
+  transition: transform 0.15s;
 }
-button.arrow.disable {
+.header-btn-wrapper button.arrow.disable {
   opacity: 0.3;
   pointer-events: none;
+}
+.header-btn-wrapper .arrow:active{
+  transform: translateY(2px);
 }
 /* button.arrow.prev {
 
@@ -635,7 +643,7 @@ button.arrow.next {
 button.arrow i {
   position: relative;
   top: 1px;
-  font-size: 0.7rem;
+  font-size: 0.9rem;
   font-weight: 500;
 }
 /* #index .calendar__header .arrow {
@@ -825,18 +833,19 @@ button.arrow i {
   content: "";
   position: absolute;
   top: -1px;
-  width: 90%;
-  right: 10%;
+  width: 50%;
+  right: 50%;
   height: 1px;
   background-color: white;
 }
 #index .calendar-outer .times-wrapper.right .times-cells .time-cell::after{
   right: auto;
-  left: 10%;
+  left: 50%;
 }
 
 
 /* #index .calendar-outer .times-wrapper .week-cell__contents p.sp-time { */
+
 #index .calendar-outer .times-wrapper .times-cells p.sp-time {
   font-size: 0.75rem;
   font-weight: 600;
@@ -845,9 +854,13 @@ button.arrow i {
   /* margin: -10px 0 10px 0; */
   position: absolute;
   top: -10px;
-  left: 50%;
-  transform: translateX(-50%);
+  left: -15%;
+  /* transform: translateX(-50%); */
   z-index: 15;
+}
+#index .calendar-outer .times-wrapper.times-wrapper.right .times-cells p.sp-time {
+  left: auto;
+  right: -15%;
 }
 
 
@@ -861,6 +874,9 @@ button.arrow i {
   text-align: center;
   border-right: 1px solid #f1f2f6;
   border-bottom: 1px solid #f1f2f6;
+}
+#index .calendar-outer .weekday-wrapper.first .week-cell__contents .sec {
+  border-left: 1px solid #f1f2f6;
 }
 
 #index .calendar-outer .week-cell__contents .icon-wrapper{
@@ -1048,7 +1064,14 @@ button.arrow i {
     justify-content: center;
   }
 
-
+  /* Time */
+  #index .calendar-outer .times-wrapper .times-cells p.sp-time {
+    left: 0;
+  }
+  #index .calendar-outer .times-wrapper .times-cells .time-cell::after {
+    width: 80%;
+    right: 20%;
+  }
 
 
   /* --- Calendar css --- */
@@ -1139,6 +1162,9 @@ button.arrow i {
   .calendar-dates-header .header-btn-wrapper {
     display: none;
   }
+
+
+
 }
 
 </style>

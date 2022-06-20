@@ -377,9 +377,9 @@ index
     /* height: 20px; */
 }
 @media screen and (max-width: 767px) {
-    #index .calendar__header .icon__Wrapper .icon {
-        /* height: 14px; */
-    }
+    /* #index .calendar__header .icon__Wrapper .icon {
+        height: 14px;
+    } */
     #index .calendar__header {
         display: block;
     }
