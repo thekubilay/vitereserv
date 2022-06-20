@@ -7,16 +7,29 @@
         <!-- <h1 class="header-text">ご予約内容の入力</h1> -->
         <div class="relative">
           <section class="flex-column header-subtext">
-            <h1 class="flex-column">
+            <header class="flex justify-space-between">
+              <div class="flex-column title-wrapper">
+                <h1 class="title">{{ pageTitle || "名前なし" }}</h1>
+                <p>
+                  <span class="timeslot">
+                    {{ date.split('-')[0]}}<span>年</span>{{ date.split('-')[1]}}月{{ date.split('-')[2]}}日
+                    &nbsp;
+                    {{ time.split(':')[0]}}:{{ time.split(':')[1]}}
+                    &nbsp;
+                  </span>
+                </p>
+              </div>
+              <div class="flex justify-center align-center">
+                <div class="back-calendar flex align-center justify-center"  @click="goTo('Room')">
+                  <i class="pi pi-calendar"></i>
+                </div>
+              </div>
+            </header>
+            <!-- <h1 class="flex-column">
               <span class="page-title">
                 {{ pageTitle || "名前なし" }}
               </span>
-              <!-- <span v-if="subTitle && subTitle!='null'" class="page-subtitle">
-                {{ subTitle}}
-              </span> -->
             </h1>
-            <!-- <p></p>
-            <p>ご利用日時</p> -->
             <p>
               <span class="timeslot">
                 {{ date.split('-')[0]}}<span>年</span>{{ date.split('-')[1]}}月{{ date.split('-')[2]}}日
@@ -30,7 +43,7 @@
                 <span class="btn-text">日付変更</span> 
               </button></div>
             </p>
-            <p v-if="subTitle && subTitle !== 'null'" class="room-body-summary">{{subTitle}}</p>
+            <p v-if="subTitle && subTitle !== 'null'" class="room-body-summary">{{subTitle}}</p> -->
           </section>
           <Form
             v-if="Object.keys(dynForm).length > 0"
@@ -105,40 +118,6 @@ export default defineComponent({
       checkVacancy,
       saveSessionData,
     } = FormsFunc()
-
-    // async function init2(): Promise<void>{
-    //   // 1. Check if vacancy, if not send back to calendar
-    //   checkVacancy()
-    //   // 2. Request form data
-    //   const path = ENV.API + "forms/" + formID.value + "/"
-    //   isLoading.value = true
-    //   try {
-    //     const response1 = await axios.get<FormItem[]>(path)
-    //     const data = JSON.parse(JSON.stringify(response1.data))
-    //     // console.log(data)
-    //     if (data.title) {
-    //       pageTitle.value = data.title !== "null" ?  data.title.toString() : ""
-    //     }
-    //     if (data.sub_title){
-    //       subTitle.value = data.sub_title !== "null" ?  data.sub_title.toString() : ""
-    //     }
-    //     // 2.5 Setup form data
-    //     setupForm(data.form_rows)
-
-    //     // 3. Check for session data
-    //     loadSession()
-
-    //     // 4. Get vacancy data
-    //     const response2 = await axios.get<any>(ENV.API + "vacancies/" + vacancyID.value + "/")
-    //     date.value = response2.data.date
-    //     time.value = response2.data.time
-    //     document.getElementsByTagName('title')[0].innerHTML = (pageTitle.value)?pageTitle.value:"ビターブ｜予約システム作成・予約管理ならおまかせ｜viterve"
-    //     isLoading.value = false
-    //     isPageLoaded = true
-    //     setupExtraData()
-    //   } catch {
-    //   }
-    // }
 
     function init(): void {
       // 1. Check if vacancy, if not send back to calendar
@@ -248,17 +227,11 @@ export default defineComponent({
         res.push("optionValue")
         res.push("optionLabel")
       }
-      // if(formItem.width){
-      //   res.push("columnWidth")
-      // }
       return res
     }
 
     function getColumnOptions(formItem: FormItem): string[]|object[]{
       if(formItem.type === "select"){
-        // if(formItem.title === "物件"){
-        //   return [] //TODO get /projects
-        // }
         if(formItem.title === "都道府県"){
           return cityOptions
         }
@@ -286,7 +259,6 @@ export default defineComponent({
         }else if(rule === "kankakukigou"){
           res.push(isRomajiWithIrregulars)
         }
-       
       })
       return res
     }
@@ -443,13 +415,46 @@ p .page-btn-wrap{
   margin-left: 5px;
 }
 
+header .title-wrapper {
+  padding: 5px 0 5px 15px;
+  position: relative;
+}
+header .title-wrapper::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 3px;
+  border-radius: 30px;
+  background-color: #6366f1;
+}
+header h1.title {
+  margin-bottom: 5px;
+}
+header .title-wrapper p {
+  color: #6366f1;
+  font-size: 0.7rem;
+}
+
+header .back-calendar i{
+  /* font-size: 60px; */
+  /* font-size: 32px; */
+  color: #2ECC71;
+}
+header .back-calendar {
+  /* height: 80px;
+  width: 80px; */
+  /* height: 60px;
+  width: 60px; */
+  padding: 6px;
+  background-color: #D7FDC9;
+  border-radius: 4px;
+  cursor: pointer;
+}
 </style>
 
 <style>
-
-/* -------- Dynamic form CSS -------------*/
-
-@import '../assets/css/dynamic-form.css';
 
 p .page-btn-wrap{
   display: inline;
@@ -506,10 +511,10 @@ p .page-btn-wrap{
   font-weight: 600;
 }
 
-#request section.header-subtext h1 {
+/* #request section.header-subtext h1 {
   font-size: 1.6rem;
   margin-bottom: 20px;
-}
+} */
 
 #request section.header-subtext .page-title {
   font-size: 1.8rem;
@@ -675,6 +680,12 @@ p.room-body-summary{
 
   #request button.submit-button {
     width: 100%;
+  }
+}
+@media screen and (max-width: 414px) {
+  header {
+    flex-direction: column;
+    align-items: center;
   }
 }
 

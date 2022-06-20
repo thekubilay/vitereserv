@@ -8,8 +8,7 @@
           <p class="body-text">{{errorMessage.text}}</p>
         </div>
       </transition>
-      <!-- <VitHeader/> -->
-      <div id="overlay" ref="overlay"></div>
+      <!-- <div id="overlay" ref="overlay"></div> -->
       <div v-if="!isRest" class="template__Wrapper">
         <div class="container">
           <div class="header-container">
