@@ -134,6 +134,7 @@ export default defineComponent({
           // console.log(data)
           if (data.title) {
             pageTitle.value = data.title !== "null" ?  data.title.toString() : ""
+            document.getElementsByTagName('title')[0].innerHTML = (pageTitle.value)?pageTitle.value:"ビターブ｜予約システム作成・予約管理ならおまかせ｜viterve"
           }
           if (data.sub_title){
             subTitle.value = data.sub_title !== "null" ?  data.sub_title.toString() : ""
@@ -151,7 +152,6 @@ export default defineComponent({
               if(parseInt(response2.data.applicants.length) < parseInt(response2.data.limit)){
                 date.value = response2.data.date
                 time.value = response2.data.date_time_start.slice( -9, -4 )
-                document.getElementsByTagName('title')[0].innerHTML = (pageTitle.value)?pageTitle.value:"ビターブ｜予約システム作成・予約管理ならおまかせ｜viterve"
                 isLoading.value = false
                 isPageLoaded = true
                 setupExtraData()
@@ -330,13 +330,28 @@ export default defineComponent({
         config.data = formData
 
         try {
-          axios(config).then((response) => {
-            isLoading.value = false
-            resolve(response)
-            reject(false)
-          }).catch(error => {
-            resolve(error.response)
-          })
+          axios.get<any>(ENV.API + "vacancies/" + vacancyID.value + "/")
+            .then((response2) => {
+              if(parseInt(response2.data.applicants.length) < parseInt(response2.data.limit)){
+                console.log("Vacancy OK")
+                axios(config).then((response) => {
+                  console.log("post request ok")
+                  isLoading.value = false
+                  resolve(response)
+                  reject(false)
+                }).catch(error => {
+                  console.log("post request wrong")
+                  resolve(error.response)
+                })
+              }else{
+                console.log("No Vacancy OK")
+                reject(false)
+                resolve(false)
+                // store.SET_ERROR({title: "エラー", text: "サーバーのエラーが発生しました。"})
+                // goTo("Room")
+              }
+            })
+
         } catch (e) {
           console.log("error: " + e)
           reject(false)
