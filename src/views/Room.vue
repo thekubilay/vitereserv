@@ -539,7 +539,7 @@ export default defineComponent({
 }
 #index .container{
   max-width:1160px;
-  min-width: 400px;
+  /* min-width: 400px; */
 }
 
 #index .calendar-outer {
@@ -953,7 +953,7 @@ button.arrow i {
 #index .weekday-wrapper .sec .btn_select.sec-circle {
   color: #fff;
   /* background-color: #2ecc71; */
-  background-color: rgb(231,244,226);
+  background-color: #D7FDC9;
   border-radius: 8px;
   /* border-left: 4px solid #16a085; */
 }
@@ -966,7 +966,7 @@ button.arrow i {
 
 #index .weekday-wrapper .sec .btn_select.sec-circle svg{
   /* stroke: #fff; */
-  stroke: rgb(166,203,144);
+  stroke: #2ECC71;
   margin: 0;
 }
 
@@ -981,7 +981,7 @@ button.arrow i {
 
 #index .weekday-wrapper .sec .btn_select.sec-circle:hover{
   color: #fff;
-  background-color: #16a085;
+  background-color: #2ECC71;
 }
 #index .weekday-wrapper .sec .btn_select.sec-circle:hover svg{
   stroke: #fff;

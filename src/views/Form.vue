@@ -439,8 +439,8 @@ header .title-wrapper p {
 
 header .back-calendar i{
   /* font-size: 60px; */
-  /* font-size: 32px; */
-  color: #2ECC71;
+  font-size: 40px;
+  color: #6366f1;
 }
 header .back-calendar {
   /* height: 80px;
@@ -448,7 +448,7 @@ header .back-calendar {
   /* height: 60px;
   width: 60px; */
   padding: 6px;
-  background-color: #D7FDC9;
+  background-color: #F5F6FA;
   border-radius: 4px;
   cursor: pointer;
 }
@@ -507,7 +507,7 @@ p .page-btn-wrap{
   /* padding: 0 24px */
 }
 #request section.header-subtext .timeslot {
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   font-weight: 600;
 }
 
