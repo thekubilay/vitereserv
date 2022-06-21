@@ -166,8 +166,6 @@ const submitter = (): void => {
           props.onComplete(response)
           emits("update:modelValue", false)
         }
-      }).catch(() => {
-        props.onError()
       })
     }
   })

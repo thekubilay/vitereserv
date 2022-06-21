@@ -333,22 +333,15 @@ export default defineComponent({
           axios.get<any>(ENV.API + "vacancies/" + vacancyID.value + "/")
             .then((response2) => {
               if(parseInt(response2.data.applicants.length) < parseInt(response2.data.limit)){
-                console.log("Vacancy OK")
                 axios(config).then((response) => {
-                  console.log("post request ok")
                   isLoading.value = false
                   resolve(response)
                   reject(false)
                 }).catch(error => {
-                  console.log("post request wrong")
                   resolve(error.response)
                 })
               }else{
-                console.log("No Vacancy OK")
-                reject(false)
-                resolve(false)
-                // store.SET_ERROR({title: "エラー", text: "サーバーのエラーが発生しました。"})
-                // goTo("Room")
+                resolve("novacancy")
               }
             })
 
@@ -364,16 +357,18 @@ export default defineComponent({
       console.error("Server could not accept response")
       store.SET_ERROR({title: "エラー", text: "サーバーのエラーが発生しました。"})
       goTo("Room")
-      // console.log("error")
-      // store.SET_ERROR({title: "エラー", text: "サーバーのエラーが発生しました。"}) // text: response.data.info
-      // goTo("Room")
     }
+
     const onComplete = (response: any): void => {
       setTimeout(()=>{
         isLoading.value = false;
-        // console.log("complete",response)
-        removeSessionData()
-        goTo('Thanks')
+        if(response === "novacancy"){
+          store.SET_ERROR({title: "エラー", text: "サーバーのエラーが発生しました。"}) // text: response.data.info
+          goTo('Room')
+        }else{
+          removeSessionData()
+          goTo('Thanks')
+        }
       },600)
     }
 
