@@ -155,7 +155,7 @@ export default class CalendarService {
         date: moment(date).format('YYYY/MM/DD'),
         day: moment(date).format('ddd'),
         week: moment(date, "YYYY-MM-DD").week(),
-        month: (moment(new Date()).month() + 1) + "月",
+        month: (moment(date).month() + 1) + "月",
         timestamp: moment(date).valueOf()
       }
     })

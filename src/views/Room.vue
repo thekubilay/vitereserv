@@ -332,6 +332,7 @@ export default defineComponent({
       setTimeout(() => {
         overlay.value?.classList.remove('active')
       }, 100);
+      router.push({query:{week:currentWeek.value}})
     }
 
     const separatedHolidaysCheck = (date:string):Boolean => {
@@ -450,7 +451,11 @@ export default defineComponent({
     function init() {
       deleteQuery()
       calendarService.value = new calendarServiceClass();
-      currentWeek.value = calendarService.value.currentWeek
+      if(route.query.week){
+        currentWeek.value = Number(route.query.week)
+      }else{
+        currentWeek.value = calendarService.value.currentWeek
+      }
       weekDatesObjs.value = calendarService.value.getWeekDatesAsObject(currentWeek.value as number)
       currentDate.value = calendarService.value.currentDate.replace("年","/").replace("月","/").replace("日","")
       getRooms();
