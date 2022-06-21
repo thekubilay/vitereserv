@@ -12,15 +12,12 @@
       <div v-if="!isRest" class="template__Wrapper">
         <div class="container">
           <div class="header-container">
-
             <h1 class="flex-column heading">
               <span class="title block header-text">{{room?.name||"ご予約内容の選択"}}</span>
               <span v-if="room?.header && room?.header !== 'null'" class="sub-title block">{{room?.header}}</span>
             </h1>
             <p v-if="room?.body && room?.body !== 'null'" class="room-body-summary">{{room?.body}}</p>
-              <!-- ご予約内容の選択 -->
           </div>
-
 
           <div class="calendar-wrapper">
             <div class="sp-buttons flex justify-center align-center">
@@ -117,11 +114,6 @@
                             <svg stroke="#6366f1" fill="none" viewBox="0 0 40.00 40.00">
                               <circle class="cls-1" cx="20" cy="20" r="15" />
                             </svg>
-                            <!-- <svg fill="#6366f1" viewBox="0 0 512 512">
-                              <path
-                                d="M256,78.77c97.73,0,177.23,79.51,177.23,177.23S353.73,433.23,256,433.23,78.77,353.73,78.77,256,158.27,78.77, 256,78.77M256,0C114.62,0,0,114.62,0,256S114.62,512,256,512,512,397.38,512,256,397.38,0,256,0Z"
-                              ></path>
-                            </svg> -->
                           </figure>
                         </div>
                       </div>
@@ -154,11 +146,6 @@
                               <line class="cls-1" x1="5" y1="5" x2="35" y2="35" />
                               <line class="cls-1" x1="35" y1="5" x2="5" y2="35" />
                             </svg>
-                            <!-- <svg fill="#edebe7" viewBox="0 0 512 512">
-                              <path
-                                d="M321.83,256,498.37,79.46a46.55,46.55,0,1,0-65.83-65.83L256,190.17,79.46,13.63A46.55,46.55,0,0,0, 13.63,79.46L190.17,256,13.63,432.54a46.55,46.55,0,0,0,65.83,65.83L256,321.83,432.54,498.37a46.55,46.55, 0,0,0,65.83-65.83Z"
-                              ></path>
-                            </svg> -->
                           </figure>
                         </div>
                       </div>
@@ -258,6 +245,7 @@ import LoadingSpinner from "../components/loaders/LoadingSpinner.vue"
 import VitFooter from "../components/Footer.vue"
 import VitHeader from "../components/Header.vue"
 import moment from "moment";
+import { url } from "inspector";
 
 export default defineComponent({
   components: {
@@ -419,6 +407,9 @@ export default defineComponent({
       })
       .then((response) => {
         const data = JSON.parse(JSON.stringify(response.data))
+        // if(!data.active){
+        //   router.push({ name: "Error"})
+        // }
         room.value = data
         isRest.value = data.rest
         holidays.value = data.holidays.includes(",") ? data.holidays.split(",") : [data.holidays]
@@ -448,6 +439,7 @@ export default defineComponent({
       calendarService.value = new calendarServiceClass();
       if(route.query.week){
         currentWeek.value = Number(route.query.week)
+        router.push({query:{week:route.query.week}})
       }else{
         currentWeek.value = calendarService.value.currentWeek
       }
@@ -544,21 +536,35 @@ export default defineComponent({
 .container .calendar-wrapper {
   margin-top: 10px;
 }
-/* #index .calendar-outer {
+.container .calendar-wrapper .calendar-outer {
+  min-height: 50px;
+}
 
-} */
 /* --- Header --- */
-/* #index .header-container{
-  margin-bottom: 10px;
-} */
+.container .header-container h1 .title {
+  display: inline-block;
+  font-size: 1.8rem;
+}
+.container .header-container h1 .sub-title {
+  display: inline-block;
+  font-size: 1.0rem;
+  font-weight: 500;
+}
+.container .header-container p.room-body-summary{
+  font-size: 0.75rem;
+  margin-top: 20px;
+  background-color: #faebd76f;
+  padding: 10px;
+  border-left: 4px solid #f0932b;
+}
 
 /* ---- Smartphone buttons ---- */
-.sp-buttons{
+.calendar-wrapper .sp-buttons{
   display: none;
   margin-top: 14px;
   height: 44px;
 }
-.sp-buttons .selected-week-wrapper{
+.calendar-wrapper .sp-buttons .selected-week-wrapper{
   position: relative;
   width: 100%;
   height: 44px;
@@ -567,7 +573,7 @@ export default defineComponent({
   border-radius: 6px;
   padding: 2px;
 }
-/* .sp-buttons .selected-week-wrapper .currentWeek{
+/*.calendar-wrapper .sp-buttons .selected-week-wrapper .currentWeek{
   position: absolute;
   left: 10px;
   font-size: 1rem;
@@ -576,17 +582,17 @@ export default defineComponent({
   border-radius: 6px;
 } */
 
-/* .sp-buttons .selected-week-wrapper span.week-text{
+/*.calendar-wrapper .sp-buttons .selected-week-wrapper span.week-text{
   color: #555555;
   font-weight: 400;
   padding-bottom: 2px;
 }
-.sp-buttons .selected-week-wrapper span.week-text > span{
+.calendar-wrapper .sp-buttons .selected-week-wrapper span.week-text > span{
   font-weight:600;
 } */
 
 
-.sp-buttons .selected-week-wrapper .arrow {
+.calendar-wrapper .sp-buttons .selected-week-wrapper .arrow {
   height: 100%;
   padding: 0 10px;
   background-color: #fff;
@@ -595,30 +601,33 @@ export default defineComponent({
   width: 50%;
   transition: 0.3s;
 }
-.sp-buttons .selected-week-wrapper .arrow:first-of-type {
+.calendar-wrapper .sp-buttons .selected-week-wrapper .arrow:first-of-type {
   margin-right: 2px;
 }
-.sp-buttons .selected-week-wrapper .arrow i {
+.calendar-wrapper .sp-buttons .selected-week-wrapper .arrow i {
   font-size: 0.9rem;
   position: relative;
   top: 1px;
   color: #778beb;
 }
 
-.sp-buttons .selected-week-wrapper .arrow:active{
+.calendar-wrapper .sp-buttons .selected-week-wrapper .arrow:active{
   transform: translateY(2px);
   /* background-color: rgb(99, 102, 241,0.05); */
 }
 
-.sp-buttons .selected-week-wrapper .arrow:hover{
+.calendar-wrapper .sp-buttons .selected-week-wrapper .arrow:hover{
   background-color: rgb(250, 250, 250);
 }
 
-.sp-buttons .selected-week-wrapper .arrow:hover i{
+.calendar-wrapper .sp-buttons .selected-week-wrapper .arrow:hover i{
   color: rgb(99, 102, 241);
 }
 
+
 /* ---- Calendar header ---- */
+
+
 .calendar-dates-header .header-btn-wrapper {
   width: 60px;
 }
@@ -656,7 +665,7 @@ export default defineComponent({
 
 
 /* Calendar buttons for PC */
-.header-btn-wrapper button.arrow {
+.calendar-dates-header .header-btn-wrapper button.arrow {
   cursor: pointer;
   min-width: 50px;
   height: 50px;
@@ -664,15 +673,15 @@ export default defineComponent({
   background-color: #f4f6f9;
   transition: transform 0.15s;
 }
-.header-btn-wrapper button.arrow.disable {
+.calendar-dates-header .header-btn-wrapper button.arrow.disable {
   opacity: 0.3;
   pointer-events: none;
 }
-.header-btn-wrapper button.arrow:active{
+.calendar-dates-header .header-btn-wrapper button.arrow:active{
   transform: translateY(2px);
 }
 
-.header-btn-wrapper button.arrow i {
+.calendar-dates-header .header-btn-wrapper button.arrow i {
   position: relative;
   top: 1px;
   font-size: 1rem;
@@ -756,24 +765,6 @@ export default defineComponent({
 
 
 <style>
-
-#index .header-container h1 .title {
-  display: inline-block;
-  font-size: 1.8rem;
-}
-#index .header-container h1 .sub-title {
-  display: inline-block;
-  font-size: 1.0rem;
-  font-weight: 500;
-}
-#index .header-container p.room-body-summary{
-  font-size: 0.75rem;
-  margin-top: 20px;
-  background-color: #faebd76f;
-  padding: 10px;
-  border-left: 4px solid #f0932b;
-}
-
 
 /* --- Content --- */
 #index .weekday-wrapper {
