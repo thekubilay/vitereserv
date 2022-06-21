@@ -10,7 +10,8 @@ interface Styles {
 }
 
 /* check primevue form props for more information */
-interface PrimeVueFormType {
+interface PrimeVueFormType
+{ 
   options?: options
   optionLabel?: varchar,
   optionValue?: varchar,
@@ -26,6 +27,7 @@ interface PrimeVueFormType {
   previewText?: string,
   sizeLimit?: string,
   accept?: string,
+  binary?:boolean,//n
   dateFormat?: string,
   showTime?: boolean,
   hourFormat?: string,

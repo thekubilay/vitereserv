@@ -4,24 +4,25 @@
     <div class="template__Wrapper">
       <div class="container relative">
         <LoadingSpinner v-model="isLoading" />
-        <!-- <h1 class="header-text">ご予約内容の入力</h1> -->
         <div class="relative">
           <section class="flex-column header-subtext">
             <header class="flex justify-space-between">
               <div class="flex-column title-wrapper">
                 <h1 class="title">{{ pageTitle || "名前なし" }}</h1>
-                <p>
-                  <span class="timeslot">
-                    {{ date.split('-')[0]}}<span>年</span>{{ date.split('-')[1]}}月{{ date.split('-')[2]}}日
-                    &nbsp;
-                    {{ time.split(':')[0]}}:{{ time.split(':')[1]}}
-                    &nbsp;
-                  </span>
-                </p>
+                
+                <span class="timeslot">
+                  {{ date.split('-')[0]}}<span>年</span>
+                  {{ date.split('-')[1]}}月
+                  {{ date.split('-')[2]}}日
+                  &nbsp;
+                  {{ time.split(':')[0]}}:{{ time.split(':')[1]}}
+                </span>
+
               </div>
               <div class="flex justify-center align-center">
                 <div class="back-calendar flex align-center justify-center"  @click="goTo('Room')">
                   <i class="pi pi-calendar"></i>
+                  <span class="back-calendar-text">日付変更</span>
                 </div>
               </div>
             </header>
@@ -407,16 +408,21 @@ export default defineComponent({
 })
 </script>
 <style scoped>
-/* .container[theme="dark"] {
-  background-color: #16181ad1;;
-} */
-p .page-btn-wrap{
-  display: inline;
-  margin-left: 5px;
+#request {
+  color: rgb(32, 64, 97);
+  flex-grow: 1;
+  padding-top: 66px;
+}
+#request .template__Wrapper{
+  flex-grow: 1;
+  transition: background-color 0.15s, border-color 0.15s, color 0.15s;
+}
+#request section.header-subtext {
+  margin-bottom: 50px;
 }
 
 header .title-wrapper {
-  padding: 5px 0 5px 15px;
+  padding: 3px 0 3px 15px;
   position: relative;
 }
 header .title-wrapper::after {
@@ -425,245 +431,72 @@ header .title-wrapper::after {
   left: 0;
   top: 0;
   height: 100%;
-  width: 3px;
+  width: 4px;
   border-radius: 30px;
   background-color: #6366f1;
 }
-header h1.title {
-  margin-bottom: 5px;
-}
-header .title-wrapper p {
-  color: #6366f1;
-  font-size: 0.7rem;
+header .title-wrapper h1.title {
+  font-size: 1.3rem;
+  margin-bottom: 0px;
 }
 
-header .back-calendar i{
-  /* font-size: 60px; */
-  font-size: 40px;
+header .title-wrapper span.timeslot {
+  display: inline-block;
+  font-size: 0.8rem;
+  padding-bottom: 3px;
+  font-weight: 600;
   color: #6366f1;
+  line-height: 1.1;
 }
 header .back-calendar {
-  /* height: 80px;
-  width: 80px; */
-  /* height: 60px;
-  width: 60px; */
-  padding: 6px;
-  background-color: #F5F6FA;
-  border-radius: 4px;
+  height: 36px;
+  padding: 4px 14px;
+  /* background-color: #F5F6FA; */
+  border-radius: 6px;
+  /* border: 1px solid #6366f1; */
+  border: 1px solid #dcdcdc;
   cursor: pointer;
+}
+header .back-calendar i {
+  font-size: 0.9rem;
+  color: #6366f1;
+}
+header span.back-calendar-text {
+  display: inline-block;
+  position: relative;
+  bottom: 1px;
+  margin-left: 8px;
+  font-size: 0.8rem;
+}
+
+@media screen and (max-width: 414px) {
+  header {
+    flex-direction: column;
+    align-items: center;
+  }
 }
 </style>
 
 <style>
-
-p .page-btn-wrap{
-  display: inline;
-  margin-left: 5px;
-}
-
-#request {
-  color: rgb(32, 64, 97);
-  /* height: 100%; */
-  flex-grow: 1;
-  padding-top: 66px;
-}
-
-#request .w100 {
-  width: 100%
-}
-
-#request .template__Wrapper{
-  flex-grow: 1;
-  transition: background-color 0.15s, border-color 0.15s, color 0.15s;
-}
-
-#request button.return-btn {
-  color: #fff;
-  background-color: rgba(99, 102, 241, 0.7);
-  text-align: center;
-  padding: 2px 6px 4px;
-  margin-left: 4px;
-  font-size: 1rem;
-  position: relative;
-  bottom: 2px;
-}
-
-#request button.reset-form {
-  color: #fff;
-  background-color: #999;
-  text-align: center;
-  padding: 0px 4px 2px;
-  margin-left: 0px;
-  font-size: 1rem;
-}
-
-#request h1.header-text {
-  font-size: 2.5rem;
-  margin-bottom: 60px;
-}
-
-#request section.header-subtext {
-  margin-bottom: 50px;
-  /* padding: 0 24px */
-}
-#request section.header-subtext .timeslot {
-  font-size: 1.1rem;
-  font-weight: 600;
-}
-
-/* #request section.header-subtext h1 {
-  font-size: 1.6rem;
-  margin-bottom: 20px;
-} */
-
-#request section.header-subtext .page-title {
+/* #request section.header-subtext .page-title {
   font-size: 1.8rem;
   display: inline-block;
-}
-#request section.header-subtext .page-subtitle {
+} */
+/* #request section.header-subtext .page-subtitle {
   font-size: 1.0rem;
   font-weight: 500;
   display: inline-block;
-}
+} */
 
-p.room-body-summary{
+/* p.room-body-summary{
   font-size: 0.75rem;
   margin-top: 20px;
   background-color: #faebd76f;
   padding: 10px;
   border-left: 4px solid #f0932b;
-}
-
-/* ---- Form ---- */
-/* #request .form-row {
-  margin-bottom: 20px;
-}
-
-#request .form-row label.label {
-  font-size: .85rem;
-  margin-bottom: 6px;
-  font-weight: 600;
-  align-items: center;
-}
-
-#request .hissu {
-  background-color: #e74c3c;
-  padding: 0 4px 1px;
-  color: #f1f2f6;
-  font-size: .67rem;
-  display: block;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  margin-left: 5px;
-  border-radius: 0px;
-}
-
-#request .td2 {
-  margin-left: 5px;
-  color: #808080;
-}
-#request .hint {
-  font-size: .7rem;
-  font-weight: 600;
-  color: #929292;
-}
-
-#request .error-wrapper {
-  display: flex;
-}
-
-#request span.is-danger {
-  padding: 0px 3px 0px 0;
-  border-radius: 0px;
-  font-size: .7rem;
-  color: #ec5700;
-}
-
-#request .p-dropdown {
-  padding: 0;
-  width: 100%;
-  margin-right: 0;
-  font: inherit;
-  border-radius: 0px;
-  background-color: rgba(245, 243, 250, 0.6);
-}
-
-#request .p-dropdown .p-inputtext {
-  height: 34px;
-  line-height: 2.4;
-}
-
-#request .p-dropdown .p-dropdown-trigger {
-  background-color: rgba(245, 243, 250, 0.6);
-}
-
-#request .p-dropdown,
-#request .p-inputtext {
-  height: 40px;
-  width: 100%;
-  border-radius: 0px;
-  font-size: 1.0rem;
-  padding: 0 0 0 10px;
-  color: #000;
-  background-color: rgba(245, 243, 250, 0.6);
-}
-
-#request .p-dropdown {
-  padding-left: 0;
-}
-
-#request .p-inputtext::placeholder {
-  color: rgba(128, 127, 130, .7);
-}
-
-#request .p-dropdown-panel .p-dropdown-items .p-dropdown-item {
-  font-size: 1.4rem;
-}
-
-#request .p-checkbox .p-checkbox-box {
-  border-radius: 0;
-}
-
-#request .checkbox-wrapper {
-  margin-right: 8px;
-}
-
-#request .flex-column .checkbox-wrapper {
-  margin-bottom: 8px;
-}
-
-#request .checkbox-wrapper:last-of-type {
-  margin-right: 0px;
-}
-
-#request .flex-column .checkbox-wrapper:last-of-type {
-  margin-bottom: 0;
-}
-
-#request .checkbox-wrapper label {
-  font-size: 0.8rem;
-  margin-left: 4px;
 } */
 
-
-/* ---Button--- */
-
-/* #request button.submit-button {
-  width: 200px;
-  color: #f5f6fa;
-  background: radial-gradient(circle, rgba(102, 105, 242, 1) 75%, rgba(88, 91, 210, 1) 100%);
-  height: 44px;
-  font-weight: 500;
-  border-radius: 0px;
-  font-size: 1rem;
-}
-
-#request .form-button-wrapper {
-  margin-top: 50px;
-} */
-
-@media screen and (max-width: 767px) {
+/* @media screen and (max-width: 767px) {
   #request .form-row .form-row-wrapper {
     flex-direction: column;
   }
@@ -671,9 +504,9 @@ p.room-body-summary{
   #request .form-row .form-row-wrapper .flex-column {
     width: 100%;
   }
-}
+} */
 
-@media screen and (max-width: 480px) {
+/* @media screen and (max-width: 480px) {
   #request .form-row .form-row-wrapper .flex-column {
     width: 100% !important;
   }
@@ -681,16 +514,5 @@ p.room-body-summary{
   #request button.submit-button {
     width: 100%;
   }
-}
-@media screen and (max-width: 414px) {
-  header {
-    flex-direction: column;
-    align-items: center;
-  }
-}
-
-/* --- Form end --- */
-
-
-
+} */
 </style>

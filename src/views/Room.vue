@@ -45,7 +45,7 @@
 
 
           <div class="calendar-wrapper">
-            <div class="calendar-dates-header flex justify-space-between align-center" v-if="!isLoading">
+            <div class="calendar-dates-header flex justify-space-between align-center">
               <div class="header-btn-wrapper flex justify-center align-center">
                 <button class="flex justify-center align-center arrow prev" @click="changeWeek(-1)">
                    <i class="pi pi-chevron-left"></i>
@@ -552,7 +552,7 @@ export default defineComponent({
 
 
 
-#index .selected-week-wrapper{
+.header-subtext .selected-week-wrapper{
   position: relative;
   width: 100%;
   height: 44px;
@@ -561,7 +561,7 @@ export default defineComponent({
   border-radius: 6px;
   padding: 2px;
 }
-#index .selected-week-wrapper .currentWeek{
+.header-subtext .selected-week-wrapper .currentWeek{
   position: absolute;
   left: 10px;
   font-size: 1rem;
@@ -570,12 +570,12 @@ export default defineComponent({
   border-radius: 6px;
 }
 
-#index .selected-week-wrapper span.week-text{
+.header-subtext .selected-week-wrapper span.week-text{
   color: #555555;
   font-weight: 400;
   padding-bottom: 2px;
 }
-#index .selected-week-wrapper span.week-text > span{
+.header-subtext .selected-week-wrapper span.week-text > span{
   font-weight:600;
 }
 
@@ -589,7 +589,7 @@ export default defineComponent({
 .calendar-dates-header .header-date {
   height: 120px;
   width: calc((100% - 60px) / 7);
-  min-width: 40px;
+  min-width: 33px;
   margin: 15px 0;
   position: relative;
 }
@@ -610,16 +610,32 @@ export default defineComponent({
   border-radius: 10px;
   color: white;
 }
-.calendar-dates-header .header-date.today.addafter::after {
-  display: none;
-}
 
 /* .calendar-dates-header .header-date .month {} */
-.calendar-dates-header .header-date .day {
+.calendar-dates-header .header-date .header-date-inner .day {
   font-size: 1.6rem;
   font-weight: 600;
 }
 /* .calendar-dates-header .header-date .weekday {} */
+
+@media screen and (max-width: 415px){
+  .calendar-dates-header .header-date {
+    height: 85px;
+  }
+  .calendar-dates-header .header-date::after {
+    display: none;
+    content: none;
+  }
+  .calendar-dates-header .header-date .header-date-inner{
+    padding: 5px;
+    font-size: 0.9rem;
+  }
+  .calendar-dates-header .header-date .header-date-inner .day {
+    font-size: 1rem;
+  }
+}
+
+
 .header-btn-wrapper button.arrow {
   cursor: pointer;
   min-width: 50px;
@@ -636,12 +652,7 @@ export default defineComponent({
 .header-btn-wrapper .arrow:active{
   transform: translateY(2px);
 }
-/* button.arrow.prev {
 
-}
-button.arrow.next {
-
-} */
 button.arrow i {
   position: relative;
   top: 1px;
@@ -688,13 +699,20 @@ button.arrow i {
 #index .selected-week-wrapper .arrow:hover i{
   color: rgb(99, 102, 241);
 }
+/* ----- Calendar content ----- */
+
+
+
+
+
+
 .calendar-legend {
   margin-right: 60px;
 }
 @media screen and (max-width: 515px){
   .calendar-legend {
-  margin: 0;
-}
+    margin: 0;
+  }
 }
 </style>
 
@@ -1121,7 +1139,7 @@ button.arrow i {
     align-items: center;
     justify-content: center;
     padding: 0;
-    min-width: 40px;
+    min-width: 33px;
     height: 40px;
     border-width: 1px;
   }

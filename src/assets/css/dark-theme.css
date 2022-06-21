@@ -215,7 +215,10 @@ html[theme="dark"] #index .selected-week-wrapper span.week-text{
 html[theme="dark"] #index .week-cell__contents .time{
   font-weight: 400;
 }
-
+/* ----- Form page ----- */
+/*html[theme="dark"] #request .container {
+  background-color: #16181ad1;;
+} */
 
 @media screen and (max-width: 767px){
   html[theme="dark"] #index .icon-list {
