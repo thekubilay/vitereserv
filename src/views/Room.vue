@@ -243,9 +243,15 @@
         </div>
       </div>
       <!-- <VitFooter/> -->
-      <div v-else-if="isRest" class="maintenance">
-      <p>ただいまメンテナンス中です。</p>
-      <p>少々お待ちください。</p>
+      <div v-else-if="isRest" class="maintenance template__Wrapper">
+        <div class="container">
+          <h2 class="h2">ただいまメンテナンス中です。</h2>
+          <div>
+            <section class="message__Wrapper">
+              <h3 class="h3">ご迷惑をおかけしておりますが、<br>今しばらくお待ちください</h3>
+            </section>
+          </div>
+        </div>
       </div>
     </div>
 </template>
@@ -332,6 +338,7 @@ export default defineComponent({
       setTimeout(() => {
         overlay.value?.classList.remove('active')
       }, 100);
+      router.push({query:{week:currentWeek.value}})
     }
 
     const separatedHolidaysCheck = (date:string):Boolean => {
@@ -450,7 +457,11 @@ export default defineComponent({
     function init() {
       deleteQuery()
       calendarService.value = new calendarServiceClass();
-      currentWeek.value = calendarService.value.currentWeek
+      if(route.query.week){
+        currentWeek.value = Number(route.query.week)
+      }else{
+        currentWeek.value = calendarService.value.currentWeek
+      }
       weekDatesObjs.value = calendarService.value.getWeekDatesAsObject(currentWeek.value as number)
       currentDate.value = calendarService.value.currentDate.replace("年","/").replace("月","/").replace("日","")
       getRooms();
@@ -1018,14 +1029,15 @@ button.arrow i {
 
 
 /* maintenance */
-#index .maintenance {
-  width: 100%;
-  height: 70vh
+#index .maintenance h2 {
+  margin-top: 100px;
+  text-align: center;
 }
 
-#index .maintenance p{
+#index .maintenance h3 {
+  font-size: 1.4rem;
+  margin-top: 60px;
   text-align: center;
-  margin: 30px auto;
 }
 
 
@@ -1180,8 +1192,6 @@ button.arrow i {
   .calendar-dates-header .header-btn-wrapper {
     display: none;
   }
-
-
 
 }
 
