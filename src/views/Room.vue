@@ -45,7 +45,7 @@
 
 
           <div class="calendar-wrapper">
-            <div class="calendar-dates-header flex justify-space-between align-center" v-if="!isLoading">
+            <div class="calendar-dates-header flex justify-space-between align-center" >
               <div class="header-btn-wrapper flex justify-center align-center">
                 <button class="flex justify-center align-center arrow prev" @click="changeWeek(-1)">
                    <i class="pi pi-chevron-left"></i>
@@ -243,9 +243,15 @@
         </div>
       </div>
       <!-- <VitFooter/> -->
-      <div v-else-if="isRest" class="maintenance">
-      <p>ただいまメンテナンス中です。</p>
-      <p>少々お待ちください。</p>
+      <div v-else-if="isRest" class="maintenance template__Wrapper">
+        <div class="container">
+          <h2 class="h2">ただいまメンテナンス中です。</h2>
+          <div>
+            <section class="message__Wrapper">
+              <h3 class="h3">ご迷惑をおかけしておりますが、<br>今しばらくお待ちください</h3>
+            </section>
+          </div>
+        </div>
       </div>
     </div>
 </template>
@@ -1005,14 +1011,15 @@ button.arrow i {
 
 
 /* maintenance */
-#index .maintenance {
-  width: 100%;
-  height: 70vh
+#index .maintenance h2 {
+  margin-top: 100px;
+  text-align: center;
 }
 
-#index .maintenance p{
+#index .maintenance h3 {
+  font-size: 1.4rem;
+  margin-top: 60px;
   text-align: center;
-  margin: 30px auto;
 }
 
 
@@ -1167,8 +1174,6 @@ button.arrow i {
   .calendar-dates-header .header-btn-wrapper {
     display: none;
   }
-
-
 
 }
 
