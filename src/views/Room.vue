@@ -882,7 +882,7 @@ export default defineComponent({
   line-height: 1.3;
   /* margin: -10px 0 10px 0; */
   position: absolute;
-  top: -10px;
+  top: -0.6rem;
   left: -15%;
   /* transform: translateX(-50%); */
   z-index: 15;
@@ -1062,6 +1062,7 @@ export default defineComponent({
   /* Time */
   #index .calendar-outer .times-wrapper .times-cells p.sp-time {
     left: 0;
+    font-weight: 400;
   }
   #index .calendar-outer .times-wrapper .times-cells .time-cell::after {
     width: 80%;
@@ -1125,7 +1126,7 @@ export default defineComponent({
     min-height: 0;
   }
   #index .selected-week-wrapper .arrow i{
-    font-size: 1.7rem;
+    font-size: 1.3rem;
   }
 
   #index .selected-week-wrapper {
