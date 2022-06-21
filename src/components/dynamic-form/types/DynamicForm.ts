@@ -27,7 +27,8 @@ interface PrimeVueFormType
   previewText?: string,
   sizeLimit?: string,
   accept?: string,
-  binary?:boolean,//n
+  binary?:boolean,
+  separator?: string,
   dateFormat?: string,
   showTime?: boolean,
   hourFormat?: string,

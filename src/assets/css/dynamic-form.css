@@ -10,6 +10,12 @@
   height: 41px;
   border-radius: 0;
 }
+.p-chips {
+  width: 100%;
+}
+.p-chips .p-chips-multiple-container .p-chips-input-token input {
+  font-size: .8rem;
+}
 .p-inputtextarea {
   padding: 8px;
   height: 100px;
@@ -165,4 +171,15 @@
 }
 #df.dynamic-form .f-body .ctx .actions button.submit:active {
   transform: translateY(2px);
+}
+@media screen and (max-width: 414px){
+  #df.dynamic-form .f-body .ctx .f-row {
+    flex-direction: column;
+  }
+  #df.dynamic-form .f-body .ctx .f-row div:not(:last-child) {
+    margin-bottom: 16px;
+  }
+  #df.dynamic-form .f-body .ctx .f-row .f-r-column {
+    width: 100%;
+  }
 }

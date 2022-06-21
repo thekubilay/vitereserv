@@ -22,7 +22,7 @@
               <div class="flex justify-center align-center">
                 <div class="back-calendar flex align-center justify-center"  @click="goTo('Room')">
                   <i class="pi pi-calendar"></i>
-                  <span class="back-calendar-text">日付変更</span>
+                  <span class="back-calendar-text">カレンダーへ</span>
                 </div>
               </div>
             </header>
@@ -472,7 +472,10 @@ header span.back-calendar-text {
 @media screen and (max-width: 414px) {
   header {
     flex-direction: column;
-    align-items: center;
+    align-items: start;/*center*/
+  }
+  header .title-wrapper {
+    margin-bottom: 10px;
   }
 }
 </style>

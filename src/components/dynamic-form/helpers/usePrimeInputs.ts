@@ -19,6 +19,10 @@ export const pvcl = (form: DynamicForm, data: any): Promise<boolean> => {
             return import("primevue/inputnumber").then((component) => {
               column.component = shallowRef<any>(component.default)
             })
+          case "chips":
+            return import("primevue/chips").then((component) => {
+              column.component = shallowRef<any>(component.default)
+            })
           case "checkbox":
             return import("primevue/checkbox").then((component) => {
               column.component = shallowRef<any>(component.default)

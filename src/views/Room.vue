@@ -19,32 +19,21 @@
             </h1>
             <p v-if="room?.body && room?.body !== 'null'" class="room-body-summary">{{room?.body}}</p>
               <!-- ご予約内容の選択 -->
-            <div class="header-subtext flex justify-center align-center">
-              <!-- <h2 v-if="room">{{ room.name }}</h2> -->
-               <div class="selected-week-wrapper flex align-center justify-center">
-
-                 <!-- <p v-if="weekDatesObjs" class="currentWeek">
-                  {{currentWeekForDisplay}} 〜 
-                 </p> -->
-
-                <button class="flex justify-center align-center arrow prev" @click="changeWeek(-1)">
-                  <i class="pi pi-chevron-left"></i>
-                </button>
-                <!-- 
-                <span class="week-text" v-if="weekDatesObjs">
-                  {{ weekDatesObjs[0].date+" "}}<span>(日)</span> 〜  {{ weekDatesObjs[6].date+" "}}<span>(土)</span>
-                </span> -->
-
-                <button class="flex justify-center align-center arrow next" @click="changeWeek(1)">
-                  <i class="pi pi-chevron-right"></i>
-                </button>
-
-              </div>
-            </div>
           </div>
 
 
           <div class="calendar-wrapper">
+            <div class="sp-buttons flex justify-center align-center">
+              <div class="selected-week-wrapper flex align-center justify-center">
+                <button class="flex justify-center align-center arrow prev" @click="changeWeek(-1)">
+                  <i class="pi pi-chevron-left"></i>
+                </button>
+                <button class="flex justify-center align-center arrow next" @click="changeWeek(1)">
+                  <i class="pi pi-chevron-right"></i>
+                </button>
+              </div>
+            </div>
+
             <div class="calendar-dates-header flex justify-space-between align-center">
               <div class="header-btn-wrapper flex justify-center align-center">
                 <button class="flex justify-center align-center arrow prev" @click="changeWeek(-1)">
@@ -487,7 +476,7 @@ export default defineComponent({
 </script>
 
 <style scoped>
-
+/* Notification */
 .notification {
   position: fixed;
   top: 20px;
@@ -548,22 +537,28 @@ export default defineComponent({
   flex-grow: 1;
   padding-top: 66px;
 }
-#index .container{
+.container{
   max-width:1160px;
   /* min-width: 400px; */
 }
-
-#index .calendar-outer {
-
+.container .calendar-wrapper {
+  margin-top: 10px;
 }
+/* #index .calendar-outer {
+
+} */
 /* --- Header --- */
-#index .header-container{
-  /* margin-bottom: 10px; */
+/* #index .header-container{
+  margin-bottom: 10px;
+} */
+
+/* ---- Smartphone buttons ---- */
+.sp-buttons{
+  display: none;
+  margin-top: 14px;
+  height: 44px;
 }
-
-
-
-.header-subtext .selected-week-wrapper{
+.sp-buttons .selected-week-wrapper{
   position: relative;
   width: 100%;
   height: 44px;
@@ -572,28 +567,58 @@ export default defineComponent({
   border-radius: 6px;
   padding: 2px;
 }
-.header-subtext .selected-week-wrapper .currentWeek{
+/* .sp-buttons .selected-week-wrapper .currentWeek{
   position: absolute;
   left: 10px;
   font-size: 1rem;
   font-weight: 700;
   color: #5b5ede;
   border-radius: 6px;
-}
+} */
 
-.header-subtext .selected-week-wrapper span.week-text{
+/* .sp-buttons .selected-week-wrapper span.week-text{
   color: #555555;
   font-weight: 400;
   padding-bottom: 2px;
 }
-.header-subtext .selected-week-wrapper span.week-text > span{
+.sp-buttons .selected-week-wrapper span.week-text > span{
   font-weight:600;
+} */
+
+
+.sp-buttons .selected-week-wrapper .arrow {
+  height: 100%;
+  padding: 0 10px;
+  background-color: #fff;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 50%;
+  transition: 0.3s;
+}
+.sp-buttons .selected-week-wrapper .arrow:first-of-type {
+  margin-right: 2px;
+}
+.sp-buttons .selected-week-wrapper .arrow i {
+  font-size: 0.9rem;
+  position: relative;
+  top: 1px;
+  color: #778beb;
+}
+
+.sp-buttons .selected-week-wrapper .arrow:active{
+  transform: translateY(2px);
+  /* background-color: rgb(99, 102, 241,0.05); */
+}
+
+.sp-buttons .selected-week-wrapper .arrow:hover{
+  background-color: rgb(250, 250, 250);
+}
+
+.sp-buttons .selected-week-wrapper .arrow:hover i{
+  color: rgb(99, 102, 241);
 }
 
 /* ---- Calendar header ---- */
-/* .calendar-dates-header {
-  border-bottom: 1px solid #f1f2f6;
-} */
 .calendar-dates-header .header-btn-wrapper {
   width: 60px;
 }
@@ -629,7 +654,70 @@ export default defineComponent({
 }
 /* .calendar-dates-header .header-date .weekday {} */
 
+
+/* Calendar buttons for PC */
+.header-btn-wrapper button.arrow {
+  cursor: pointer;
+  min-width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #f4f6f9;
+  transition: transform 0.15s;
+}
+.header-btn-wrapper button.arrow.disable {
+  opacity: 0.3;
+  pointer-events: none;
+}
+.header-btn-wrapper button.arrow:active{
+  transform: translateY(2px);
+}
+
+.header-btn-wrapper button.arrow i {
+  position: relative;
+  top: 1px;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+/* ----- Calendar content ----- */
+
+
+
+
+
+/* ----- Calendar legend ----- */
+.calendar-legend {
+  margin-right: 60px;
+}
+.calendar-legend .icon-list {
+  font-size: 0.8rem;
+  font-weight: 300;
+  margin: 0;
+  padding: 10px 10px 10px 0;
+  /* border-left: 4px solid rgb(99, 102, 241); */
+  /* background-color: rgb(99, 102, 241,0.05); */
+}
+.calendar-legend .icon-list li {
+  margin-left: 8px;
+  color: #555;
+}
+
+.calendar-legend .icon-list li span{
+  padding-left: 5px;
+}
+
+/* ---- Media for smart phone ---- */
+
 @media screen and (max-width: 415px){
+  .sp-buttons{
+    display: block;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column-reverse;
+  }
+  .calendar-dates-header {
+    justify-content: space-around;
+  }
   .calendar-dates-header .header-date {
     height: 85px;
   }
@@ -644,85 +732,24 @@ export default defineComponent({
   .calendar-dates-header .header-date .header-date-inner .day {
     font-size: 1rem;
   }
-}
-
-
-.header-btn-wrapper button.arrow {
-  cursor: pointer;
-  min-width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  /* background-color: #fafafa; */
-  background-color: rgb(244, 246, 249);
-  transition: transform 0.15s;
-}
-.header-btn-wrapper button.arrow.disable {
-  opacity: 0.3;
-  pointer-events: none;
-}
-.header-btn-wrapper .arrow:active{
-  transform: translateY(2px);
-}
-
-button.arrow i {
-  position: relative;
-  top: 1px;
-  font-size: 1rem;
-  font-weight: 500;
-}
-/* #index .calendar__header .arrow {
-    width: 30px;
-    height: 30px;
-    
-    border: 1px solid #c7c7c7;
-    background-color: #fafafa;
-} */
-
-#index .selected-week-wrapper .arrow {
-  height: 100%;
-  padding: 0 10px;
-  background-color: #fff;
-  border-radius: 4px;
-  cursor: pointer;
-  /* width: 60px; */
-  width: 50%;
-  transition: 0.3s;
-}
-#index .selected-week-wrapper .arrow:first-of-type {
-  margin-right: 2px;
-}
-#index .selected-week-wrapper .arrow i {
-  font-size: 0.9rem;
-  position: relative;
-  top: 1px;
-  color: #778beb;
-}
-
-#index .selected-week-wrapper .arrow:active{
-  transform: translateY(2px);
-  /* background-color: rgb(99, 102, 241,0.05); */
-}
-
-#index .selected-week-wrapper .arrow:hover{
-  background-color: rgb(250, 250, 250);
-}
-
-#index .selected-week-wrapper .arrow:hover i{
-  color: rgb(99, 102, 241);
-}
-/* ----- Calendar content ----- */
-
-
-
-
-
-
-.calendar-legend {
-  margin-right: 60px;
-}
-@media screen and (max-width: 515px){
+  /* Calendar legend */
   .calendar-legend {
     margin: 0;
+  }
+  .calendar-legend .icon-list {
+    border: none;
+    justify-content: center;
+    background-color: white;
+  }
+
+  #index .calendar-outer .times-wrapper.right {
+    display: none;
+  }
+  .calendar-dates-header .header-btn-wrapper {
+    display: none;
+  }
+  #index .calendar-outer .times-wrapper .times-cells .time-cell{
+    height: 45px;
   }
 }
 </style>
@@ -747,33 +774,6 @@ button.arrow i {
   border-left: 4px solid #f0932b;
 }
 
-
-#index .header-subtext{
-  display: none;
-  margin-top: 14px;
-  height: 44px;
-}
-
-#index .calendar-wrapper {
-  margin-top: 10px;
-}
-
-#index .icon-list {
-  font-size: 0.8rem;
-  font-weight: 300;
-  margin: 0;
-  padding: 10px 10px 10px 0;
-  /* border-left: 4px solid rgb(99, 102, 241); */
-  /* background-color: rgb(99, 102, 241,0.05); */
-}
-#index .icon-list li {
-  margin-left: 8px;
-  color: #555;
-}
-
-#index .icon-list li span{
-  padding-left: 5px;
-}
 
 /* --- Content --- */
 #index .weekday-wrapper {
@@ -874,9 +874,6 @@ button.arrow i {
   right: auto;
   left: 50%;
 }
-
-
-/* #index .calendar-outer .times-wrapper .week-cell__contents p.sp-time { */
 
 #index .calendar-outer .times-wrapper .times-cells p.sp-time {
   font-size: 0.75rem;
@@ -987,12 +984,6 @@ button.arrow i {
   /* border-left: 4px solid #16a085; */
 }
 
-/* #index .weekday-wrapper .sec .btn_select.disable {
-  color: #8b8b8b;
-  background-color: #eef2f5;
-  border-left: 4px solid #bfbfc1;
-} */
-
 #index .weekday-wrapper .sec .btn_select.sec-circle svg{
   /* stroke: #fff; */
   stroke: #2ECC71;
@@ -1025,9 +1016,6 @@ button.arrow i {
   color: #edebe7;
 }
 
-
-
-
 /* maintenance */
 #index .maintenance h2 {
   margin-top: 100px;
@@ -1047,13 +1035,6 @@ button.arrow i {
   } */
 }
 
-
-/* @media screen and (min-width: 767px) {
-  #index .calendar-outer .sp-times {
-    display: none;
-  }
-} */
-
 @media screen and (max-width: 414px) {
   #index h1 .title{
     text-align: center;
@@ -1061,12 +1042,6 @@ button.arrow i {
   }
   #index .header-container h1 .sub-title{
     text-align: center
-  }
-  #index .header-subtext{
-    display: block;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column-reverse;
   }
   #index .weekday-wrapper{
     margin: 0;
@@ -1082,16 +1057,6 @@ button.arrow i {
   }
   #index .week-cell-header .date{
     font-size: 0.6rem;
-  }
-
-  #index .icon-list {
-    border: none;
-    justify-content: center;
-    background-color: white;
-  }
-
-  #index .calendar-outer {
-    justify-content: center;
   }
 
   /* Time */
@@ -1141,7 +1106,7 @@ button.arrow i {
 
   #index .calendar-outer .week-cell__contents .sec {
     min-width: 100%;
-    min-height: 40px;
+    min-height: 45px;
     margin: 0;
     align-items: center;
   }
@@ -1184,13 +1149,6 @@ button.arrow i {
   }
   #index .calendar-outer .times-wrapper {
     min-width: 45px;
-  }
-
-  #index .calendar-outer .times-wrapper.right {
-    display: none;
-  }
-  .calendar-dates-header .header-btn-wrapper {
-    display: none;
   }
 
 }
