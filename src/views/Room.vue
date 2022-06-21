@@ -718,7 +718,7 @@ export default defineComponent({
 /* ---- Media for smart phone ---- */
 
 @media screen and (max-width: 415px){
-  .sp-buttons{
+  .calendar-wrapper .sp-buttons{
     display: block;
     align-items: center;
     justify-content: center;
