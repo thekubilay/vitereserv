@@ -26,25 +26,6 @@
                 </div>
               </div>
             </header>
-            <!-- <h1 class="flex-column">
-              <span class="page-title">
-                {{ pageTitle || "名前なし" }}
-              </span>
-            </h1>
-            <p>
-              <span class="timeslot">
-                {{ date.split('-')[0]}}<span>年</span>{{ date.split('-')[1]}}月{{ date.split('-')[2]}}日
-                &nbsp;
-                {{ time.split(':')[0]}}:{{ time.split(':')[1]}}
-                &nbsp;
-              </span>
-            <div class="back-btn-wrap">
-              <button class="back-btn" @click="goTo('Room')">
-                <i class="pi pi-calendar"></i>
-                <span class="btn-text">日付変更</span> 
-              </button></div>
-            </p>
-            <p v-if="subTitle && subTitle !== 'null'" class="room-body-summary">{{subTitle}}</p> -->
           </section>
           <Form
             v-if="Object.keys(dynForm).length > 0"
@@ -120,63 +101,46 @@ export default defineComponent({
       saveSessionData,
     } = FormsFunc()
 
-    function init(): void {
+    async function init(): Promise<void>{
       // 1. Check if vacancy, if not send back to calendar
       checkVacancy()
+      try{
+        // 2. Request form data
+        const path = ENV.API + "forms/" + formID.value + "/"
+        isLoading.value = true
+        const response = await  axios.get<FormItem[]>(path)
+        const data = JSON.parse(JSON.stringify(response.data))
+        // console.log(data)
+        if (data.title) {
+          pageTitle.value = data.title !== "null" ?  data.title.toString() : ""
+          document.getElementsByTagName('title')[0].innerHTML = (pageTitle.value)?pageTitle.value:"ビターブ｜予約システム作成・予約管理ならおまかせ｜viterve"
+        }
+        if (data.sub_title){
+          subTitle.value = data.sub_title !== "null" ?  data.sub_title.toString() : ""
+        }
+        // 2.5 Setup form data
+        setupForm(data.form_rows)
 
-      // 2. Request form data
-      const path = ENV.API + "forms/" + formID.value + "/"
-      // console.log(path)
-      isLoading.value = true
-      axios.get<FormItem[]>(path)
-        .then((response) => {
-          const data = JSON.parse(JSON.stringify(response.data))
-          // console.log(data)
-          if (data.title) {
-            pageTitle.value = data.title !== "null" ?  data.title.toString() : ""
-            document.getElementsByTagName('title')[0].innerHTML = (pageTitle.value)?pageTitle.value:"ビターブ｜予約システム作成・予約管理ならおまかせ｜viterve"
-          }
-          if (data.sub_title){
-            subTitle.value = data.sub_title !== "null" ?  data.sub_title.toString() : ""
-          }
-          // 2.5 Setup form data
-          setupForm(data.form_rows)
+        // 3. Check for session data
+        loadSession()
 
-          // 3. Check for session data
-          loadSession()
-
-          // 4. Get vacancy data
-          axios.get<any>(ENV.API + "vacancies/" + vacancyID.value + "/")
-            .then((response2) => {
-              // console.log("vacancy:",response2.data)
-              if(parseInt(response2.data.applicants.length) < parseInt(response2.data.limit)){
-                date.value = response2.data.date
-                time.value = response2.data.date_time_start.slice( -9, -4 )
-                isLoading.value = false
-                isPageLoaded = true
-                setupExtraData()
-              }else{
-                isLoading.value = false
-                isPageLoaded = true
-                store.SET_ERROR({title: "エラー", text: "サーバーのエラーが発生しました。"})
-                goTo("Room")
-                }
-            })
-            .catch((error2) => {
-              isLoading.value = false
-              isPageLoaded = true
-              store.SET_ERROR({title: "エラー", text: "サーバーのエラーが発生しました。"})
-              console.log(error2)
-              goTo("Room")
-            })
-          // isLoading.value = false
-        })
-        .catch((error) => {
-          isLoading.value = false;
-          store.SET_ERROR({title: "エラー", text: "サーバーのエラーが発生しました。"})
-          console.log(error)
-          goTo("Room")
-        })
+        // 4. Get vacancy data
+        const response2 =  await axios.get<any>(ENV.API + "vacancies/" + vacancyID.value + "/")
+        if(parseInt(response2.data.applicants.length) < parseInt(response2.data.limit)){
+          date.value = response2.data.date
+          time.value = response2.data.date_time_start.slice( -9, -4 )
+          isLoading.value = false
+          isPageLoaded = true
+          setupExtraData()
+        }else{
+          throw "予約が上限に達しました。他の日時を選択して下さい。"
+        }
+      }catch(error){
+        isLoading.value = false;
+        store.SET_ERROR({title: "エラー", text: "サーバーのエラーが発生しました。"})
+        console.log(error)
+        goTo("Room")
+      }
     }
 
     function getRows(rows: FormRow[]): DynamicFormRow[]{
@@ -243,7 +207,7 @@ export default defineComponent({
     function getRulesFunctions(rules: string): Function[]{
       const r:string[] = rules.replace(" ", "").split(",")
       const res: Function[] = []
-    //   if (rules && rules.length > 0) {
+      // if (rules && rules.length > 0) {
       r.forEach((rule: string) => {
         if(rule === "katakana"){
           res.push(isKatakana)
@@ -266,7 +230,6 @@ export default defineComponent({
 
     function setupForm(f: FormRow[]): void {
       dynForm.value = {class: "",rows: getRows(f)}
-      // console.log(dynForm.value)
     }
 
     function setupExtraData(): void{
@@ -279,7 +242,6 @@ export default defineComponent({
 
     function saveForm(): void {
       setTimeout(() => {//wait a bit so model is updated first
-        // console.log("saving from to session")
         let saveData: any = {}
         dynForm.value.rows.forEach(row => {
           row.columns.forEach(column => {
@@ -291,13 +253,11 @@ export default defineComponent({
           })
         })
         saveSessionData(JSON.stringify(saveData))
-        // console.log(data)
       }, 400)
     }
 
     function loadSession(): void{
       if (hasSessionData()) {
-        // console.log("loading session data from browser")
         let d = JSON.parse(getSessionData())
         let f = getSessionFormID()
         if (f === formID.value.toString()) {
@@ -344,7 +304,6 @@ export default defineComponent({
                 resolve("novacancy")
               }
             })
-
         } catch (e) {
           console.log("error: " + e)
           reject(false)
@@ -363,7 +322,7 @@ export default defineComponent({
       setTimeout(()=>{
         isLoading.value = false;
         if(response === "novacancy"){
-          store.SET_ERROR({title: "エラー", text: "サーバーのエラーが発生しました。"}) // text: response.data.info
+          store.SET_ERROR({title: "エラー", text: "予約が上限に達しました。他の日時を選択して下さい。"}) // text: response.data.info
           goTo('Room')
         }else{
           removeSessionData()
@@ -396,7 +355,6 @@ export default defineComponent({
 
     watch(() => dynForm.value, val =>{
       if(Object.keys(val).length>0 && isPageLoaded){
-        // console.log("form changed")
         saveForm()
       }
     },{deep:true})
