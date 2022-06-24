@@ -103,7 +103,7 @@
                   <template v-else-if="room && betweenHours.length > 0">
                     <div v-for="(time, index) in betweenHours" :key="index" class="sec flex-column justify-center align-center">
                       <!-- マル -->
-                      <div v-if="findHourBefore(time, item.date) && vacanciesCheck(item.date, time).mark==='circle' && !pastTimeCheck(item.timestamp)" 
+                      <div v-if="findHourBefore(time, item.date) && vacanciesCheck(item.date, time).mark==='circle' && !pastTimeCheck(item.timestamp,time)" 
                             class="flex-column justify-center btn_select sec-circle" 
                             @click="goToForm(item.date, time, room)">
                         <!-- <p class="time">
@@ -344,14 +344,23 @@ export default defineComponent({
       return {id: 0, mark: "none"}
     }
 
-    const pastTimeCheck = (timestamp:number):boolean => {
+    const pastTimeCheck = (timestamp:number,time:string):boolean => {
       const todayTimestamp = new Date().getTime()
-      // ＊Added one day's time to the timestamp
-      if(todayTimestamp >= (timestamp + 86400000)) {
+      const targetTime = timestamp+(parseInt(time.split(':')[0]))*3600000
+      // console.log(moment(timestamp).format(),(targetTime-todayTimestamp),new Date())
+      if(targetTime < todayTimestamp) {
         return true
       }
       return false
     }
+    // const pastTimeCheck = (timestamp:number):boolean => {
+    //   const todayTimestamp = new Date().getTime()
+    //   // ＊Added one day's time to the timestamp
+    //   if(todayTimestamp >= (timestamp + 86400000)) {
+    //     return true
+    //   }
+    //   return false
+    // }
     const getPrepTime = (time: string) => {
       let splits = time.split(":")
       if(splits.length>1 && splits[1]=="00")

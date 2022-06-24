@@ -151,6 +151,8 @@ export default class CalendarService {
 
   getWeekDatesAsObject(week_num: number): WeekDatesAsObject[] {
     return this.getWeekDates(week_num).map(date => {
+      //'date' has format of 2022/01/01, but '/' is not ISO standard -> throws deprecated warning
+      //See:   https://momentjs.com/docs/#/parsing/string/
       return {
         date: moment(date).format('YYYY/MM/DD'),
         day: moment(date).format('ddd'),
