@@ -345,8 +345,9 @@ export default defineComponent({
     }
 
     const pastTimeCheck = (timestamp:number,time:string):boolean => {
-      const todayTimestamp = new Date().getTime()
+      const todayTimestamp = moment().unix()*1000//new Date().getTime()
       const targetTime = timestamp+(parseInt(time.split(':')[0]))*3600000
+      // console.log(timestamp,todayTimestamp, targetTime)
       // console.log(moment(timestamp).format(),(targetTime-todayTimestamp),new Date())
       if(targetTime < todayTimestamp) {
         return true
