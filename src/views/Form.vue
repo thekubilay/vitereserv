@@ -110,7 +110,6 @@ export default defineComponent({
         isLoading.value = true
         const response = await  axios.get<FormItem[]>(path)
         const data = JSON.parse(JSON.stringify(response.data))
-        // console.log(data)
         if (data.title) {
           pageTitle.value = data.title !== "null" ?  data.title.toString() : ""
           document.getElementsByTagName('title')[0].innerHTML = (pageTitle.value)?pageTitle.value:"ビターブ｜予約システム作成・予約管理ならおまかせ｜viterve"
@@ -290,20 +289,13 @@ export default defineComponent({
         config.data = formData
 
         try {
-          axios.get<any>(ENV.API + "vacancies/" + vacancyID.value + "/")
-            .then((response2) => {
-              if(parseInt(response2.data.applicants.length) < parseInt(response2.data.limit)){
-                axios(config).then((response) => {
-                  isLoading.value = false
-                  resolve(response)
-                  reject(false)
-                }).catch(error => {
-                  resolve(error.response)
-                })
-              }else{
-                resolve("novacancy")
-              }
-            })
+          axios(config).then((response) => {
+            isLoading.value = false
+            resolve(response)
+            reject(false)
+          }).catch(error => {
+            resolve(error.response)
+          })
         } catch (e) {
           console.log("error: " + e)
           reject(false)
@@ -321,10 +313,11 @@ export default defineComponent({
     const onComplete = (response: any): void => {
       setTimeout(()=>{
         isLoading.value = false;
-        if(response === "novacancy"){
-          store.SET_ERROR({title: "エラー", text: "予約が上限に達しました。他の日時を選択して下さい。"}) // text: response.data.info
+        if(response.data && response.data.status && response.data.status ==="REFUSED"){
+          store.SET_ERROR({title: "エラー", text: response.data.info}) // text:  //"予約が上限に達しました。他の日時を選択して下さい。"
           goTo('Room')
-        }else{
+        }
+        if(response.data && response.data.status && response.data.status ==="OK"){
           removeSessionData()
           goTo('Thanks')
         }
