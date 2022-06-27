@@ -20,24 +20,24 @@ export default defineComponent({
     const headFootRoutes = ["Room","Form"]
     const route = useRoute()
 
-    // onBeforeMount((): void => {
-    //   const storageTheme: any = localStorage.getItem("theme")
-    //   const browserTheme: string = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? "dark" : "light"
+    onBeforeMount((): void => {
+      const storageTheme: any = localStorage.getItem("theme")
+      const browserTheme: string = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? "dark" : "light"
 
-    //   if (!storageTheme){
-    //     theme.value = browserTheme
-    //   } else theme.value = storageTheme
+      if (!storageTheme){
+        theme.value = browserTheme
+      } else theme.value = storageTheme
 
-    //   window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
-    //     theme.value = event.matches ? "dark" : "light";
-    //     localStorage.setItem("theme", theme.value)
-    //   });
-    // })
+      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+        theme.value = event.matches ? "dark" : "light";
+        localStorage.setItem("theme", theme.value)
+      });
+    })
 
-    // watch(theme, val => {
-    //   localStorage.setItem("theme", val)
-    //   document.getElementsByTagName("html")[0].setAttribute("theme", val)
-    // })
+    watch(theme, val => {
+      localStorage.setItem("theme", val)
+      document.getElementsByTagName("html")[0].setAttribute("theme", val)
+    })
     return {
       theme, headFootRoutes, route
     }

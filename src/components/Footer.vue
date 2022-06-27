@@ -1,5 +1,5 @@
 <template>
-  <footer class="footer-container flex align-center justify-center">
+  <footer id="app_footer" class="footer-container flex align-center justify-center">
     <div class="inner-footer flex-column justify-center">
       <!-- <section class="notes">
         <ul>

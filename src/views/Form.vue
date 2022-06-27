@@ -410,24 +410,24 @@ header .title-wrapper span.timeslot {
   line-height: 1.1;
 }
 header .back-calendar {
-  height: 36px;
+  height: 34px;
   padding: 4px 14px;
   /* background-color: #F5F6FA; */
-  border-radius: 6px;
+  border-radius: 4px;
   /* border: 1px solid #6366f1; */
   border: 1px solid #dcdcdc;
   cursor: pointer;
+  color: #6366f1;
 }
 header .back-calendar i {
   font-size: 0.9rem;
-  color: #6366f1;
 }
 header span.back-calendar-text {
   display: inline-block;
   position: relative;
   bottom: 1px;
   margin-left: 8px;
-  font-size: 0.8rem;
+  font-size: 0.85rem;
 }
 
 @media screen and (max-width: 414px) {

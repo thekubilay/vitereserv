@@ -539,6 +539,7 @@ export default defineComponent({
   flex-grow: 1;
   padding-top: 66px;
 }
+
 .container{
   max-width:1160px;
   /* min-width: 400px; */
@@ -606,6 +607,7 @@ export default defineComponent({
   height: 100%;
   padding: 0 10px;
   background-color: #fff;
+  color: #778beb;
   border-radius: 4px;
   cursor: pointer;
   width: 50%;
@@ -618,7 +620,6 @@ export default defineComponent({
   font-size: 0.9rem;
   position: relative;
   top: 1px;
-  color: #778beb;
 }
 
 .calendar-wrapper .sp-buttons .selected-week-wrapper .arrow:active{
@@ -627,13 +628,9 @@ export default defineComponent({
 }
 
 .calendar-wrapper .sp-buttons .selected-week-wrapper .arrow:hover{
-  background-color: rgb(250, 250, 250);
+  background-color: #fafafa;
+  color: #6366f1;
 }
-
-.calendar-wrapper .sp-buttons .selected-week-wrapper .arrow:hover i{
-  color: rgb(99, 102, 241);
-}
-
 
 /* ---- Calendar header ---- */
 
@@ -699,10 +696,77 @@ export default defineComponent({
 }
 
 /* ----- Calendar content ----- */
+.calendar-outer .weekday-wrapper {
+  width: calc((100% - 60px) / 7);
+}
+.calendar-outer .weekday-wrapper .week-cell__contents{
+  transition: all 0.3s;
+  height: 100%;
+}
 
+/* Content time cells */
+.calendar-outer .times-wrapper {
+  width: 60px;
+}
 
+/* .calendar-outer .times-wrapper .week-cell-header {
+    position: relative;
+    width: auto;
+    height: 65px;
+    line-height: 1.2;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #f1f2f6;
+    background-color: #f5f6fa66;
+} */
 
+/*.calendar-outer .times-wrapper .week-cell__contents {
+    border-top: none;
+    height: 100%;
+} */
 
+/* .calendar-outer .times-wrapper .week-cell__contents .sec { */
+.calendar-outer .times-wrapper .times-cells .time-cell{
+  height: 75px;
+  width: 100%;
+  margin: 0px auto 0px;
+  text-align: center;
+  border-top: 1px solid #f1f2f6;
+  /* border-bottom: none; */
+  /* border-right: 1px solid #f1f2f6; */
+  position: relative;
+  z-index: 12;
+}
+.calendar-outer .times-wrapper .times-cells .time-cell::after{
+  content: "";
+  position: absolute;
+  top: -1px;
+  width: 50%;
+  right: 50%;
+  height: 1px;
+  background-color: white;
+}
+.calendar-outer .times-wrapper.right .times-cells .time-cell::after{
+  right: auto;
+  left: 50%;
+}
+
+.calendar-outer .times-wrapper .times-cells p.sp-time {
+  font-size: 0.7rem;
+  font-weight: 400;
+  color: #000000;
+  line-height: 1.3;
+  /* margin: -10px 0 10px 0; */
+  position: absolute;
+  top: -0.6rem;
+  left: -15%;
+  /* transform: translateX(-50%); */
+  z-index: 15;
+}
+.calendar-outer .times-wrapper.times-wrapper.right .times-cells p.sp-time {
+  left: auto;
+  right: -15%;
+}
 
 /* ----- Calendar legend ----- */
 .calendar-legend {
@@ -777,14 +841,7 @@ export default defineComponent({
 <style>
 
 /* --- Content --- */
-#index .weekday-wrapper {
-  width: calc((100% - 60px) / 7);
-}
 
-#index .weekday-wrapper .week-cell__contents{
-  transition: all 0.3s;
-  height: 100%;
-}
 
 #index .weekday-wrapper .week-cell-header {
   position: relative;
@@ -827,70 +884,6 @@ export default defineComponent({
   font-weight: 500;
   font-size: 0.8rem;
   margin-top: 5px;
-}
-
-/* time content cells */
-#index .calendar-outer .times-wrapper {
-  width: 60px;
-}
-
-#index .calendar-outer .times-wrapper .week-cell-header {
-    /* position: relative;
-    width: auto; */
-    /* height: 65px; */
-    /* line-height: 1.2; */
-    /* padding-bottom: 5px; */
-    /* margin-bottom: 10px; */
-    /* border-bottom: 1px solid #f1f2f6; */
-    /* background-color: #f5f6fa66; */
-}
-
-/* #index .calendar-outer .times-wrapper .week-cell__contents {
-    border-top: none;
-    height: 100%;
-} */
-
-/* #index .calendar-outer .times-wrapper .week-cell__contents .sec { */
-#index .calendar-outer .times-wrapper .times-cells .time-cell{
-  height: 75px;
-  width: 100%;
-  margin: 0px auto 0px;
-  text-align: center;
-  border-top: 1px solid #f1f2f6;
-  /* border-bottom: none; */
-  /* border-right: 1px solid #f1f2f6; */
-  position: relative;
-  z-index: 12;
-}
-#index .calendar-outer .times-wrapper .times-cells .time-cell::after{
-  content: "";
-  position: absolute;
-  top: -1px;
-  width: 50%;
-  right: 50%;
-  height: 1px;
-  background-color: white;
-}
-#index .calendar-outer .times-wrapper.right .times-cells .time-cell::after{
-  right: auto;
-  left: 50%;
-}
-
-#index .calendar-outer .times-wrapper .times-cells p.sp-time {
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: rgb(145, 145, 145);
-  line-height: 1.3;
-  /* margin: -10px 0 10px 0; */
-  position: absolute;
-  top: -0.6rem;
-  left: -15%;
-  /* transform: translateX(-50%); */
-  z-index: 15;
-}
-#index .calendar-outer .times-wrapper.times-wrapper.right .times-cells p.sp-time {
-  left: auto;
-  right: -15%;
 }
 
 
@@ -951,6 +944,7 @@ export default defineComponent({
   font-weight: 400;
   margin: 0;
   background-color: #f1f2f652;
+    color: #dfe4ea;
 }
 
 
@@ -960,14 +954,13 @@ export default defineComponent({
   /* margin: 0; */
   font-size: 1.4rem;
   font-weight: bold;
-  color: #dfe4ea;
 }
 
 #index .calendar-outer .week-cell__contents .sec.empty{
   height: 100%;
 }
 
-#index .weekday-wrapper .week-cell__contents {
+#index .weekday-wrapper {
   border-top: 1px solid #f1f2f6;
 }
 

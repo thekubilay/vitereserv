@@ -53,19 +53,19 @@
       </svg>
         <!-- <img id="logo" src="/logo.svg" alt="logo"> -->
       </a>
-      <!-- <div class="button-group flex align-center">
+      <div class="button-group flex align-center">
         <ThemeButton v-model:theme="innerTheme"/>
-      </div> -->
+      </div>
     </div>
   </header>
 </template>
 
 <script lang="ts">
 import {defineComponent, ref, PropType, watch, onMounted} from "vue";
-// import ThemeButton from "./ThemeButton.vue";
+import ThemeButton from "./ThemeButton.vue";
 export default defineComponent({
   name: "Header",
-  // components: {ThemeButton},
+  components: {ThemeButton},
   props: {
     theme: {
       type: String as PropType<string>,
