@@ -4,7 +4,7 @@
       <a href="/" class="part flex align-center" id="brand">
        
       <!-- Generator: Adobe Illustrator 26.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-      <svg version="1.1" id="レイヤー_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
+      <!-- <svg version="1.1" id="レイヤー_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
         y="0px" width="87.55" height="25" viewBox="0 0 648.9 185.3" style="enable-background:new 0 0 648.9 185.3;" xml:space="preserve">
         <g>
           <polygon class="st0" points="100.7,185 61.9,185 122.2,0 162.6,0 	"/>
@@ -50,12 +50,12 @@
             h-27.2c-3.2,0-4.8,0.1-6.7,0.3v-5.2c2.2,0.3,3.4,0.4,6.8,0.4H517.8z M523.1,0.2c2.6,3,3.8,4.7,5.8,8.4l-3.2,1.8
             c-1.6-3.2-3.2-5.7-5.7-8.5L523.1,0.2z"/>
         </g>
-      </svg>
-        <!-- <img id="logo" src="/logo.svg" alt="logo"> -->
+      </svg> -->
+        <img id="logo" :src="logoPath" alt="logo">
       </a>
-      <div class="button-group flex align-center">
+      <!-- <div class="button-group flex align-center">
         <ThemeButton v-model:theme="innerTheme"/>
-      </div>
+      </div> -->
     </div>
   </header>
 </template>
@@ -75,13 +75,14 @@ export default defineComponent({
 
   setup(props,{emit}){
     const innerTheme = ref<string>(props.theme)
+    const logoPath = ref<string>("https://sumai.tokyu-land.co.jp/e-salon/img/logo-e-salon.png")
 
-    watch(()=> innerTheme.value,val => {
-      emit("update:theme",val)
-    })
+    // watch(()=> innerTheme.value,val => {
+    //   emit("update:theme",val)
+    // })
 
     return {
-      innerTheme
+      innerTheme, logoPath
     }
   }
 })

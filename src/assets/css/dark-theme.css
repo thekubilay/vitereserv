@@ -116,6 +116,10 @@ html[theme="dark"] header#app_header {
   box-shadow: 0px 0px 10px 3px rgba(0,0,0,0.35);
 }
 
+/* html[theme="dark"] header#app_header #logo {
+  background-color: #ffffff;
+} */
+
 html[theme="dark"] header#app_header svg .text path{
   fill: #A4B0BE;
 }
@@ -174,6 +178,9 @@ html[theme="dark"] .template__Wrapper .container li span{
 }
 
 /* ------ Room ------ */
+html[theme="dark"] #index {
+  background-color: #1e2023;
+}
 
 html[theme="dark"] #index .header-container h1.heading {
   color: #ccd3db;
