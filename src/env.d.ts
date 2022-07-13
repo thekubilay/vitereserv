@@ -5,6 +5,7 @@ interface ImportMetaEnv {
   readonly VITE_APP_GOOGLE_MAPS_KEY: string
   readonly VITE_APP_BASE_PATH: string
   readonly VITE_APP_HOST: string
+  readonly VITE_APP_STATIC_PATH: string
 }
 
 interface ImportMeta {

@@ -16,12 +16,12 @@
               <span class="title block header-text">{{room?.name||"ご予約内容の選択"}}</span>
               <span v-if="room?.header && room?.header !== 'null'" class="sub-title block">{{room?.header}}</span>
             </h1>
+            <div class="custom-content header flex-column justify-center align-center" v-if="pageContents.header.length>0">
+              <img v-for="(img) in pageContents.header" :class="img.class" :src="ENV.STATIC+img.src" :alt="img.alt">
+            </div>
             <p v-if="room?.body && room?.body !== 'null'" class="room-body-summary">{{room?.body}}</p>
           </div>
 
-          <header class="custom-content flex-column justify-center align-center" v-if="pageContents.header.length>0">
-            <img v-for="(img) in pageContents.header" :class="img.class" :src="img.src" :alt="img.alt">
-          </header>
 
           <!-- Calendar -->
           <div class="calendar-wrapper">
@@ -222,9 +222,9 @@
             </div>
           </div>
           <!-- calendar-wrapper -->
-          <!-- <footer class="custom-content flex-column justify-center align-center" v-if="pageContents.footer.length>0">
+          <!-- <div class="custom-content footer flex-column justify-center align-center" v-if="pageContents.footer.length>0">
             <img v-for="(img) in pageContents.footer" :class="img.class" :src="img.src" :alt="img.alt">
-          </footer> -->
+          </div> -->
 
         </div>
       </div>
@@ -287,10 +287,10 @@ export default defineComponent({
     }
     if(['637599256','635834411'].includes(route.params.rid as string)){
       pageContents.header = [
-        {src: "/img/esalon_header.png", class:"pc", alt:""},
-        {src: "/img/esalon_headersub.png", class:"pc sub", alt:""},
-        {src: "/img/esalon_header_sp.png", class:"sp", alt:""},
-        {src: "/img/esalon_headersub_sp.png", class:"sp", alt:""},
+        {src: "eSalonImages/esalon_header.png", class:"pc", alt:""},
+        {src: "eSalonImages/esalon_headersub.png", class:"pc sub", alt:""},
+        {src: "eSalonImages/esalon_header_sp.png", class:"sp", alt:""},
+        {src: "eSalonImages/esalon_headersub_sp.png", class:"sp", alt:""},
       ]
     }
 
@@ -490,7 +490,7 @@ export default defineComponent({
 
     return {
       overlay, calendarService, currentWeek, weekDatesObjs, room, holidays, vacancies, 
-      isNotification, errorMessage, isLoading, mainColor, betweenHours, currentWeekForDisplay, currentDate, isRest, pageContents,
+      isNotification, errorMessage, isLoading, mainColor, betweenHours, currentWeekForDisplay, currentDate, isRest, pageContents, ENV,
       formatDate, changeWeek, separatedHolidaysCheck, vacanciesCheck, goToForm, pastTimeCheck, closeNotification, getPrepTime, findHourBefore,
     };
   },
@@ -860,10 +860,10 @@ export default defineComponent({
   width: 100%;
   padding: 20px;
 }
-header.custom-content {
+.custom-content.header {
   border-bottom: solid 3px #000000;
 }
-footer.custom-content {
+.custom-content.footer {
   border-top: solid 3px #000000;
 }
 .custom-content img {
@@ -882,10 +882,10 @@ footer.custom-content {
   display: none;
 }
 @media screen and (max-width: 415px){
-  header.custom-content {
+  .custom-content.header {
     padding: 0 0 15px 0;
   }
-  footer.custom-content {
+  .custom-content.footer {
     padding: 15px 0 0 0;
   }
   .custom-content img {
