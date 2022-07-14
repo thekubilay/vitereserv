@@ -285,6 +285,7 @@ export default defineComponent({
       header: [],
       footer: [],
     }
+    // Test id,      eSalon id
     if(['637599256','635834411'].includes(route.params.rid as string)){
       pageContents.header = [
         {src: "eSalonImages/esalon_header.png", class:"pc", alt:""},
