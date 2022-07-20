@@ -114,6 +114,7 @@ header#app_header .part {
 
 header#app_header .part#brand img {
   height: 25px;
+  width: auto;
 }
 
 header[theme="dark"] {
