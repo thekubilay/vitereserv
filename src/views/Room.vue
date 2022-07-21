@@ -288,10 +288,12 @@ export default defineComponent({
     // Test id,      eSalon id
     if(['637599256','635834411'].includes(route.params.rid as string)){
       pageContents.header = [
-        {src: "eSalonImages/esalon_header.png", class:"pc", alt:""},
-        {src: "eSalonImages/esalon_headersub.png", class:"pc sub", alt:""},
-        {src: "eSalonImages/esalon_header_sp.png", class:"sp", alt:""},
-        {src: "eSalonImages/esalon_headersub_sp.png", class:"sp", alt:""},
+        {src: "eSalonImages/esalon_flowofuse.png", class:"pc", alt:""},
+        {src: "eSalonImages/esalon_flowofuse_sp.png", class:"sp", alt:""},
+        // {src: "eSalonImages/esalon_header.png", class:"pc", alt:""},
+        // {src: "eSalonImages/esalon_headersub.png", class:"pc sub", alt:""},
+        // {src: "eSalonImages/esalon_header_sp.png", class:"sp", alt:""},
+        // {src: "eSalonImages/esalon_headersub_sp.png", class:"sp", alt:""},
       ]
     }
 
@@ -868,7 +870,7 @@ export default defineComponent({
   border-top: solid 3px #000000;
 }
 .custom-content img {
-  width: 80%;
+  width: 90%;
   height: auto;
 }
 
