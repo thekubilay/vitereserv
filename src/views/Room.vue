@@ -861,7 +861,7 @@ export default defineComponent({
 
 .custom-content {
   width: 100%;
-  padding: 20px;
+  padding: 20px 0;
 }
 .custom-content.header {
   border-bottom: solid 3px #000000;
@@ -870,7 +870,7 @@ export default defineComponent({
   border-top: solid 3px #000000;
 }
 .custom-content img {
-  width: 90%;
+  width: 100%;
   height: auto;
 }
 
