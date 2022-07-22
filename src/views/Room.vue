@@ -16,9 +16,14 @@
               <span class="title block header-text">{{room?.name||"ご予約内容の選択"}}</span>
               <span v-if="room?.header && room?.header !== 'null'" class="sub-title block">{{room?.header}}</span>
             </h1>
+            <div class="custom-content header flex-column justify-center align-center" v-if="pageContents.header.length>0">
+              <img v-for="(img) in pageContents.header" :class="img.class" :src="ENV.STATIC+img.src" :alt="img.alt">
+            </div>
             <p v-if="room?.body && room?.body !== 'null'" class="room-body-summary">{{room?.body}}</p>
           </div>
 
+
+          <!-- Calendar -->
           <div class="calendar-wrapper">
             <div class="sp-buttons flex justify-center align-center">
               <div class="selected-week-wrapper flex align-center justify-center">
@@ -215,10 +220,14 @@
                 </li>
               </ul>
             </div>
-          </div><!-- calendar-wrapper -->
+          </div>
+          <!-- calendar-wrapper -->
+          <!-- <div class="custom-content footer flex-column justify-center align-center" v-if="pageContents.footer.length>0">
+            <img v-for="(img) in pageContents.footer" :class="img.class" :src="img.src" :alt="img.alt">
+          </div> -->
+
         </div>
       </div>
-      <!-- <VitFooter/> -->
       <div v-else-if="isRest" class="maintenance template__Wrapper">
         <div class="container">
           <h2 class="h2">ただいまメンテナンス中です。</h2>
@@ -236,7 +245,7 @@
 import { reactive, defineComponent, onMounted, ref, computed } from "vue";
 import useStore from "@/helpers/useStore"
 import {useRouter, useRoute} from "vue-router";
-import { Room, SeparatedHoliday, Vacancy, Error } from "@/types/Room"
+import { Room, SeparatedHoliday, Vacancy, Error, PageContents } from "@/types/Room"
 import { WeekDatesAsObject } from "@/types/Calendar";
 import axios from "axios";
 import ENV from "../config"
@@ -245,7 +254,6 @@ import LoadingSpinner from "../components/loaders/LoadingSpinner.vue"
 import VitFooter from "../components/Footer.vue"
 import VitHeader from "../components/Header.vue"
 import moment from "moment";
-import { url } from "inspector";
 
 export default defineComponent({
   components: {
@@ -273,6 +281,21 @@ export default defineComponent({
     const currentDate = ref<string | null>(null)
     const isRest = ref<boolean>(false)
 
+    const pageContents:{header: PageContents[], footer: PageContents[]} = {
+      header: [],
+      footer: [],
+    }
+    // Test id,      eSalon id
+    if(['637599256','635834411'].includes(route.params.rid as string)){
+      pageContents.header = [
+        {src: "eSalonImages/esalon_flowofuse.png", class:"pc", alt:""},
+        {src: "eSalonImages/esalon_flowofuse_sp.png", class:"sp", alt:""},
+        // {src: "eSalonImages/esalon_header.png", class:"pc", alt:""},
+        // {src: "eSalonImages/esalon_headersub.png", class:"pc sub", alt:""},
+        // {src: "eSalonImages/esalon_header_sp.png", class:"sp", alt:""},
+        // {src: "eSalonImages/esalon_headersub_sp.png", class:"sp", alt:""},
+      ]
+    }
 
     const currentWeekForDisplay = computed(() => {
       if(weekDatesObjs.value){
@@ -399,7 +422,6 @@ export default defineComponent({
       betweenHours.value = hours.slice(startIdx, endIdx)
     }
 
-
     function findVacancy(date:string, time:string):any{
       return vacancies.value.find((element:Vacancy) => {
         return (formatDate(element.date) === date) && (formatTime(element.date_time_start) === time)
@@ -470,7 +492,8 @@ export default defineComponent({
     })
 
     return {
-      overlay, calendarService, currentWeek, weekDatesObjs, room, holidays, vacancies, isNotification, errorMessage, isLoading, mainColor, betweenHours, currentWeekForDisplay, currentDate, isRest,
+      overlay, calendarService, currentWeek, weekDatesObjs, room, holidays, vacancies, 
+      isNotification, errorMessage, isLoading, mainColor, betweenHours, currentWeekForDisplay, currentDate, isRest, pageContents, ENV,
       formatDate, changeWeek, separatedHolidaysCheck, vacanciesCheck, goToForm, pastTimeCheck, closeNotification, getPrepTime, findHourBefore,
     };
   },
@@ -835,6 +858,47 @@ export default defineComponent({
     height: 45px;
   }
 }
+
+.custom-content {
+  width: 100%;
+  padding: 20px 0;
+}
+.custom-content.header {
+  border-bottom: solid 3px #000000;
+}
+.custom-content.footer {
+  border-top: solid 3px #000000;
+}
+.custom-content img {
+  width: 100%;
+  height: auto;
+}
+
+.custom-content img.sub {
+  width: 60%;
+  /* padding: 0 40px; */
+} 
+.custom-content img:not(:first-child) {
+  margin-top: 20px;
+}
+.custom-content img.sp {
+  display: none;
+}
+@media screen and (max-width: 415px){
+  .custom-content.header {
+    padding: 0 0 15px 0;
+  }
+  .custom-content.footer {
+    padding: 15px 0 0 0;
+  }
+  .custom-content img {
+    width: 100%;
+    display: none;
+  }
+  .custom-content img.sp {
+    display: block;
+  }
+}
 </style>
 
 
@@ -944,9 +1008,8 @@ export default defineComponent({
   font-weight: 400;
   margin: 0;
   background-color: #f1f2f652;
-    color: #dfe4ea;
+  color: #dfe4ea;
 }
-
 
 #index .sec.holiday p{
   width: 90%;
@@ -1022,13 +1085,6 @@ export default defineComponent({
   text-align: center;
 }
 
-
-@media screen and (max-width: 970px) {
-  /* #index .calendar-outer .week-cell__contents .sec {
-    min-width: 95px;
-  } */
-}
-
 @media screen and (max-width: 414px) {
   #index h1 .title{
     text-align: center;
@@ -1063,7 +1119,6 @@ export default defineComponent({
     right: 20%;
   }
 
-
   /* --- Calendar css --- */
   #index .calendar-outer .week-cell__contents {
     margin-bottom: 5px;
@@ -1081,12 +1136,10 @@ export default defineComponent({
     padding: 0;
   }
 
-
   #index .top-line{
     flex-direction: column;
     margin-bottom: 10px;
   }
-
 
   #index .calendar-outer .week-cell__contents p.sp-time {
     font-size: 0.7rem;
@@ -1137,7 +1190,6 @@ export default defineComponent({
   #index .sec .btn_select:hover p.time{
     margin-left: 0px;
   }
-  /*  */
 
   #index .calendar-dates-header {
     padding-left: 45px;

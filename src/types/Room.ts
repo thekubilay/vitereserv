@@ -48,3 +48,9 @@ export interface Settings {
   time_end: string,
   room: number
 }
+
+export interface PageContents {
+  src: string,
+  class: string,
+  alt: string,
+}
