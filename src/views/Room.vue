@@ -1147,6 +1147,7 @@ export default defineComponent({
   #index .calendar-outer .week-cell__contents .sec.holiday {
     font-size: 0.7rem;
     border-width: 1px;
+    min-width: 35px;
   }
   #index .selected-week-wrapper span.week-text{
     padding-bottom: 1px;
@@ -1157,6 +1158,7 @@ export default defineComponent({
     min-height: 45px;
     margin: 0;
     align-items: center;
+    padding: 2px;
   }
 
   #index .sec .btn_select {
@@ -1164,7 +1166,7 @@ export default defineComponent({
     align-items: center;
     justify-content: center;
     padding: 0;
-    min-width: 33px;
+    min-width: 30px;
     height: 40px;
     border-width: 1px;
   }
@@ -1193,6 +1195,7 @@ export default defineComponent({
 
   #index .calendar-dates-header {
     padding-left: 45px;
+    min-width: 290px;
   }
   #index .calendar-outer .times-wrapper {
     min-width: 45px;
