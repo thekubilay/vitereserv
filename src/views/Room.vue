@@ -244,7 +244,7 @@
 <script lang="ts">
 import { reactive, defineComponent, onMounted, ref, computed } from "vue";
 import useStore from "@/helpers/useStore"
-import {useRouter, useRoute, LocationQueryRaw} from "vue-router";
+import {useRouter, useRoute, LocationQuery} from "vue-router";
 import { Room, SeparatedHoliday, Vacancy, Error, PageContents } from "@/types/Room"
 import { WeekDatesAsObject } from "@/types/Calendar";
 import axios from "axios";
@@ -436,7 +436,7 @@ export default defineComponent({
         baseURL: ENV.API,
         // baseURL: "http://viterve-env.eba-pwmisykt.ap-northeast-1.elasticbeanstalk.com/api/v1/",
         url: "rooms/" + route.params.rid + "/",
-        params: {week: currentWeek.value ? (currentWeek.value) : 0}
+        params: {week: currentWeek.value ? (currentWeek.value) : "0"}
       })
       .then((response) => {
         const data = JSON.parse(JSON.stringify(response.data))
@@ -458,25 +458,23 @@ export default defineComponent({
       })
     }
 
-    function deleteQueryVacancy(){
-      let currentQuery = Object.assign({}, route.query)
+    function deleteQueryVacancy(currentQuery:LocationQuery){
       delete currentQuery.vacancy
-      router.push({
-        name: "Room",
-        params: {rid:route.params.rid},
-        query: currentQuery
-      })
+      return currentQuery
     }
 
     function init() {
-      if(route.query.vacancy){
-        deleteQueryVacancy()
-      }
       calendarService.value = new calendarServiceClass();
       currentWeek.value = calendarService.value.currentWeek
-      if(currentWeek.value !== Number(route.query.week)){
+      if(route.query.week && (currentWeek.value !== Number(route.query.week))){
         currentWeek.value = Number(route.query.week)
       }
+      let currentQuery = Object.assign({}, route.query)
+      currentQuery = Object.assign(currentQuery, {week: currentWeek.value})
+      if(route.query.vacancy){
+        currentQuery = deleteQueryVacancy(currentQuery)
+      }
+      router.push({query: currentQuery})
       weekDatesObjs.value = calendarService.value.getWeekDatesAsObject(currentWeek.value as number)
       currentDate.value = calendarService.value.currentDate.replace("年","/").replace("月","/").replace("日","")
       getRooms();
