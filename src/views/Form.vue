@@ -47,7 +47,7 @@
 
 <script lang="ts">
 import {defineComponent, computed, onMounted, ref, watch, ComputedRef} from "vue";
-import {useRouter} from "vue-router";
+import {useRouter, useRoute} from "vue-router";
 import {FormItem, FormRow} from "@/types/Form";
 import {DynamicFormRow, DynamicForm} from "../components/dynamic-form/types/DynamicForm"
 import {Crud} from "../components/dynamic-form/types/Crud"
@@ -80,6 +80,7 @@ export default defineComponent({
     const dynForm = ref<DynamicForm>({} as DynamicForm);
     const pageTitle = ref<string>("");
     const subTitle = ref<string>("");
+    const route = useRoute()
     const router = useRouter();
     const extraData = ref<Extra>({vacancy: "",});
     const config = ref<Crud>({method: "POST", url: ENV.API+"applicants/"})
@@ -336,6 +337,7 @@ export default defineComponent({
     })
 
     const goTo = (where: string): void => {
+      const currentQuery = Object.assign({}, route.query)
       const param = {rid: ""}
       if (where === 'Room') {
         param.rid = roomID.value.toString()
@@ -343,6 +345,7 @@ export default defineComponent({
       router.push({
         name: where,
         params: param,
+        query: currentQuery
       })
     }
 

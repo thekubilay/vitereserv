@@ -244,7 +244,7 @@
 <script lang="ts">
 import { reactive, defineComponent, onMounted, ref, computed } from "vue";
 import useStore from "@/helpers/useStore"
-import {useRouter, useRoute} from "vue-router";
+import {useRouter, useRoute, LocationQueryRaw} from "vue-router";
 import { Room, SeparatedHoliday, Vacancy, Error, PageContents } from "@/types/Room"
 import { WeekDatesAsObject } from "@/types/Calendar";
 import axios from "axios";
@@ -280,6 +280,7 @@ export default defineComponent({
     const betweenHours = ref<string[]>([])
     const currentDate = ref<string | null>(null)
     const isRest = ref<boolean>(false)
+    // const currentQuery = ref<LocationQueryRaw | null>(null)
 
     const pageContents:{header: PageContents[], footer: PageContents[]} = {
       header: [],
@@ -329,16 +330,14 @@ export default defineComponent({
     }
 
     const changeWeek = (num:number):void => {
-      overlay.value?.classList.add('active')
       if(currentWeek.value){
         currentWeek.value += num
       }
       weekDatesObjs.value = calendarService.value.getWeekDatesAsObject(currentWeek.value as number)
+      let currentQuery = Object.assign({}, route.query)
+      currentQuery = Object.assign(currentQuery, {week:currentWeek.value})
+      router.push({query: currentQuery})
       getRooms();
-      setTimeout(() => {
-        overlay.value?.classList.remove('active')
-      }, 100);
-      router.push({query:{week:currentWeek.value}})
     }
 
     const separatedHolidaysCheck = (date:string):Boolean => {
@@ -394,11 +393,13 @@ export default defineComponent({
 
     const goToForm = (date:string, time:string, room:Room|null) => {
       const vacancy = findVacancy(date, time)
+      let currentQuery = Object.assign({}, route.query)
       if(vacancy){
+        currentQuery = Object.assign(currentQuery, {vacancy: vacancy.id})
         router.push({
           name: "Form",
           params: {rid:route.params.rid, fid:room?.form},
-          query: {vacancy: vacancy.id}
+          query: currentQuery
         })
       }
     }
@@ -457,23 +458,24 @@ export default defineComponent({
       })
     }
 
-    function deleteQuery(){
-      if(route.query){
-        router.push({
-          name: "Room",
-          params: {rid:route.params.rid},
-        })
-      }
+    function deleteQueryVacancy(){
+      let currentQuery = Object.assign({}, route.query)
+      delete currentQuery.vacancy
+      router.push({
+        name: "Room",
+        params: {rid:route.params.rid},
+        query: currentQuery
+      })
     }
 
     function init() {
-      deleteQuery()
+      if(route.query.vacancy){
+        deleteQueryVacancy()
+      }
       calendarService.value = new calendarServiceClass();
-      if(route.query.week){
+      currentWeek.value = calendarService.value.currentWeek
+      if(currentWeek.value !== Number(route.query.week)){
         currentWeek.value = Number(route.query.week)
-        router.push({query:{week:route.query.week}})
-      }else{
-        currentWeek.value = calendarService.value.currentWeek
       }
       weekDatesObjs.value = calendarService.value.getWeekDatesAsObject(currentWeek.value as number)
       currentDate.value = calendarService.value.currentDate.replace("年","/").replace("月","/").replace("日","")
