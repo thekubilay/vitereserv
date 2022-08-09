@@ -22,8 +22,8 @@
           </span>
         </div> 
         <div class="legal-links">
-          <a class="privacy-policy" href="#">個人情報保護ポリシー</a>
-          <a class="terms-of-use" href="#">利用規約</a>
+          <a class="privacy-policy" href="https://www.tokyu-land.co.jp/about/privacy.html" target="_blank">個人情報保護ポリシー</a>
+          <a class="terms-of-use" href="https://sumai.tokyu-land.co.jp/info/first.html" target="_blank">利用規約</a>
         </div>
       </section>
     </div>
