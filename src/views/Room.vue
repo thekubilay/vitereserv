@@ -458,6 +458,11 @@ export default defineComponent({
       })
     }
 
+    /**
+    * If the query has vacancy when returning from the form, delete it
+    * @param {object} currentQuery
+    * @return {object} trimed currentQuery
+    */
     function deleteQueryVacancy(currentQuery:LocationQuery){
       delete currentQuery.vacancy
       return currentQuery
@@ -466,6 +471,7 @@ export default defineComponent({
     function init() {
       calendarService.value = new calendarServiceClass();
       currentWeek.value = calendarService.value.currentWeek
+      ////// for query /////
       if(route.query.week && (currentWeek.value !== Number(route.query.week))){
         currentWeek.value = Number(route.query.week)
       }
@@ -475,6 +481,7 @@ export default defineComponent({
         currentQuery = deleteQueryVacancy(currentQuery)
       }
       router.push({query: currentQuery})
+      ////// for query end /////
       weekDatesObjs.value = calendarService.value.getWeekDatesAsObject(currentWeek.value as number)
       currentDate.value = calendarService.value.currentDate.replace("年","/").replace("月","/").replace("日","")
       getRooms();
