@@ -369,21 +369,13 @@ export default defineComponent({
     const pastTimeCheck = (timestamp:number,time:string):boolean => {
       const todayTimestamp = moment().unix()*1000//new Date().getTime()
       const targetTime = timestamp+(parseInt(time.split(':')[0]))*3600000
-      // console.log(timestamp,todayTimestamp, targetTime)
       // console.log(moment(timestamp).format(),(targetTime-todayTimestamp),new Date())
       if(targetTime < todayTimestamp) {
         return true
       }
       return false
     }
-    // const pastTimeCheck = (timestamp:number):boolean => {
-    //   const todayTimestamp = new Date().getTime()
-    //   // ＊Added one day's time to the timestamp
-    //   if(todayTimestamp >= (timestamp + 86400000)) {
-    //     return true
-    //   }
-    //   return false
-    // }
+    
     const getPrepTime = (time: string) => {
       let splits = time.split(":")
       if(splits.length>1 && splits[1]=="00")
@@ -434,7 +426,6 @@ export default defineComponent({
       axios.request({
         method: "get",
         baseURL: ENV.API,
-        // baseURL: "http://viterve-env.eba-pwmisykt.ap-northeast-1.elasticbeanstalk.com/api/v1/",
         url: "rooms/" + route.params.rid + "/",
         params: {week: currentWeek.value ? (currentWeek.value) : "0"}
       })
