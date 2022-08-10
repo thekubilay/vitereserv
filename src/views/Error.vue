@@ -1,17 +1,28 @@
 <template>
   <div id="error" class="outer">
     <div class="container inner flex align-center justify-center">
-
-        <section class="">
-          <h1 class="error-header">お探しのページは<br class="for-sp">見つかりませんでした。</h1>
-          <div class="error-number-c flex align-center justify-center">
-            <span class="error-number">404</span>
-          </div>
-        </section>
-
+      <section class="">
+        <h1 class="error-header">お探しのページは<br class="for-sp">見つかりませんでした。</h1>
+        <div class="error-number-c flex align-center justify-center">
+          <span class="error-number">404</span>
+        </div>
+      </section>
     </div>
   </div>
 </template>
+<script setup lang="ts">
+import { useGtm } from '@gtm-support/vue-gtm';
+import { onMounted } from 'vue';
+const gtm = useGtm();
+onMounted(() => {
+  if(!gtm?.enabled()){
+    gtm?.enable(true)
+  }else{
+    gtm?.trackEvent({event: 'gtm.init_consent'})
+    gtm?.trackEvent({event: 'gtm.init'})
+  }
+})
+</script>
 <style scoped>
 #error{
   height: 100%;

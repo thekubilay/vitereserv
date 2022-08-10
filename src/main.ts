@@ -42,17 +42,16 @@ service.getRoom().then((response: any) => {
   if(response && response.gtmid){
     app.use(createGtm({
       id: response.gtmid,
-      trackViewEventProperty: 'gtm.js',
-      enabled: true,
+      enabled: false,
       // loadScript: true,
       // vueRouter: router,
     }))
-    console.log(`Tracking added with ${response.gtmid}`)
+    // console.log(`Tracking added with ${response.gtmid}`)
   }
   app.component('Dropdown', Dropdown)
   app.mount('#app')
 }).catch(() => {
-  console.log("not working")
+  console.log("NT")
   app.component('Dropdown', Dropdown)
   app.mount('#app')
 });

@@ -62,6 +62,7 @@ import useStore from "../helpers/useStore"
 import LoadingSpinner from "@/components/loaders/LoadingSpinner.vue"
 import { DynamicFormRowColumn } from "@/components/dynamic-form/types/DynamicForm";
 import { isRomaji, isKatakana, isMail, isZip, isRomajiWithIrregulars, isNumber, phoneNumberCheck } from "@/components/dynamic-form/helpers/useRules";
+import {useGtm} from "@gtm-support/vue-gtm";
 
 interface Extra {
   vacancy?: string,
@@ -89,6 +90,7 @@ export default defineComponent({
     const date = ref<string>("");
     const modelData = ref<any>();
     let isPageLoaded = false
+    const gtm = useGtm();
     const {
       vacancyID,
       cityOptions,
@@ -357,6 +359,12 @@ export default defineComponent({
     },{deep:true})
 
     onMounted(() => {
+      if(!gtm?.enabled()){
+        gtm?.enable(true)
+      }else{
+        gtm?.trackEvent({event: 'gtm.init_consent'})
+        gtm?.trackEvent({event: 'gtm.init'})
+      }
       init()
     })
 

@@ -11,6 +11,16 @@
     </div>
   </div>
 </template>
-<style>
-
-</style>
+<script setup lang="ts">
+import { useGtm } from '@gtm-support/vue-gtm';
+import { onMounted } from 'vue';
+const gtm = useGtm();
+onMounted(() => {
+  if(!gtm?.enabled()){
+    gtm?.enable(true)
+  }else{
+    gtm?.trackEvent({event: 'gtm.init_consent'})
+    gtm?.trackEvent({event: 'gtm.init'})
+  }
+})
+</script>

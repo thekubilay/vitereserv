@@ -253,6 +253,7 @@ import LoadingSpinner from "../components/loaders/LoadingSpinner.vue"
 import VitFooter from "../components/Footer.vue"
 import VitHeader from "../components/Header.vue"
 import moment from "moment";
+import { useGtm } from "@gtm-support/vue-gtm";
 
 export default defineComponent({
   components: {
@@ -279,6 +280,7 @@ export default defineComponent({
     const currentDate = ref<string | null>(null)
     const isRest = ref<boolean>(false)
     // const currentQuery = ref<LocationQueryRaw | null>(null)
+    const gtm = useGtm()
 
     const pageContents:{header: PageContents[], footer: PageContents[]} = {
       header: [],
@@ -484,6 +486,12 @@ export default defineComponent({
     }
 
     onMounted(() => {
+      if(!gtm?.enabled()){
+        gtm?.enable(true)
+      }else{
+        gtm?.trackEvent({event: 'gtm.init_consent'})
+        gtm?.trackEvent({event: 'gtm.init'})
+      }
       init()
     })
 
