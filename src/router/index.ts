@@ -41,6 +41,8 @@ const router = createRouter({
   routes
 })
 
+
+//// This will refresh the page when changing view /////
 // router.afterEach((to, from) => {
 //     const isReloaded = sessionStorage.getItem("reload")
 
