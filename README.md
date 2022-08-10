@@ -86,7 +86,9 @@ This sends two event to the Google Tag Manager system: the 'Consents' and the 'I
 
 ## Additional
 
-For more options see the official [site](https://www.npmjs.com/package/@gtm-support/vue-gtm).
+For Google Analytics with Google Tag Manager setup see this [site](https://www.e2msolutions.com/blog/setup-google-analytics-4/).
+
+For more vue gtm module options see the official [site](https://www.npmjs.com/package/@gtm-support/vue-gtm).
 <!-- The standard tracking code snippets does NOT need to be added to the **index.html** -->
 
 &nbsp;  
@@ -96,24 +98,24 @@ For more options see the official [site](https://www.npmjs.com/package/@gtm-supp
 &nbsp;  
 
 # Google Tag ManagerをVue3で（日本語版）
-# How to use Google tag manager with Vue 3（日本語版は↓）
 
-First install the [Vue Google Tag Manager](https://www.npmjs.com/package/@gtm-support/vue-gtm) module from npm.
+最初にnpmモジュールをインストールします。 [Vue Google Tag Manager](https://www.npmjs.com/package/@gtm-support/vue-gtm) 
 
 ```npm
 npm install @gtm-support/vue-gtm
 ```
 
-## Setup in the Vue project
+## セットアップ
 
-In the **main.ts** file add the following code.
-First import the Vue Google Tag Manager module.
+**main.ts** のファイルに以下を追加して、モジュールをインポートします.
 
 ```js
 import {createGtm} from '@gtm-support/vue-gtm'
 ```
 
-and use it with the Vue-application. Google Tag Manager ID is requested from API dynamically (**main.ts**). The module is disabled at first to not send data twice when loading the application. It will be enabled dynamically in each component. (see next section)
+次にaxiosでapiからGoogle Tag Managerを取得し、vue-gtmに設定します。
+モジュールは最初はenableをfalseにしておき、後で動的に有効にします。
+（そうしないと最初に２回送信されてしまいます。） (**main.ts**)
 ```js
 const service = new RequestService();
 service.getRoom().then((response: any) => { // Axios request to API to get gtmid
@@ -132,18 +134,18 @@ service.getRoom().then((response: any) => { // Axios request to API to get gtmid
   app.mount('#app')
 });
 ```
-With this setting the 'content view' event will be send to the Google Tag Manager when the route of the application changes. 
+この設定で、ページ移動するごとに'content view' イベントが Google Tag Managerに送られます. 
 
-## Add tracking to different Views(Pages)
+## ページ遷移をトラッキングできるようにイベントを送信する(各ページごと)
 
-To activate the module and start sending data to the Google Tag Manager, add the following code to all the Vue3 'View' pages that should be tracked. 
-In **Viterve** this is added to the **Room.vue, Form.vue, Thanks.vue and Error.vue** files.
+各viewファイルからGoogle Tag Managerにイベントを送信し、ページ遷移をトラッキングできるようにします。
+ **Room.vue, Form.vue, Thanks.vue and Error.vue** 
 ```js
 import {useRoute} from "vue-router"
 import {useGtm} from "@gtm-support/vue-gtm";
 ```
-In the setup method add the following. (This checks if the gtm is active and enables the module if inactive.)
-The module is disabled at first to not send data twice when loading the application.
+各viewファイルに以下の設定を追加します. (２回送信しないようにgtmのenabledの設定を動的に変更します。)
+
 ```js
 setup(){
   const route = useRoute();
@@ -159,11 +161,13 @@ setup(){
   })
 }
 ```
-This sends two event to the Google Tag Manager system: the 'Consents' and the 'Initialization' event when the page is mounted. 
-(Caution: The 'content view' event will also be send automatically when changing views)
+mountedで'gtm.init_consent','gtm.init'の２つの設定を送ります。. 
+(注意: 'content view'イベントはページの移動で自動的に送信されます。)
 
 
-## Additional
+## 追加
 
-For more options see the official [site](https://www.npmjs.com/package/@gtm-support/vue-gtm).
+Google Analytics を作成し、 Google Tag Manager に設定する [site](https://www.e2msolutions.com/blog/setup-google-analytics-4/).
+
+vue gtmモジュールのオフィシャルサイト [site](https://www.npmjs.com/package/@gtm-support/vue-gtm).
 <!-- The standard tracking code snippets does NOT need to be added to the **index.html** -->
