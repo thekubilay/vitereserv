@@ -41,6 +41,26 @@ const router = createRouter({
   routes
 })
 
+router.afterEach((to, from) => {
+    const isReloaded = sessionStorage.getItem("reload")
+
+    if (typeof isReloaded === "string") {
+      if (to.name === from.name) {
+        sessionStorage.setItem("reload", "true")
+      } else if (isReloaded === "false"){
+        sessionStorage.setItem("reload", "true")
+        document.location.reload()
+      }
+    }
+
+    setTimeout(() => {
+      sessionStorage.setItem("reload", "false")        
+      console.log(isReloaded + " timeout1")
+    }, 200);   
+    console.log(isReloaded)
+
+})
+
 router.beforeEach((to,from) => {
   if(to.params.rid){
     axios.request({
