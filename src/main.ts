@@ -43,10 +43,8 @@ service.getRoom().then((response: any) => {
     app.use(createGtm({
       id: response.gtmid,
       enabled: false,
-      // loadScript: true,
-      // vueRouter: router,
+      vueRouter: router,
     }))
-    // console.log(`Tracking added with ${response.gtmid}`)
   }
   app.component('Dropdown', Dropdown)
   app.mount('#app')

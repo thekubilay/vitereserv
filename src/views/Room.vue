@@ -489,7 +489,7 @@ export default defineComponent({
       if(!gtm?.enabled()){
         gtm?.enable(true)
       }else{
-        gtm?.trackEvent({event: 'gtm.init_consent'})
+        gtm?.trackEvent({event: 'gtm.init_consent', 'content-view-name':route.name})
         gtm?.trackEvent({event: 'gtm.init'})
       }
       init()
