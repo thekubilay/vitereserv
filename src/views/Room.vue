@@ -8,7 +8,6 @@
           <p class="body-text">{{errorMessage.text}}</p>
         </div>
       </transition>
-      <!-- <div id="overlay" ref="overlay"></div> -->
       <div v-if="!isRest" class="template__Wrapper">
         <div class="container">
           <div class="header-container">
@@ -263,7 +262,6 @@ export default defineComponent({
     const route = useRoute()
     const router = useRouter()
     const {store} = useStore()
-    const overlay = ref<HTMLElement | null>(null)
     const calendarService = ref()
     const currentWeek = ref<number | null>(null);
     const weekDatesObjs = ref<WeekDatesAsObject[] | null>(null);
@@ -490,7 +488,7 @@ export default defineComponent({
     })
 
     return {
-      overlay, calendarService, currentWeek, weekDatesObjs, room, holidays, vacancies, 
+      calendarService, currentWeek, weekDatesObjs, room, holidays, vacancies, 
       isNotification, errorMessage, isLoading, mainColor, betweenHours, currentWeekForDisplay, currentDate, isRest, pageContents, ENV,
       formatDate, changeWeek, separatedHolidaysCheck, vacanciesCheck, goToForm, pastTimeCheck, closeNotification, getPrepTime, findHourBefore,
     };

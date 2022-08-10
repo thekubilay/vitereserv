@@ -1,5 +1,7 @@
 import { createApp } from 'vue'
 import {createPinia} from 'pinia'
+import {createGtm} from '@gtm-support/vue-gtm'
+import RequestService from './services/RequestService';
 
 import App from './App.vue';
 import PrimeVue from 'primevue/config';
@@ -31,10 +33,26 @@ const primeOptions = {
     emptyMessage: '選択できるものがありません。'
   }
 }
-
-
 app.use(pinia)
 app.use(PrimeVue,primeOptions)
 app.use(router)
-app.component('Dropdown', Dropdown)
-app.mount('#app')
+
+const service = new RequestService();
+service.getRoom().then((response: any) => {
+  if(response && response.gaid){
+    app.use(createGtm({
+      id: response.gaid,
+      trackViewEventProperty: 'gtm.js',
+      enabled: true,
+      loadScript: true,
+      vueRouter: router,
+    }))
+    console.log(`Tracking added with ${response.gaid}`)
+  }
+  app.component('Dropdown', Dropdown)
+  app.mount('#app')
+}).catch(() => {
+  console.log("not working")
+  app.component('Dropdown', Dropdown)
+  app.mount('#app')
+});

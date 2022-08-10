@@ -6,27 +6,32 @@ let routes: Array<RouteRecordRaw> = [
   {
     path: '/', 
     name: 'Home',
-    component: () => import('../views/Home.vue')
+    component: () => import('../views/Home.vue'),
+    meta: {gtm: 'ホーム'}
   },
   {
     path: '/:rid', 
     name: 'Room',
-    component: () => import('../views/Room.vue')
+    component: () => import('../views/Room.vue'),
+    meta: {gtm: 'ルーム'}
   },
   {
     path: '/:rid/:fid', 
     name: 'Form',
-    component: () => import('../views/Form.vue')
+    component: () => import('../views/Form.vue'),
+    meta: {gtm: 'フォーム'}
   },
   {
     path: '/404', 
     name: 'Error',
-    component: () => import('../views/Error.vue')
+    component: () => import('../views/Error.vue'),
+    meta: {gtm: 'エラー'}
   },
   {
     path: '/thanks',
     name: 'Thanks',
-    component: () => import('../views/Thanks.vue')
+    component: () => import('../views/Thanks.vue'),
+    meta: {gtm: 'サンクス'}
   },
   { path: '/:pathMatch(.*)*', redirect: "404" },
 ]
