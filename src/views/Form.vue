@@ -362,6 +362,12 @@ export default defineComponent({
       if(!gtm?.enabled()){
         gtm?.enable(true)
       }else{
+        window.dataLayer?.push({
+          dynx_pagetype: 'product',
+          dynx_device: 'PC',
+          dynx_prefecture: 'osaka',
+          dynx_area: 'osaka',
+        });
         gtm?.trackEvent({event: 'gtm.init_consent', 'content-view-name':route.name})
         gtm?.trackEvent({event: 'gtm.init'})
       }

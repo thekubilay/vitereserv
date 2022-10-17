@@ -486,9 +486,32 @@ export default defineComponent({
     }
 
     onMounted(() => {
+      // if(!document.getElementById('googleTag')){
+      //   service.getRoom().then((response: any) => {
+      //   if(response && response.gtmid){
+      //     const script = document.createElement('script');
+      //     script.id = 'googleTag'
+      //     script.textContent = `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+      //     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+      //     j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+      //     'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+      //     })(window,document,'script','dataLayer','${response.gtmid}');`;
+      //     document.getElementsByTagName('head')[0].appendChild(script);
+      //   }
+      //   }).catch(() => {
+      //     console.log("TagRequestError")
+      //   });
+      // }
+
       if(!gtm?.enabled()){
         gtm?.enable(true)
       }else{
+        window.dataLayer?.push({
+          dynx_pagetype: 'product',
+          dynx_device: 'PC',
+          dynx_prefecture: 'osaka',
+          dynx_area: 'osaka',
+        });
         gtm?.trackEvent({event: 'gtm.init_consent', 'content-view-name':route.name})
         gtm?.trackEvent({event: 'gtm.init'})
       }
