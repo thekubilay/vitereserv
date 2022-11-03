@@ -225,6 +225,13 @@
             <img v-for="(img) in pageContents.footer" :class="img.class" :src="img.src" :alt="img.alt">
           </div> -->
 
+
+          <div class="footer-container">
+            <div class="custom-content footer flex-column justify-center align-center" v-if="pageContents.footer.length>0">
+              <img v-for="(img) in pageContents.footer" :class="img.class" :src="ENV.STATIC+img.src" :alt="img.alt">
+            </div>
+          </div>
+
         </div>
       </div>
       <div v-else-if="isRest" class="maintenance template__Wrapper">
@@ -291,6 +298,14 @@ export default defineComponent({
       pageContents.header = [
         {src: "eSalonImages/esalon_flowofuse.png", class:"pc", alt:""},
         {src: "eSalonImages/esalon_flowofuse_sp.png", class:"sp", alt:""},
+        // {src: "eSalonImages/esalon_header.png", class:"pc", alt:""},
+        // {src: "eSalonImages/esalon_headersub.png", class:"pc sub", alt:""},
+        // {src: "eSalonImages/esalon_header_sp.png", class:"sp", alt:""},
+        // {src: "eSalonImages/esalon_headersub_sp.png", class:"sp", alt:""},
+      ]
+      pageContents.footer = [
+        {src: "eSalonImages/esalon_telButton.png", class:"pc", alt:""},
+        {src: "eSalonImages/esalon_telButton_sp.png", class:"sp", alt:""},
         // {src: "eSalonImages/esalon_header.png", class:"pc", alt:""},
         // {src: "eSalonImages/esalon_headersub.png", class:"pc sub", alt:""},
         // {src: "eSalonImages/esalon_header_sp.png", class:"sp", alt:""},
@@ -893,6 +908,7 @@ export default defineComponent({
 }
 .custom-content.footer {
   border-top: solid 3px #000000;
+  margin: 20px auto 0;
 }
 .custom-content img {
   width: 100%;
@@ -914,7 +930,7 @@ export default defineComponent({
     padding: 0 0 15px 0;
   }
   .custom-content.footer {
-    padding: 15px 0 0 0;
+    padding: 0 0 0 0;
   }
   .custom-content img {
     width: 100%;
