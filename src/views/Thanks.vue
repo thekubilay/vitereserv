@@ -1,11 +1,11 @@
 <template>
   <div id="thanks" class="template__Wrapper outer">
     <div class="container inner">
-      <h2 class="h2">ありがとうございました。</h2>
+      <h2 class="h2">{{ t('thanksTitle') }}</h2>
       <div>
         <section class="message__Wrapper">
-          <h3 class="h3"><span>オンライン相談の申し込みが<br class="for-sp">完了しました。</span></h3>
-          <p>ご予約の日時などをメール送信致しましたので<br class="for-sp">ご確認ください。</p>
+          <h3 class="h3"><span v-html="t('thanksBody1')"></span></h3>
+          <p v-html="t('thanksBody2')"></p>
         </section>
       </div>
     </div>
@@ -15,8 +15,12 @@
 import { useGtm } from '@gtm-support/vue-gtm';
 import { onMounted } from 'vue';
 import {useRoute} from 'vue-router';
+import { vocabularies } from '../utils/useVocabularies'
+
 const gtm = useGtm();
 const route = useRoute();
+const { t } = vocabularies();
+
 onMounted(() => {
   if(!gtm?.enabled()){
     gtm?.enable(true)

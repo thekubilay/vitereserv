@@ -43,9 +43,11 @@
 <script lang="ts">
 import {defineComponent, ref} from "vue";
 import logoImg from "/col.svg"
+import { vocabularies } from '../utils/useVocabularies'
 
 export default defineComponent({
   setup(){
+    const { t } = vocabularies();
     const corporationLinkAddress = "https://www.tokyu-land.co.jp"
     const imgSrc = logoImg
     const imgAlt = "東急不動産"
@@ -55,6 +57,7 @@ export default defineComponent({
     return {
       corporationLinkAddress,
       imgSrc, imgAlt, imgWidth, imgHeight,
+      t,
     }
   }
 })

@@ -12,8 +12,9 @@
         <div class="container">
           <div class="header-container">
             <h1 class="flex-column heading">
-              <span class="title block header-text">{{room?.name||"ご予約内容の選択"}}</span>
+              <span class="title block header-text">{{room?.name}}</span>
               <span v-if="room?.header && room?.header !== 'null'" class="sub-title block">{{room?.header}}</span>
+              <p>{{ t('calendarServiceWeekdaysText').split(',')[0] }}</p>
             </h1>
             <div class="custom-content header flex-column justify-center align-center" v-if="pageContents.header.length>0">
               <img v-for="(img) in pageContents.header" :class="img.class" :src="ENV.STATIC+img.src" :alt="img.alt">
@@ -236,10 +237,10 @@
       </div>
       <div v-else-if="isRest" class="maintenance template__Wrapper">
         <div class="container">
-          <h2 class="h2">ただいまメンテナンス中です。</h2>
+          <h2 class="h2">{{ t('maintenanceTitle') }}</h2>
           <div>
             <section class="message__Wrapper">
-              <h3 class="h3">ご迷惑をおかけしておりますが、<br>今しばらくお待ちください</h3>
+              <h3 class="h3" v-html="t('maintenanceTitle')"></h3>
             </section>
           </div>
         </div>
@@ -261,6 +262,7 @@ import VitFooter from "../components/Footer.vue"
 import VitHeader from "../components/Header.vue"
 import moment from "moment";
 import { useGtm } from "@gtm-support/vue-gtm";
+import { vocabularies } from '../utils/useVocabularies'
 
 export default defineComponent({
   components: {
@@ -288,6 +290,7 @@ export default defineComponent({
     const isRest = ref<boolean>(false)
     // const currentQuery = ref<LocationQueryRaw | null>(null)
     const gtm = useGtm()
+    const { t } = vocabularies();
 
     const pageContents:{header: PageContents[], footer: PageContents[]} = {
       header: [],
@@ -498,6 +501,7 @@ export default defineComponent({
       // setTimeout(() => {
       //   isNotification.value = true
       // }, 1000)
+      console.log(weekDatesObjs.value)
     }
 
     onMounted(() => {
@@ -534,7 +538,7 @@ export default defineComponent({
     return {
       calendarService, currentWeek, weekDatesObjs, room, holidays, vacancies, 
       isNotification, errorMessage, isLoading, mainColor, betweenHours, currentWeekForDisplay, currentDate, isRest, pageContents, ENV,
-      formatDate, changeWeek, separatedHolidaysCheck, vacanciesCheck, goToForm, pastTimeCheck, closeNotification, getPrepTime, findHourBefore,
+      formatDate, changeWeek, separatedHolidaysCheck, vacanciesCheck, goToForm, pastTimeCheck, closeNotification, getPrepTime, findHourBefore, t,
     };
   },
 });

@@ -25,6 +25,7 @@ import './assets/css/transitions.css';
 import './assets/css/formstyle.css';
 import './assets/css/dark-theme.css';
 import './assets/css/dynamic-form.css';
+import { createI18n } from 'vue-i18n'
 
 const app = createApp(App);
 const pinia = createPinia();
@@ -33,9 +34,18 @@ const primeOptions = {
     emptyMessage: '選択できるものがありません。'
   }
 }
+const languageSetting = window.navigator.language
+const i18n = createI18n({
+  // something vue-i18n options here ...
+  legacy: false, // you must set `false`, to use Composition API
+  locale: languageSetting, // set locale
+  fallbackLocale: languageSetting, // set fallback locale
+})
+
 app.use(pinia)
 app.use(PrimeVue,primeOptions)
 app.use(router)
+app.use(i18n)
 
 const service = new RequestService();
 service.getRoom().then((response: any) => {
