@@ -13,7 +13,7 @@
         <a :href="corporationLinkAddress" target="_blank" class="corporation-logo">
           <img :src="imgSrc" :alt="imgAlt" :width="imgWidth" :height="imgHeight">
         </a>
-        <p class="corporation-name">東急不動産</p>
+        <p class="corporation-name">{{ t('footerCompanyName') }}</p>
       </section>
       <section class="legal">
         <div class="copyright">
@@ -22,8 +22,8 @@
           </span>
         </div> 
         <div class="legal-links">
-          <a class="privacy-policy" href="https://www.tokyu-land.co.jp/about/privacy.html" target="_blank">個人情報保護ポリシー</a>
-          <a class="terms-of-use" href="https://sumai.tokyu-land.co.jp/info/first.html" target="_blank">利用規約</a>
+          <a class="privacy-policy" href="https://www.tokyu-land.co.jp/about/privacy.html" target="_blank">{{ t('footerPrivacyPolicy') }}</a>
+          <a class="terms-of-use" href="https://sumai.tokyu-land.co.jp/info/first.html" target="_blank">{{ t('footerBasicPolicy') }}</a>
         </div>
       </section>
     </div>

@@ -146,7 +146,7 @@ export default defineComponent({
           isPageLoaded = true
           setupExtraData()
         }else{
-          throw "予約が上限に達しました。他の日時を選択して下さい。"
+          throw t('formLimit')
         }
       }catch(error){
         isLoading.value = false;
@@ -303,6 +303,7 @@ export default defineComponent({
         config.data = formData
 
         try {
+          // console.table([...config.data])
           axios(config).then((response) => {
             isLoading.value = false
             resolve(response)
@@ -320,7 +321,7 @@ export default defineComponent({
     const onError = (): void => {
       isLoading.value = false;
       console.error("Server could not accept response")
-      store.SET_ERROR({title: "エラー", text: "サーバーのエラーが発生しました。"})
+      store.SET_ERROR({title: t('formErrorTitle'), text: t('formErrorBody')})
       goTo("Room")
     }
 

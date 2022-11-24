@@ -25,7 +25,7 @@ import './assets/css/transitions.css';
 import './assets/css/formstyle.css';
 import './assets/css/dark-theme.css';
 import './assets/css/dynamic-form.css';
-import { createI18n } from 'vue-i18n'
+import { createI18n } from 'vue-i18n';
 
 const app = createApp(App);
 const pinia = createPinia();
@@ -46,6 +46,7 @@ app.use(pinia)
 app.use(PrimeVue,primeOptions)
 app.use(router)
 app.use(i18n)
+
 
 const service = new RequestService();
 service.getRoom().then((response: any) => {

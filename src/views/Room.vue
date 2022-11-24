@@ -14,7 +14,6 @@
             <h1 class="flex-column heading">
               <span class="title block header-text">{{room?.name}}</span>
               <span v-if="room?.header && room?.header !== 'null'" class="sub-title block">{{room?.header}}</span>
-              <p>{{ t('calendarServiceWeekdaysText').split(',')[0] }}</p>
             </h1>
             <div class="custom-content header flex-column justify-center align-center" v-if="pageContents.header.length>0">
               <img v-for="(img) in pageContents.header" :class="img.class" :src="ENV.STATIC+img.src" :alt="img.alt">
@@ -87,7 +86,7 @@
                   <!-- 休日の場合 -->
                   <div v-if="holidays.includes(item.day) || separatedHolidaysCheck(item.date)" class="sec holiday">
                     <p class="holiday flex align-center justify-center">
-                      定休日
+                      {{ t('roomRegularHoliday') }}
                     </p>
                   </div>
 
@@ -189,7 +188,7 @@
                   >
                     <path d="M256,78.77c97.73,0,177.23,79.51,177.23,177.23S353.73,433.23,256,433.23,78.77,353.73,78.77,256,158.27,78.77, 256,78.77M256,0C114.62,0,0,114.62,0,256S114.62,512,256,512,512,397.38,512,256,397.38,0,256,0Z"></path>
                   </svg>
-                  <span class="">予約できます</span>
+                  <span class="">{{ t('roomVacancy') }}</span>
                 </li>
                 <!-- <li class="flex align-center">
                   <svg
@@ -216,7 +215,7 @@
                       d="M321.83,256,498.37,79.46a46.55,46.55,0,1,0-65.83-65.83L256,190.17,79.46,13.63A46.55,46.55,0,0,0, 13.63,79.46L190.17,256,13.63,432.54a46.55,46.55,0,0,0,65.83,65.83L256,321.83,432.54,498.37a46.55,46.55, 0,0,0,65.83-65.83Z"
                     ></path>
                   </svg>
-                  <span class="">予約できません</span>
+                  <span class="">{{ t('roomNoVacancy') }}</span>
                 </li>
               </ul>
             </div>
@@ -301,18 +300,10 @@ export default defineComponent({
       pageContents.header = [
         {src: "eSalonImages/esalon_flowofuse.png", class:"pc", alt:""},
         {src: "eSalonImages/esalon_flowofuse_sp.png", class:"sp", alt:""},
-        // {src: "eSalonImages/esalon_header.png", class:"pc", alt:""},
-        // {src: "eSalonImages/esalon_headersub.png", class:"pc sub", alt:""},
-        // {src: "eSalonImages/esalon_header_sp.png", class:"sp", alt:""},
-        // {src: "eSalonImages/esalon_headersub_sp.png", class:"sp", alt:""},
       ]
       pageContents.footer = [
         {src: "eSalonImages/esalon_telButton.png", class:"pc", alt:""},
         {src: "eSalonImages/esalon_telButton_sp.png", class:"sp", alt:""},
-        // {src: "eSalonImages/esalon_header.png", class:"pc", alt:""},
-        // {src: "eSalonImages/esalon_headersub.png", class:"pc sub", alt:""},
-        // {src: "eSalonImages/esalon_header_sp.png", class:"sp", alt:""},
-        // {src: "eSalonImages/esalon_headersub_sp.png", class:"sp", alt:""},
       ]
     }
 
@@ -501,7 +492,6 @@ export default defineComponent({
       // setTimeout(() => {
       //   isNotification.value = true
       // }, 1000)
-      console.log(weekDatesObjs.value)
     }
 
     onMounted(() => {
