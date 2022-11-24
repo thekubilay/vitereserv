@@ -24,6 +24,7 @@ export function vocabularies() {
                 formLimit: "You have reached your reservation limit. Please select another date and time.",
                 formErrorTitle: "Error",
                 formErrorBody: "An error has occurred.",
+                formRequireError: "Please enter",
                 thanksTitle: "Your reservation is complete.",
                 thanksBody1: "Thank you for booking to visit the model room.",
                 thanksBody2: `To the registered e-mail address so that you can check the reservation details
@@ -52,6 +53,7 @@ export function vocabularies() {
                 formLimit: "予約が上限に達しました。他の日時を選択して下さい。",
                 formErrorTitle: "エラー",
                 formErrorBody: "エラーが発生しました。",
+                formRequireError: "ご入力ください。",
                 thanksTitle: "ありがとうございました。",
                 thanksBody1: "オンライン相談の申し込みが<br class='for-sp'>完了しました。",
                 thanksBody2: "ご予約の日時などをメール送信致しましたので<br class='for-sp'>ご確認ください。",

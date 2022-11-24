@@ -43,7 +43,7 @@
 
               <span v-if="column.hint" class="f-hint">{{ column.hint }}</span>
 
-              <span v-if="column.invalid" class="f-error">ご入力ください</span>
+              <span v-if="column.invalid" class="f-error">{{ t('formRequireError') }}</span>
               <span v-for="(error, i) in column.errors" :key="i+'error'" class="f-error">{{ error }}</span>
             </div>
           </div>

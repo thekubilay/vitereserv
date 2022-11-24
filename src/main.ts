@@ -47,7 +47,6 @@ app.use(PrimeVue,primeOptions)
 app.use(router)
 app.use(i18n)
 
-
 const service = new RequestService();
 service.getRoom().then((response: any) => {
   if(response && response.gtmid){
