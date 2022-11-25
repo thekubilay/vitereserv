@@ -8,6 +8,8 @@ export function vocabularies() {
         messages: {
             en: {
                 locale: languageSetting,
+                metaDescription: `Create and manage a reservation system from an easy-to-use management screen. We support your business efficiency!`,
+                metaKeywords: `viterve, viterve, reservation system, reservation management, real estate`,
                 year: 'year',
                 month: 'month',
                 day: 'day',
@@ -37,6 +39,8 @@ export function vocabularies() {
             },
             ja: {
                 locale: languageSetting,
+                metaDescription: `使いやすい管理画面から予約システムを作成・管理。業務の効率化をサポート！`,
+                metaKeywords: `ビターブ, viterve, 予約システム, 予約管理, 不動産`,
                 year: '年',
                 month: '月',
                 day: '日',

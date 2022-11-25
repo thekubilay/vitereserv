@@ -306,6 +306,20 @@ export default defineComponent({
         {src: "eSalonImages/esalon_telButton_sp.png", class:"sp", alt:""},
       ]
     }
+    // reserve en
+    if(['600799837'].includes(route.params.rid as string)){
+      pageContents.header = [
+        {src: "eSalonImages/esalon_flowofuse_onLine_en.png", class:"pc", alt:""},
+        {src: "eSalonImages/esalon_flowofuse_onLine_en_sp.png", class:"sp", alt:""},
+      ]
+    }
+    // online en
+    if(['746935619'].includes(route.params.rid as string)){
+      pageContents.header = [
+        {src: "eSalonImages/esalon_flowofuse_en.png", class:"pc", alt:""},
+        {src: "eSalonImages/esalon_flowofuse_sp_en.png", class:"sp", alt:""},
+      ]
+    }
 
     const currentWeekForDisplay = computed(() => {
       if(weekDatesObjs.value){

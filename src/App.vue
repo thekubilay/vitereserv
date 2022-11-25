@@ -13,12 +13,20 @@ import Form from "./views/Form.vue"
 import Room from "./views/Room.vue"
 import VitFooter from "./components/Footer.vue"
 import VitHeader from "./components/Header.vue"
+import { vocabularies } from './utils/useVocabularies'
+
 export default defineComponent({
   components: {Form, Room, VitHeader, VitFooter},
   setup(){
     const theme = ref<string>("light")
     const headFootRoutes = ["Room","Form"]
     const route = useRoute()
+    const { t } = vocabularies();
+
+    onMounted(() => {
+      document.querySelector('meta[name="description"]')?.setAttribute("content", t('metaDescription'));
+      document.querySelector('meta[name="keywords"]')?.setAttribute("content", t('metaKeywords'));
+    });
 
     // onBeforeMount((): void => {
     //   const storageTheme: any = localStorage.getItem("theme")
