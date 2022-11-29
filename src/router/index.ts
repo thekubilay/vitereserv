@@ -28,7 +28,7 @@ let routes: Array<RouteRecordRaw> = [
     // meta: {gtm: 'エラー'}
   },
   {
-    path: '/thanks',
+    path: '/:rid/:fid/thanks',
     name: 'Thanks',
     component: () => import('../views/Thanks.vue'),
     // meta: {gtm: 'サンクス'}

@@ -353,7 +353,7 @@ export default defineComponent({
     const goTo = (where: string): void => {
       const currentQuery = Object.assign({}, route.query)
       delete currentQuery.vacancy
-      const param = {rid: ""}
+      const param = {rid:route.params.rid, fid:route.params.fid}
       if (where === 'Room') {
         param.rid = roomID.value.toString()
       }
