@@ -164,9 +164,12 @@ export default class CalendarService {
     return this.getWeekDates(week_num).map(date => {
       //'date' has format of 2022/01/01, but '/' is not ISO standard -> throws deprecated warning
       //See:   https://momentjs.com/docs/#/parsing/string/
+      const weekdaysShortEn = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"]
+      const dayJa = this.weekdaysShort[weekdaysShortEn.indexOf( moment(date).format('ddd') )]
       return {
         date: moment(date).format('YYYY/MM/DD'),
         day: moment(date).format('ddd'),
+        dayJa: (languageSetting === "ja") ? moment(date).format('ddd') : dayJa,
         week: moment(date, "YYYY-MM-DD").week(),
         month: (languageSetting === "ja") ? (moment(date).month() + 1) + "月" : moment(date).format('MMM'),
         timestamp: moment(date).valueOf()

@@ -18,21 +18,18 @@ export function vocabularies() {
                 roomMaintenanceTitle: "maintenance",
                 roomMaintenanceBody: "maintenance",
                 roomRegularHoliday: "Regular holiday",
-                roomVacancy: "vacancy",
-                roomNoVacancy: "no vacancy",
-                formGoToCalendar: "Go Back",
-                formSubmitButton: "submit",
+                roomVacancy: "Available",
+                roomNoVacancy: "Not available",
+                formGoToCalendar: "Calendar",
+                formSubmitButton: "Send",
                 formRequired: "Required",
                 formLimit: "You have reached your reservation limit. Please select another date and time.",
                 formErrorTitle: "Error",
                 formErrorBody: "An error has occurred.",
                 formRequireError: "Please enter",
-                thanksTitle: "Your reservation is complete.",
-                thanksBody1: "Thank you for booking to visit the model room.",
-                thanksBody2: `To the registered e-mail address so that you can check the reservation details
-                We have sent you a confirmation email.<br>
-                We are looking forward to seeing you at the model room.<br>
-                On the day of the day, please take care of yourself.`,
+                thanksTitle: "",
+                thanksBody1: "",
+                thanksBody2: "",
                 footerPrivacyPolicy: "Privacy Policy",
                 footerBasicPolicy: "Basic Policy",
                 footerCompanyName: "TOKYU LAND CORPORATION"
