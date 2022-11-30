@@ -68,7 +68,13 @@ export default function() {
       formID.value = parseInt(route.params.fid as string)
       // console.log(vacancyID.value, roomID.value, formID.value)
     }else{
-      router.push({path: '/'+route.params.rid+'/'})
+      const currentQuery = Object.assign({}, route.query)
+      router.push({
+        name: 'Room',
+        params: {rid:route.params.rid},
+        query: currentQuery
+      })
+      // router.push({path: '/'+route.params.rid+'/'})
     }
   }
 

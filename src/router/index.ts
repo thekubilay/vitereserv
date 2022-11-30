@@ -64,6 +64,7 @@ const router = createRouter({
 // })
 
 router.beforeEach((to,from) => {
+  //Check if the room exists or active
   if(to.params.rid){
     axios.request({
       method: "get",

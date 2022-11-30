@@ -1,7 +1,6 @@
 import moment from "moment";
 import {DateObject, Month, WeekDatesAsObject} from "../types/Calendar";
-
-const languageSetting = window.navigator.language
+import { languageSetting } from "../utils/useVocabularies";
 
 if(languageSetting === "ja") {
   moment.locale("ja", {

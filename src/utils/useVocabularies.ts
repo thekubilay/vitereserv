@@ -1,6 +1,16 @@
 import { useI18n } from 'vue-i18n'
 
-const languageSetting = window.navigator.language
+function getQuery(name:string) {
+    const url = window.location.href;
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
+
+export const languageSetting = getQuery("lang") || window.navigator.language;
 
 export function vocabularies() {
     const { t } = useI18n({
