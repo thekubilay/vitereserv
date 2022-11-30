@@ -10,7 +10,22 @@ function getQuery(name:string) {
     return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
 
-export const languageSetting = getQuery("lang") || window.navigator.language;
+let queryLang = "ja"
+switch (getQuery("lang")) {
+    case "ja":
+        queryLang = "ja"
+        break;
+    case "en":
+        queryLang = "en"
+        break;
+    case "en-us":
+        queryLang = "en"
+        break;
+    default:
+        queryLang = window.navigator.language
+        break;
+}
+export const languageSetting = queryLang;
 
 export function vocabularies() {
     const { t } = useI18n({
