@@ -8,6 +8,9 @@
           <p v-html="thanksBody2"></p>
         </section>
       </div>
+      <div class="flex">
+        <a href="https://infish-test.com/tokyu/lp/global/en/" class="btn ghost-btn">Home</a>
+      </div>
     </div>
   </div>
 </template>
@@ -54,3 +57,29 @@ onMounted(() => {
   }
 })
 </script>
+<style>
+#thanks .ghost-btn {
+    padding: 8px 24px;
+    margin: auto;
+    background: transparent;
+    color: #3372FF;
+    font-size: 1.2rem;
+    font-weight: 700;
+    border: 1px solid;
+    border-radius: 40px;
+    text-decoration: none;
+    text-align: center;
+    transition: background .3s ease-out, color .3s ease-out;
+}
+#thanks .ghost-btn:hover {
+    color: #fff;
+    background-color: #3372FF;
+    border-color: #3372FF;
+}
+@media screen and (min-width: 768px){
+  #thanks .ghost-btn {
+    font-size: 1.2rem;
+  }
+}
+
+</style>

@@ -64,8 +64,8 @@ export default defineComponent({
 </script>
 <style scoped>
 footer{
-  display: block;
-  margin: 0;
+  display: flex;
+  margin: auto 0 0;
   padding: 0;
   border: 0;
   box-sizing: border-box;
@@ -81,6 +81,7 @@ footer{
 }
 footer .inner-footer {
   max-width: 980px;
+  width: 100%;
   margin: 0 auto;
   padding: 0 22px;
 }

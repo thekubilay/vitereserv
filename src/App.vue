@@ -19,7 +19,7 @@ export default defineComponent({
   components: {Form, Room, VitHeader, VitFooter},
   setup(){
     const theme = ref<string>("light")
-    const headFootRoutes = ["Room","Form"]
+    const headFootRoutes = ["Room","Form","Thanks"]
     const route = useRoute()
     const { t } = vocabularies();
 
