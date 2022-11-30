@@ -288,7 +288,15 @@ export default defineComponent({
             if (typeof column.model === "boolean") {
               formData.append(column.db, column.model ? "1" : "0")
             } else {
-              if (column.model) formData.append(column.db, column.model.toString())
+              if (column.model) {
+                formData.append(column.db, column.model.toString())
+                //add building name to formData
+                if(column.db==="project" && column.options){
+                  const buildingName:any = [...column.options]
+                    .find((option:any) =>  option.value === column.model?.toString())
+                  if(buildingName) {formData.append("building_name", buildingName.label)}
+                }
+              }
             }
           })
         })
