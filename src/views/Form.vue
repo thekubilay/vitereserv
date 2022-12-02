@@ -418,11 +418,11 @@ export default defineComponent({
   transition: background-color 0.15s, border-color 0.15s, color 0.15s;
 }
 #request section.header-subtext {
-  margin-bottom: 40px;
+  margin-bottom: 30px;
 }
 #request section.header-subtext p.room-body-summary{
   font-size: 0.75rem;
-  margin-top: 10px;
+  margin-top: 20px;
   background-color: #faebd76f;
   padding: 10px;
   /* border-left: 4px solid #f0932b; */
