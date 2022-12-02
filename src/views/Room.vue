@@ -18,7 +18,9 @@
             <div class="custom-content header flex-column justify-center align-center" v-if="pageContents.header.length>0">
               <img v-for="(img) in pageContents.header" :class="img.class" :src="ENV.STATIC+img.src" :alt="img.alt">
             </div>
-            <p v-if="room?.body && room?.body !== 'null'" class="room-body-summary">{{room?.body}}</p>
+            <p v-if="room?.body && room?.body !== 'null'"
+               v-html="room?.body"
+              class="room-body-summary"></p>
           </div>
 
 
