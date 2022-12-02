@@ -18,9 +18,12 @@
             <div class="custom-content header flex-column justify-center align-center" v-if="pageContents.header.length>0">
               <img v-for="(img) in pageContents.header" :class="img.class" :src="ENV.STATIC+img.src" :alt="img.alt">
             </div>
-            <p v-if="room?.body && room?.body !== 'null'"
+            <p class="room-body-summary">
+              <span style="color:#e45700;">ご希望の予約時間直前にエントリーされる場合は、出来れば15分程度事前にエントリーいただく事をお勧めします。<br>( ご希望時間直前でのご予約の場合、システムの関係上、ご希望の開始時間を少し遅れる場合がございますので、予めご了承ください。)</span>
+            </p>
+            <!-- <p v-if="room?.body && room?.body !== 'null'"
                v-html="room?.body"
-              class="room-body-summary"></p>
+              class="room-body-summary"></p> -->
           </div>
 
 
@@ -638,7 +641,7 @@ export default defineComponent({
   margin-top: 20px;
   background-color: #faebd76f;
   padding: 10px;
-  border-left: 4px solid #f0932b;
+  /* border-left: 4px solid #f0932b; */
 }
 
 /* ---- Smartphone buttons ---- */

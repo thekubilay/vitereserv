@@ -21,6 +21,9 @@
                 </div>
               </div>
             </header>
+            <p class="room-body-summary">
+              <span style="color:#e45700;">ご希望の予約時間直前にエントリーされる場合は、出来れば15分程度事前にエントリーいただく事をお勧めします。<br>( ご希望時間直前でのご予約の場合、システムの関係上、ご希望の開始時間を少し遅れる場合がございますので、予めご了承ください。)</span>
+            </p>
           </section>
           <Form
             v-if="Object.keys(dynForm).length > 0"
@@ -415,7 +418,14 @@ export default defineComponent({
   transition: background-color 0.15s, border-color 0.15s, color 0.15s;
 }
 #request section.header-subtext {
-  margin-bottom: 50px;
+  margin-bottom: 40px;
+}
+#request section.header-subtext p.room-body-summary{
+  font-size: 0.75rem;
+  margin-top: 10px;
+  background-color: #faebd76f;
+  padding: 10px;
+  /* border-left: 4px solid #f0932b; */
 }
 
 header .title-wrapper {
