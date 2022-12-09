@@ -23,7 +23,7 @@ switch (getQuery("lang")) {
         queryLang = "en"
         break;
     default:
-        queryLang = "en"
+        queryLang = "ja"
         break;
 }
 export const languageSetting = queryLang;
