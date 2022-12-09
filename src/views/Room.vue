@@ -312,14 +312,14 @@ export default defineComponent({
       ]
     }
     // reserve en
-    if(['600799837'].includes(route.params.rid as string)){
+    if(['532783550','600799837'].includes(route.params.rid as string)){
       pageContents.header = [
         {src: "eSalonImages/esalon_flowofuse_en.png", class:"pc", alt:""},
         {src: "eSalonImages/esalon_flowofuse_en_sp.png", class:"sp", alt:""},
       ]
     }
     // online en
-    if(['746935619'].includes(route.params.rid as string)){
+    if(['520803050','746935619'].includes(route.params.rid as string)){
       pageContents.header = [
         {src: "eSalonImages/esalon_flowofuse_onLine_en.png", class:"pc", alt:""},
         {src: "eSalonImages/esalon_flowofuse_onLine_en_sp.png", class:"sp", alt:""},
