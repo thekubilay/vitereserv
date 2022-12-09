@@ -26,7 +26,8 @@
                 </div>
               </div>
             </header>
-            <p class="room-body-summary">
+            <p v-if="route.params.rid==='635834411'"
+                class="room-body-summary">
               <span style="color:#e45700;">ご希望の予約時間直前にエントリーされる場合は、出来れば15分程度事前にエントリーいただく事をお勧めします。<br>( ご希望時間直前でのご予約の場合、システムの関係上、ご希望の開始時間を少し遅れる場合がございますので、予めご了承ください。)</span>
             </p>
           </section>
@@ -379,7 +380,7 @@ export default defineComponent({
       date, time, pageTitle, subTitle, dateAndTime,
       dynForm, modelData,
       extraData,config,
-      isLoading, 
+      isLoading, route,
       submit, onError, onComplete,
       goTo,
     }
