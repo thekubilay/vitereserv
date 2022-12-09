@@ -8,7 +8,7 @@
           <p v-html="thanksBody2"></p>
         </section>
       </div>
-      <div class="flex">
+      <div v-if="route.params.rid!=='635834411'" class="flex">
         <a href="https://infish-test.com/tokyu/lp/global/en/" class="btn ghost-btn">Home</a>
       </div>
     </div>

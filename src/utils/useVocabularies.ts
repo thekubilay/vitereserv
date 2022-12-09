@@ -10,20 +10,19 @@ function getQuery(name:string) {
     return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
 
-// let queryLang = window.navigator.language
-let queryLang = "ja"
+let queryLang = "ja";
 switch (getQuery("lang")) {
     case "ja":
-        queryLang = "ja"
+        queryLang = "ja";
         break;
     case "en":
-        queryLang = "en"
+        queryLang = "en";
         break;
     case "en-us":
-        queryLang = "en"
+        queryLang = "en";
         break;
     default:
-        queryLang = "ja"
+        queryLang = window.navigator.language==="ja" ? "ja" : "en";
         break;
 }
 export const languageSetting = queryLang;
