@@ -28,7 +28,7 @@ let routes: Array<RouteRecordRaw> = [
     // meta: {gtm: 'エラー'}
   },
   {
-    path: '/thanks',
+    path: '/:rid/:fid/thanks',
     name: 'Thanks',
     component: () => import('../views/Thanks.vue'),
     // meta: {gtm: 'サンクス'}
@@ -64,6 +64,7 @@ const router = createRouter({
 // })
 
 router.beforeEach((to,from) => {
+  //Check if the room exists or active
   if(to.params.rid){
     axios.request({
       method: "get",

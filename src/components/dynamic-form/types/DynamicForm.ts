@@ -9,10 +9,19 @@ interface Styles {
   borderRadius?: string,
 }
 
+interface SelectOptions {
+  extra: string,
+  form_item: number
+  id: number
+  label: string
+  order_id: number,
+  value: string,
+}
+
 /* check primevue form props for more information */
 interface PrimeVueFormType
 { 
-  options?: options
+  options?: options|SelectOptions[]
   optionLabel?: varchar,
   optionValue?: varchar,
   appendTo?: string,

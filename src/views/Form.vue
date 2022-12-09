@@ -8,21 +8,16 @@
           <section class="flex-column header-subtext">
             <header class="flex justify-space-between">
               <div class="flex-column title-wrapper">
-                <h1 class="title">{{ pageTitle || "名前なし" }}</h1>
-                
+                <h1 class="title">{{ pageTitle }}</h1>
                 <span class="timeslot">
-                  {{ date.split('-')[0]}}<span>年</span>
-                  {{ date.split('-')[1]}}月
-                  {{ date.split('-')[2]}}日
-                  &nbsp;
-                  {{ time.split(':')[0]}}:{{ time.split(':')[1]}}
+                  {{ arrangeDate}}
                 </span>
 
               </div>
               <div class="flex justify-center align-center">
                 <div class="back-calendar flex align-center justify-center"  @click="goTo('Room')">
                   <i class="pi pi-calendar"></i>
-                  <span class="back-calendar-text">カレンダーへ</span>
+                  <span class="back-calendar-text">{{ t('formGoToCalendar') }}</span>
                 </div>
               </div>
             </header>
@@ -67,6 +62,7 @@ import LoadingSpinner from "@/components/loaders/LoadingSpinner.vue"
 import { DynamicFormRowColumn } from "@/components/dynamic-form/types/DynamicForm";
 import { isRomaji, isKatakana, isMail, isZip, isRomajiWithIrregulars, isNumber, phoneNumberCheck } from "@/components/dynamic-form/helpers/useRules";
 import {useGtm} from "@gtm-support/vue-gtm";
+import { vocabularies } from '../utils/useVocabularies'
 
 interface Extra {
   vacancy?: string,
@@ -95,6 +91,7 @@ export default defineComponent({
     const modelData = ref<any>();
     let isPageLoaded = false
     const gtm = useGtm();
+    const { t } = vocabularies();
     const {
       vacancyID,
       cityOptions,
@@ -107,6 +104,20 @@ export default defineComponent({
       checkVacancy,
       saveSessionData,
     } = FormsFunc()
+
+    const arrangeDate:ComputedRef<string> = computed(() =>{
+      if(t('locale') === 'ja') {
+        return `${date.value.split('-')[0]} 年
+            ${date.value.split('-')[1]}月
+            ${date.value.split('-')[2]}日
+            ${time.value.split(':')[0]}:${ time.value.split(':')[1]}`
+      }else{
+        return `${time.value.split(':')[0]}:${ time.value.split(':')[1]},
+            ${date.value.split('-')[1]} /
+            ${date.value.split('-')[2]}/
+            ${date.value.split('-')[0]}`
+      }
+    });
 
     async function init(): Promise<void>{
       // 1. Check if vacancy, if not send back to calendar
@@ -139,7 +150,7 @@ export default defineComponent({
           isPageLoaded = true
           setupExtraData()
         }else{
-          throw "予約が上限に達しました。他の日時を選択して下さい。"
+          throw t('formLimit')
         }
       }catch(error){
         isLoading.value = false;
@@ -281,7 +292,15 @@ export default defineComponent({
             if (typeof column.model === "boolean") {
               formData.append(column.db, column.model ? "1" : "0")
             } else {
-              if (column.model) formData.append(column.db, column.model.toString())
+              if (column.model) {
+                formData.append(column.db, column.model.toString())
+                //add building name to formData
+                if(column.db==="project" && column.options){
+                  const buildingName:any = [...column.options]
+                    .find((option:any) =>  option.value === column.model?.toString())
+                  if(buildingName) {formData.append("building_name", buildingName.label)}
+                }
+              }
             }
           })
         })
@@ -296,6 +315,7 @@ export default defineComponent({
         config.data = formData
 
         try {
+          // console.table([...config.data])
           axios(config).then((response) => {
             isLoading.value = false
             resolve(response)
@@ -313,7 +333,7 @@ export default defineComponent({
     const onError = (): void => {
       isLoading.value = false;
       console.error("Server could not accept response")
-      store.SET_ERROR({title: "エラー", text: "サーバーのエラーが発生しました。"})
+      store.SET_ERROR({title: t('formErrorTitle'), text: t('formErrorBody')})
       goTo("Room")
     }
 
@@ -345,7 +365,7 @@ export default defineComponent({
     const goTo = (where: string): void => {
       const currentQuery = Object.assign({}, route.query)
       delete currentQuery.vacancy
-      const param = {rid: ""}
+      const param = {rid:route.params.rid, fid:route.params.fid}
       if (where === 'Room') {
         param.rid = roomID.value.toString()
       }
@@ -380,9 +400,9 @@ export default defineComponent({
       date, time, pageTitle, subTitle, dateAndTime,
       dynForm, modelData,
       extraData,config,
-      isLoading, route,
+      isLoading, arrangeDate, route,
       submit, onError, onComplete,
-      goTo,
+      goTo, t,
     }
   }
 

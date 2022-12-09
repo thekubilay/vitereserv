@@ -12,7 +12,7 @@
         <div class="container">
           <div class="header-container">
             <h1 class="flex-column heading">
-              <span class="title block header-text">{{room?.name||"ご予約内容の選択"}}</span>
+              <span class="title block header-text">{{room?.name}}</span>
               <span v-if="room?.header && room?.header !== 'null'" class="sub-title block">{{room?.header}}</span>
             </h1>
             <div class="custom-content header flex-column justify-center align-center" v-if="pageContents.header.length>0">
@@ -87,12 +87,11 @@
                   <div class="day">{{ item.day }}</div>
                   <div class="date">{{ item.date.slice(5, item.date.length) }}</div>
                 </div> -->
-
                 <div class="week-cell__contents flex-column justify-space-around align-center">
                   <!-- 休日の場合 -->
-                  <div v-if="holidays.includes(item.day) || separatedHolidaysCheck(item.date)" class="sec holiday">
+                  <div v-if="holidays.includes(item.dayJa) || separatedHolidaysCheck(item.date)" class="sec holiday">
                     <p class="holiday flex align-center justify-center">
-                      定休日
+                      {{ t('roomRegularHoliday') }}
                     </p>
                   </div>
 
@@ -194,7 +193,7 @@
                   >
                     <path d="M256,78.77c97.73,0,177.23,79.51,177.23,177.23S353.73,433.23,256,433.23,78.77,353.73,78.77,256,158.27,78.77, 256,78.77M256,0C114.62,0,0,114.62,0,256S114.62,512,256,512,512,397.38,512,256,397.38,0,256,0Z"></path>
                   </svg>
-                  <span class="">予約できます</span>
+                  <span class="">{{ t('roomVacancy') }}</span>
                 </li>
                 <!-- <li class="flex align-center">
                   <svg
@@ -221,7 +220,7 @@
                       d="M321.83,256,498.37,79.46a46.55,46.55,0,1,0-65.83-65.83L256,190.17,79.46,13.63A46.55,46.55,0,0,0, 13.63,79.46L190.17,256,13.63,432.54a46.55,46.55,0,0,0,65.83,65.83L256,321.83,432.54,498.37a46.55,46.55, 0,0,0,65.83-65.83Z"
                     ></path>
                   </svg>
-                  <span class="">予約できません</span>
+                  <span class="">{{ t('roomNoVacancy') }}</span>
                 </li>
               </ul>
             </div>
@@ -242,10 +241,10 @@
       </div>
       <div v-else-if="isRest" class="maintenance template__Wrapper">
         <div class="container">
-          <h2 class="h2">ただいまメンテナンス中です。</h2>
+          <h2 class="h2">{{ t('maintenanceTitle') }}</h2>
           <div>
             <section class="message__Wrapper">
-              <h3 class="h3">ご迷惑をおかけしておりますが、<br>今しばらくお待ちください</h3>
+              <h3 class="h3" v-html="t('maintenanceTitle')"></h3>
             </section>
           </div>
         </div>
@@ -267,6 +266,7 @@ import VitFooter from "../components/Footer.vue"
 import VitHeader from "../components/Header.vue"
 import moment from "moment";
 import { useGtm } from "@gtm-support/vue-gtm";
+import { vocabularies } from '../utils/useVocabularies'
 
 export default defineComponent({
   components: {
@@ -294,6 +294,7 @@ export default defineComponent({
     const isRest = ref<boolean>(false)
     // const currentQuery = ref<LocationQueryRaw | null>(null)
     const gtm = useGtm()
+    const { t } = vocabularies();
 
     const pageContents:{header: PageContents[], footer: PageContents[]} = {
       header: [],
@@ -304,18 +305,24 @@ export default defineComponent({
       pageContents.header = [
         {src: "eSalonImages/esalon_flowofuse.png", class:"pc", alt:""},
         {src: "eSalonImages/esalon_flowofuse_sp.png", class:"sp", alt:""},
-        // {src: "eSalonImages/esalon_header.png", class:"pc", alt:""},
-        // {src: "eSalonImages/esalon_headersub.png", class:"pc sub", alt:""},
-        // {src: "eSalonImages/esalon_header_sp.png", class:"sp", alt:""},
-        // {src: "eSalonImages/esalon_headersub_sp.png", class:"sp", alt:""},
       ]
       pageContents.footer = [
         {src: "eSalonImages/esalon_telButton.png", class:"pc", alt:""},
         {src: "eSalonImages/esalon_telButton_sp.png", class:"sp", alt:""},
-        // {src: "eSalonImages/esalon_header.png", class:"pc", alt:""},
-        // {src: "eSalonImages/esalon_headersub.png", class:"pc sub", alt:""},
-        // {src: "eSalonImages/esalon_header_sp.png", class:"sp", alt:""},
-        // {src: "eSalonImages/esalon_headersub_sp.png", class:"sp", alt:""},
+      ]
+    }
+    // reserve en
+    if(['600799837'].includes(route.params.rid as string)){
+      pageContents.header = [
+        {src: "eSalonImages/esalon_flowofuse_en.png", class:"pc", alt:""},
+        {src: "eSalonImages/esalon_flowofuse_en_sp.png", class:"sp", alt:""},
+      ]
+    }
+    // online en
+    if(['746935619'].includes(route.params.rid as string)){
+      pageContents.header = [
+        {src: "eSalonImages/esalon_flowofuse_onLine_en.png", class:"pc", alt:""},
+        {src: "eSalonImages/esalon_flowofuse_onLine_en_sp.png", class:"sp", alt:""},
       ]
     }
 
@@ -540,7 +547,7 @@ export default defineComponent({
     return {
       calendarService, currentWeek, weekDatesObjs, room, holidays, vacancies, route,
       isNotification, errorMessage, isLoading, mainColor, betweenHours, currentWeekForDisplay, currentDate, isRest, pageContents, ENV,
-      formatDate, changeWeek, separatedHolidaysCheck, vacanciesCheck, goToForm, pastTimeCheck, closeNotification, getPrepTime, findHourBefore,
+      formatDate, changeWeek, separatedHolidaysCheck, vacanciesCheck, goToForm, pastTimeCheck, closeNotification, getPrepTime, findHourBefore, t,
     };
   },
 });
