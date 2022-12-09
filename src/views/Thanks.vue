@@ -38,22 +38,18 @@ onMounted(() => {
     gtm?.trackEvent({event: 'gtm.init_consent', 'content-view-name':route.name})
     gtm?.trackEvent({event: 'gtm.init'})
   }
-  console.log(t('locale'))
-  if(t('locale')==="ja"){
-    thanksTitle.value = t('thanksTitle');
-    thanksBody1.value = t('thanksBody1');
-    thanksBody2.value = t('thanksBody2');
-  }else{
-    // reserve en
-    if(['532783550','600799837'].includes(route.params.rid as string)){
-      thanksTitle.value = "Thank you for reserving a model room tour.";
-      thanksBody2.value = "We will send a confirmation email to the email address you entered <br>so that you can confirm the details of your reservation.<br><br>We look forward to seeing you on your model room tour.<br>We wish you safe travels on the day of the tour.";
-    }
-    // online en
-    if(['520803050','746935619'].includes(route.params.rid as string)){
-      thanksTitle.value = "Thank you for reserving an online consultation.";
-      thanksBody2.value = "We will send a confirmation email to the email address you entered <br>so that you can confirm the details of your reservation.<br><br>We look forward to seeing you online on the day of your consultation.";
-    }
+  thanksTitle.value = t('thanksTitle');
+  thanksBody1.value = t('thanksBody1');
+  thanksBody2.value = t('thanksBody2');
+  // reserve en
+  if(['532783550','600799837'].includes(route.params.rid as string)){
+    thanksTitle.value = "Thank you for reserving a model room tour.";
+    thanksBody2.value = "We will send a confirmation email to the email address you entered <br>so that you can confirm the details of your reservation.<br><br>We look forward to seeing you on your model room tour.<br>We wish you safe travels on the day of the tour.";
+  }
+  // online en
+  if(['520803050','746935619'].includes(route.params.rid as string)){
+    thanksTitle.value = "Thank you for reserving an online consultation.";
+    thanksBody2.value = "We will send a confirmation email to the email address you entered <br>so that you can confirm the details of your reservation.<br><br>We look forward to seeing you online on the day of your consultation.";
   }
 })
 </script>

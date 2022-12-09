@@ -52,9 +52,9 @@ export function vocabularies() {
                 formErrorTitle: "Error",
                 formErrorBody: "An error has occurred.",
                 formRequireError: "Please enter",
-                thanksTitle: "",
+                thanksTitle: "Thank you for reserving a model room tour.",
                 thanksBody1: "",
-                thanksBody2: "",
+                thanksBody2: "We will send a confirmation email to the email address you entered <br>so that you can confirm the details of your reservation.<br><br>We look forward to seeing you.",
                 footerPrivacyPolicy: "Privacy Policy",
                 footerBasicPolicy: "Basic Policy",
                 footerCompanyName: "TOKYU LAND CORPORATION"
