@@ -22,6 +22,10 @@
                 class="room-body-summary">
               <span style="color:#e45700;">ご希望の予約時間直前にエントリーされる場合は、出来れば15分程度事前にエントリーいただく事をお勧めします。<br>( ご希望時間直前でのご予約の場合、システムの関係上、ご希望の開始時間を少し遅れる場合がございますので、予めご了承ください。)</span>
             </p>
+            <p v-if="route.params.rid==='532783550'"
+                class="room-body-summary">
+              <span style="color:#e45700;">Translator available for your visit on first to forth Saturday of each month.（Available on 1P.M.~5P.M. on jst）<br>First and third Saturday: English-Japanese translator <br>Second and third Saturday: Chinese-Japanese translator</span>
+            </p>
             <!-- <p v-if="room?.body && room?.body !== 'null'"
                v-html="room?.body"
               class="room-body-summary"></p> -->
