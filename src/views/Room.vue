@@ -18,11 +18,11 @@
             <div class="custom-content header flex-column justify-center align-center" v-if="pageContents.header.length>0">
               <img v-for="(img) in pageContents.header" :class="img.class" :src="ENV.STATIC+img.src" :alt="img.alt">
             </div>
-            <p v-if="route.params.rid==='635834411'"
+            <p v-if="['637599256','635834411'].includes(route.params.rid as string)"
                 class="room-body-summary">
               <span style="color:#e45700;">ご希望の予約時間直前にエントリーされる場合は、出来れば15分程度事前にエントリーいただく事をお勧めします。<br>( ご希望時間直前でのご予約の場合、システムの関係上、ご希望の開始時間を少し遅れる場合がございますので、予めご了承ください。)</span>
             </p>
-            <p v-if="route.params.rid==='532783550'"
+            <p v-if="['532783550','600799837'].includes(route.params.rid as string)"
                 class="room-body-summary">
               <span style="color:#e45700;">Translator available for your visit on first to forth Saturday of each month.（Available on 1P.M.~5P.M. on jst）<br>First and third Saturday: English-Japanese translator <br>Second and third Saturday: Chinese-Japanese translator</span>
             </p>

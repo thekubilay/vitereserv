@@ -9,7 +9,7 @@
         </section>
       </div>
       <div v-if="route.params.rid!=='635834411'" class="flex">
-        <a href="https://infish-test.com/tokyu/lp/global/en/" class="btn ghost-btn">Home</a>
+        <a href="https://sumai.tokyu-land.co.jp/e-salon/global/en/" class="btn ghost-btn">Home</a>
       </div>
     </div>
   </div>
