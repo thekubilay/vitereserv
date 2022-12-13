@@ -21,6 +21,7 @@ export interface Calendar {
 export interface WeekDatesAsObject {
   date: string,
   day: string,
+  dayJa: string,
   month: string,
   week: number,
   timestamp: number

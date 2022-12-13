@@ -13,7 +13,7 @@
         <a :href="corporationLinkAddress" target="_blank" class="corporation-logo">
           <img :src="imgSrc" :alt="imgAlt" :width="imgWidth" :height="imgHeight">
         </a>
-        <p class="corporation-name">東急不動産</p>
+        <p class="corporation-name">{{ t('footerCompanyName') }}</p>
       </section>
       <section class="legal">
         <div class="copyright">
@@ -22,8 +22,8 @@
           </span>
         </div> 
         <div class="legal-links">
-          <a class="privacy-policy" href="https://www.tokyu-land.co.jp/about/privacy.html" target="_blank">個人情報保護ポリシー</a>
-          <a class="terms-of-use" href="https://sumai.tokyu-land.co.jp/info/first.html" target="_blank">利用規約</a>
+          <a class="privacy-policy" href="https://www.tokyu-land.co.jp/about/privacy.html" target="_blank">{{ t('footerPrivacyPolicy') }}</a>
+          <a class="terms-of-use" href="https://sumai.tokyu-land.co.jp/info/first.html" target="_blank">{{ t('footerBasicPolicy') }}</a>
         </div>
       </section>
     </div>
@@ -43,9 +43,11 @@
 <script lang="ts">
 import {defineComponent, ref} from "vue";
 import logoImg from "/col.svg"
+import { vocabularies } from '../utils/useVocabularies'
 
 export default defineComponent({
   setup(){
+    const { t } = vocabularies();
     const corporationLinkAddress = "https://www.tokyu-land.co.jp"
     const imgSrc = logoImg
     const imgAlt = "東急不動産"
@@ -55,14 +57,15 @@ export default defineComponent({
     return {
       corporationLinkAddress,
       imgSrc, imgAlt, imgWidth, imgHeight,
+      t,
     }
   }
 })
 </script>
 <style scoped>
 footer{
-  display: block;
-  margin: 0;
+  display: flex;
+  margin: auto 0 0;
   padding: 0;
   border: 0;
   box-sizing: border-box;
@@ -78,6 +81,7 @@ footer{
 }
 footer .inner-footer {
   max-width: 980px;
+  width: 100%;
   margin: 0 auto;
   padding: 0 22px;
 }

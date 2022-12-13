@@ -31,7 +31,7 @@
 
               <span v-if="column.name" class="f-name flex align-center">
                 {{ column.name }}
-                <span v-if="column.required" class="required">[必須]</span>
+                <span v-if="column.required" class="required">[{{t('formRequired')}}]</span>
               </span>
 
               <component @change="useTypeValidation($event, idx, cid)"
@@ -43,7 +43,7 @@
 
               <span v-if="column.hint" class="f-hint">{{ column.hint }}</span>
 
-              <span v-if="column.invalid" class="f-error">ご入力ください</span>
+              <span v-if="column.invalid" class="f-error">{{ t('formRequireError') }}</span>
               <span v-for="(error, i) in column.errors" :key="i+'error'" class="f-error">{{ error }}</span>
             </div>
           </div>
@@ -63,7 +63,7 @@
 
           <div class="actions flex justify-end align-center">
             <!-- <button v-if="Object.keys(data).length>0" @click="$emit('update:confirm', true)" class="remove">削除</button> -->
-            <button @click="submitter()" class="submit">登録</button>
+            <button @click="submitter()" class="submit">{{ t('formSubmitButton') }}</button>
           </div>
         </div>
 
@@ -83,6 +83,7 @@ import {changeTab, setProps} from "@/components/dynamic-form/helpers/events";
 import {useResetErrors, useSubmitValidation} from "@/components/dynamic-form/helpers/useValidation";
 import {pvcl} from "@/components/dynamic-form/helpers/usePrimeInputs";
 import {Crud} from "../types/Crud";
+import { vocabularies } from '../../../utils/useVocabularies';
 
 interface Emits {
   (e: "update:modelValue", modelValue: boolean): void;
@@ -119,6 +120,7 @@ const components = ref<boolean>(false)
 const reform = ref<DynamicForm>({} as DynamicForm)
 const syncWatchOnNulls = ref<boolean>(false)
 const serverSideErrors = ref<string[]>([])
+const { t } = vocabularies();
 
 onMounted((): void => {
   reform.value = props.form as DynamicForm

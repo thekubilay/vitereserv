@@ -1,10 +1,20 @@
 import moment from "moment";
 import {DateObject, Month, WeekDatesAsObject} from "../types/Calendar";
+import { languageSetting } from "../utils/useVocabularies";
 
-moment.locale("ja", {
-  weekdays: ["日曜日", "月曜日", "火曜日", "水曜日", "木曜日", "金曜日", "土曜日"],
-  weekdaysShort: ["日", "月", "火", "水", "木", "金", "土"]
-});
+if(languageSetting === "ja") {
+  moment.locale("ja", {
+    weekdays: ["日曜日", "月曜日", "火曜日", "水曜日", "木曜日", "金曜日", "土曜日"],
+    weekdaysShort: ["日", "月", "火", "水", "木", "金", "土"]
+  });
+}else{
+  moment.locale("en", {
+    weekdays: ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"],
+    weekdaysShort: ["sun", "mon", "tue", "wed", "thu", "fri", "sat"]
+  });
+}
+
+
 
 export default class CalendarService {
   public weekdays: string[] = ["日曜日", "月曜日", "火曜日", "水曜日", "木曜日", "金曜日", "土曜日"]
@@ -45,7 +55,7 @@ export default class CalendarService {
   get currentWeekDatesAsObject(): DateObject[] {
     return this.getWeekDates(this.currentWeek as number).map(date => {
       return {
-        date: moment(date).format('YYYY年MM月DD日'),
+        date: moment(date).format('YYYY/MM/DD'),
         day: moment(date).format('ddd'),
         week: this.currentWeek,
         month: this.currentMonth + "月"
@@ -153,11 +163,14 @@ export default class CalendarService {
     return this.getWeekDates(week_num).map(date => {
       //'date' has format of 2022/01/01, but '/' is not ISO standard -> throws deprecated warning
       //See:   https://momentjs.com/docs/#/parsing/string/
+      const weekdaysShortEn = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"]
+      const dayJa = this.weekdaysShort[weekdaysShortEn.indexOf( moment(date).format('ddd') )]
       return {
         date: moment(date).format('YYYY/MM/DD'),
         day: moment(date).format('ddd'),
+        dayJa: (languageSetting === "ja") ? moment(date).format('ddd') : dayJa,
         week: moment(date, "YYYY-MM-DD").week(),
-        month: (moment(date).month() + 1) + "月",
+        month: (languageSetting === "ja") ? (moment(date).month() + 1) + "月" : moment(date).format('MMM'),
         timestamp: moment(date).valueOf()
       }
     })
