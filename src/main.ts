@@ -51,7 +51,6 @@ app.use(i18n)
 const service = new RequestService();
 service.getRoom().then((response: any) => {
   if(response && response.gtmid){
-    console.log(response.gtmid)
     app.use(createGtm({
       id: response.gtmid,
       enabled: false,
