@@ -41,46 +41,24 @@ const router = createRouter({
   routes
 })
 
-
-//// This will refresh the page when changing view /////
-// router.afterEach((to, from) => {
-//     const isReloaded = sessionStorage.getItem("reload")
-
-//     if (typeof isReloaded === "string") {
-//       if (to.name === from.name) {
-//         sessionStorage.setItem("reload", "true")
-//       } else if (isReloaded === "false"){
-//         sessionStorage.setItem("reload", "true")
-//         document.location.reload()
-//       }
-//     }
-
-//     setTimeout(() => {
-//       sessionStorage.setItem("reload", "false")        
-//       console.log(isReloaded + " timeout1")
-//     }, 200);   
-//     console.log(isReloaded)
-
-// })
-
 router.beforeEach((to,from) => {
   //Check if the room exists or active
-  if(to.params.rid){
-    axios.request({
-      method: "get",
-      baseURL: ENV.API,
-      url: "rooms/" + to.params.rid + "/",
-      params: {week: 1}
-    })
-    .then((response) => {
-      if(!response.data.active) {
-        router.push({ name: "Error"})
-      }
-    })
-    .catch(() => {
-      router.push({name: "Error"})
-    })
-  }
+  // if(to.params.rid){
+  //   axios.request({
+  //     method: "get",
+  //     baseURL: ENV.API,
+  //     url: "rooms/" + to.params.rid + "/",
+  //     params: {year: to.query.year, week: to.query.week}
+  //   })
+  //   .then((response) => {
+  //     if(!response.data.active) {
+  //       router.push({ name: "Error"})
+  //     }
+  //   })
+  //   .catch(() => {
+  //     router.push({name: "Error"})
+  //   })
+  // }
 })
 
 export default router;

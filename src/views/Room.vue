@@ -51,13 +51,13 @@
                    <i class="pi pi-chevron-left"></i>
                  </button>
               </div>
-              <div class="header-date flex-column align-center justify-center" v-for="(weekday, idx) in weekDatesObjs" 
-                  :class="{addafter: idx+1!=weekDatesObjs?.length,today: weekday.date === currentDate}"
+              <div class="header-date flex-column align-center justify-center" v-for="(object, idx) in weekDates"
+                  :class="{addafter: idx+1!==weekDates?.length, today: object.dateJP === today}"
                   >
                 <div class="header-date-inner flex-column align-center justify-center">
-                  <span class="month">{{weekday.month}}</span>
-                  <span class="day">{{weekday.date.split('/')[2]}}</span>
-                  <span class="weekday">{{weekday.day}}</span>
+                  <span class="month">{{object.monthName}}</span>
+                  <span class="day">{{ object.date.substring(8) }}</span>
+                  <span class="weekday">{{object.dayShort}}</span>
                 </div>
               </div>
               <div class="header-btn-wrapper flex justify-center align-center">
@@ -70,8 +70,7 @@
             <section class="calendar-outer flex justify-space-between" style="position:relative;">
               <LoadingSpinner v-model="isLoading" relative/>
               <div class="times-wrapper flex-column">
-                <!-- <div class="week-cell-header flex">
-                </div> -->
+
                 <div class="times-cells flex-column justify-space-between align-center">
                   <div v-for="(time, index) in betweenHours" :key="index" class="time-cell">
                     <div>
@@ -85,43 +84,21 @@
                 </div>
               </div>
 
-              <div v-for="(item, idx) in weekDatesObjs" :key="idx" class="weekday-wrapper flex-column" :class="{first : idx === 0}">
-                <!-- <div class="week-cell-header flex-column justify-center align-center"
-                     :class="{today: item.date === currentDate}">
-                  <div class="day">{{ item.day }}</div>
-                  <div class="date">{{ item.date.slice(5, item.date.length) }}</div>
-                </div> -->
+              <div v-for="(item, idx) in weekDates" :key="idx" class="weekday-wrapper flex-column" :class="{first : idx === 0}">
                 <div class="week-cell__contents flex-column justify-space-around align-center">
                   <!-- 休日の場合 -->
-                  <div v-if="holidays.includes(item.dayJa) || separatedHolidaysCheck(item.date)" class="sec holiday">
+                  <div v-if="holidays.includes(weekdaysShort[idx]) || separatedHolidaysCheck(item.date2)" class="sec holiday">
                     <p class="holiday flex align-center justify-center">
                       {{ t('roomRegularHoliday') }}
                     </p>
                   </div>
 
-                  <!-- <div v-else-if="pastTimeCheck(item.timestamp)" class="sec empty">
-                    <div class="btn_select disable" style="height: 100%">
-                      <div class="icon-wrapper noflame">
-                        <figure class="icon cross">
-                          <svg fill="#c2c2c2" viewBox="0 0 512 512">
-                            <path
-                              d="M321.83,256,498.37,79.46a46.55,46.55,0,1,0-65.83-65.83L256,190.17,79.46,13.63A46.55,46.55,0,0,0, 13.63,79.46L190.17,256,13.63,432.54a46.55,46.55,0,0,0,65.83,65.83L256,321.83,432.54,498.37a46.55,46.55, 0,0,0,65.83-65.83Z"
-                            ></path>
-                          </svg>
-                        </figure>
-                      </div>
-                    </div>
-                  </div> -->
-
                   <template v-else-if="room && betweenHours.length > 0">
                     <div v-for="(time, index) in betweenHours" :key="index" class="sec flex-column justify-center align-center">
                       <!-- マル -->
-                      <div v-if="findHourBefore(time, item.date) && vacanciesCheck(item.date, time).mark==='circle' && !pastTimeCheck(item.timestamp,time)" 
+                      <div v-if="findHourBefore(time, item.date2) && vacanciesCheck(item.date2, time).mark==='circle' && !pastTimeCheck(item.timestamp,time)"
                             class="flex-column justify-center btn_select sec-circle" 
-                            @click="goToForm(item.date, time, room)">
-                        <!-- <p class="time">
-                          <span>{{ getPrepTime(time) }}</span>
-                        </p> -->
+                            @click="goToForm(item.date2, time, room)">
                         <div class="icon-wrapper">
                           <figure class="icon circle">
                             <svg stroke="#6366f1" fill="none" viewBox="0 0 40.00 40.00">
@@ -132,12 +109,9 @@
                       </div>
                       <!-- 三角 -->
 
-                      <div v-else-if="findHourBefore(time, item.date) && vacanciesCheck(item.date, time).mark==='triangle'" 
+                      <div v-else-if="findHourBefore(time, item.date2) && vacanciesCheck(item.date2, time).mark==='triangle'"
                             class="flex-column justify-center btn_select sec-triangle" 
-                            @click="goToForm(item.date, time, room)">
-                        <!-- <p class="time">
-                          <span>{{ getPrepTime(time) }}</span>
-                        </p> -->
+                            @click="goToForm(item.date2, time, room)">
                         <div class="icon-wrapper">
                           <figure class="icon triangle">
                             <svg fill="#6366f1" fill-opacity="0.7" viewBox="0 0 512 512">
@@ -150,9 +124,6 @@
                       </div>
 
                       <div v-else class="flex-column justify-center btn_select disable">
-                        <!-- <p class="time">
-                          <span>{{ getPrepTime(time) }}</span>
-                        </p> -->
                         <div class="icon-wrapper noflame">
                           <figure class="icon cross">
                             <svg stroke="#edebe7" fill="none" stroke-linecap="round" viewBox="0 0 40 40">
@@ -199,20 +170,6 @@
                   </svg>
                   <span class="">{{ t('roomVacancy') }}</span>
                 </li>
-                <!-- <li class="flex align-center">
-                  <svg
-                    width="14"
-                    height="12"
-                    fill="#6366f1"
-                    fill-opacity="0.7"
-                    viewBox="0 0 512 512"
-                  >
-                    <path
-                      d="M408.95,482.41H103.05c-37.76,0-72.41-20.12-90.43-52.49A97.36,97.36,0,0,1,15,330.06L172.31, 76.18a98.47,98.47,0,0,1,167.38,0L497,330.06a97.36,97.36,0,0,1,2.37,99.86C481.35,462.29,446.7,482.41, 408.95,482.41ZM256,108.34a19.42,19.42,0,0,0-16.75,9.32L81.94,371.54a19.14,19.14,0,0,0-.52,20.07c4.2, 7.55,12.29,12.05,21.63,12.05H408.95c9.34,0,17.43-4.5,21.63-12.05a19.14,19.14,0,0,0-.52-20.07L272.75, 117.66A19.42,19.42,0,0,0,256,108.34Z"
-                    ></path>
-                  </svg>
-                  <span class="">残りわずか</span>
-                </li> -->
                 <li class="flex align-center">
                   <svg
                     width="9"
@@ -229,11 +186,6 @@
               </ul>
             </div>
           </div>
-          <!-- calendar-wrapper -->
-          <!-- <div class="custom-content footer flex-column justify-center align-center" v-if="pageContents.footer.length>0">
-            <img v-for="(img) in pageContents.footer" :class="img.class" :src="img.src" :alt="img.alt">
-          </div> -->
-
 
           <div class="footer-container">
             <div class="custom-content footer flex-column justify-center align-center" v-if="pageContents.footer.length>0">
@@ -271,6 +223,7 @@ import VitHeader from "../components/Header.vue"
 import moment from "moment";
 import { useGtm } from "@gtm-support/vue-gtm";
 import { vocabularies } from '../utils/useVocabularies'
+import useDateHandler from "@/helpers/useDateHandler";
 
 export default defineComponent({
   components: {
@@ -280,6 +233,7 @@ export default defineComponent({
     const route = useRoute()
     const router = useRouter()
     const {store} = useStore()
+    const {today, weekNum, weekdays, weekdaysShort, weekDates, year, getWeekDatesByNum} = useDateHandler()
     const calendarService = ref()
     const currentWeek = ref<number | null>(null);
     const weekDatesObjs = ref<WeekDatesAsObject[] | null>(null);
@@ -304,6 +258,7 @@ export default defineComponent({
       header: [],
       footer: [],
     }
+
     // Test id,      eSalon id
     if(['637599256','635834411'].includes(route.params.rid as string)){
       pageContents.header = [
@@ -338,18 +293,6 @@ export default defineComponent({
     })
 
     const findHourBefore = (param:any, date:string):boolean => {
-      // const now: any = moment()
-      // const timeFormatted: any = new Date (new Date().toDateString() + ' ' + param.time)
-      // const time: any = moment(moment(timeFormatted))
-
-      // const isTimeNotOver: boolean = parseInt(param?.replace(":", "")) - parseInt(now) >= 100;
-      // const varDate = new Date(date.replaceAll("/","-"));
-      // const today = new Date();
-      // if (varDate >= today){
-      //   return true
-      // } else {
-      //   return time.diff(now, "hours") >= 0;
-      // }
       return true
     }
 
@@ -362,17 +305,15 @@ export default defineComponent({
     }
 
     const changeWeek = (num:number):void => {
-      if(currentWeek.value){
-        currentWeek.value += num
-      }
-      weekDatesObjs.value = calendarService.value.getWeekDatesAsObject(currentWeek.value as number)
-      let currentQuery = Object.assign({}, route.query)
-      currentQuery = Object.assign(currentQuery, {week:currentWeek.value})
-      router.push({query: currentQuery})
+      getWeekDatesByNum(num)
+
+      const currentQuery = Object.assign({}, route.query)
+      router.push({query: Object.assign(currentQuery, {year:year.value, week:weekNum.value})})
       getRooms();
     }
 
     const separatedHolidaysCheck = (date:string):Boolean => {
+      date = date.replaceAll("-", "/")
       if(room.value && room.value.separate_holidays){
         return room.value.separate_holidays.some((element: SeparatedHoliday) => formatDate(String(element.date)) === date)
       }
@@ -399,13 +340,9 @@ export default defineComponent({
     }
 
     const pastTimeCheck = (timestamp:number,time:string):boolean => {
-      const todayTimestamp = moment().unix()*1000//new Date().getTime()
+      const todayTimestamp = moment().unix()*1000
       const targetTime = timestamp+(parseInt(time.split(':')[0]))*3600000
-      // console.log(moment(timestamp).format(),(targetTime-todayTimestamp),new Date())
-      if(targetTime < todayTimestamp) {
-        return true
-      }
-      return false
+      return targetTime < todayTimestamp;
     }
     
     const getPrepTime = (time: string) => {
@@ -459,13 +396,12 @@ export default defineComponent({
         method: "get",
         baseURL: ENV.API,
         url: "rooms/" + route.params.rid + "/",
-        params: {week: currentWeek.value ? (currentWeek.value) : "0"}
+        params: {year: year.value, week: weekNum.value}
       })
       .then((response) => {
+
         const data = JSON.parse(JSON.stringify(response.data))
-        // if(!data.active){
-        //   router.push({ name: "Error"})
-        // }
+
         room.value = data
         isRest.value = data.rest
         holidays.value = data.holidays.includes(",") ? data.holidays.split(",") : [data.holidays]
@@ -473,7 +409,7 @@ export default defineComponent({
         document.getElementsByTagName('title')[0].innerHTML = (room.value)?room.value.name:"ビターブ｜予約システム作成・予約管理ならおまかせ｜viterve"
         isLoading.value = false
         getBetweenHours(data.settings.time_start, data.settings.time_end)
-        // betweenHours.value = data.times
+
       })
       .catch((eroor) => {
         isLoading.value = false
@@ -492,14 +428,12 @@ export default defineComponent({
     }
 
     function init() {
+
       calendarService.value = new calendarServiceClass();
       currentWeek.value = calendarService.value.currentWeek
       ////// for query /////
-      if(route.query.hasOwnProperty("week") && route.query.week && (currentWeek.value !== Number(route.query.week))){
-        currentWeek.value = Number(route.query.week)
-      }
       let currentQuery = Object.assign({}, route.query)
-      currentQuery = Object.assign(currentQuery, {week: currentWeek.value})
+      currentQuery = Object.assign(currentQuery, {lang:setLanguage(), year:year.value, week:weekNum.value})
       if(route.query.hasOwnProperty("vacancy") && route.query.vacancy){
         currentQuery = deleteQueryVacancy(currentQuery)
       }
@@ -507,34 +441,29 @@ export default defineComponent({
       ////// for query end /////
       weekDatesObjs.value = calendarService.value.getWeekDatesAsObject(currentWeek.value as number)
       currentDate.value = calendarService.value.currentDate.replace("年","/").replace("月","/").replace("日","")
+
       getRooms();
+
       if(store.error){
         Object.assign(errorMessage, store.error)
         isNotification.value = true
       }
-      // setTimeout(() => {
-      //   isNotification.value = true
-      // }, 1000)
+    }
+
+    function setLanguage(): string {
+      /* english */
+      if (["600799837", "746935619", "520803050", "532783550"].includes(route.params.rid as string)) {
+        return "en"
+
+      /* japanese */
+      } else if (["635834411", "637599256", "249893849"]) {
+        return "ja"
+      }
+
+      return "ja"
     }
 
     onMounted(() => {
-      // if(!document.getElementById('googleTag')){
-      //   service.getRoom().then((response: any) => {
-      //   if(response && response.gtmid){
-      //     const script = document.createElement('script');
-      //     script.id = 'googleTag'
-      //     script.textContent = `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-      //     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-      //     j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-      //     'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-      //     })(window,document,'script','dataLayer','${response.gtmid}');`;
-      //     document.getElementsByTagName('head')[0].appendChild(script);
-      //   }
-      //   }).catch(() => {
-      //     console.log("TagRequestError")
-      //   });
-      // }
-
       if(!gtm?.enabled()){
         gtm?.enable(true)
       }else{
@@ -549,6 +478,7 @@ export default defineComponent({
     })
 
     return {
+      today, weekDates, weekdaysShort,
       calendarService, currentWeek, weekDatesObjs, room, holidays, vacancies, route,
       isNotification, errorMessage, isLoading, mainColor, betweenHours, currentWeekForDisplay, currentDate, isRest, pageContents, ENV,
       formatDate, changeWeek, separatedHolidaysCheck, vacanciesCheck, goToForm, pastTimeCheck, closeNotification, getPrepTime, findHourBefore, t,
