@@ -466,12 +466,12 @@ export default defineComponent({
       if(!gtm?.enabled()){
         gtm?.enable(true)
       }else{
-        // window.dataLayer?.push({
-        //   google_tag_params: {
-        //     dynx_pagetype: 'other',
-        //     dynx_device: 'pc'
-        //   }
-        // });
+        window.dataLayer?.push({
+          google_tag_params: {
+            dynx_pagetype: 'other',
+            dynx_device: 'pc'
+          }
+        });
         gtm?.trackEvent({event: 'gtm.init_consent', 'content-view-name':route.name});
         gtm?.trackEvent({event: 'gtm.init'});
         gtm?.trackEvent({event: 'gtm.js'});
