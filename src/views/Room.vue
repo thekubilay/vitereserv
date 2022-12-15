@@ -466,12 +466,17 @@ export default defineComponent({
       if(!gtm?.enabled()){
         gtm?.enable(true)
       }else{
-        window.dataLayer?.push({
-          dynx_pagetype: 'other',
-          dynx_device: 'pc'
-        });
-        gtm?.trackEvent({event: 'gtm.init_consent', 'content-view-name':route.name})
-        gtm?.trackEvent({event: 'gtm.init'})
+        // window.dataLayer?.push({
+        //   google_tag_params: {
+        //     dynx_pagetype: 'other',
+        //     dynx_device: 'pc'
+        //   }
+        // });
+        gtm?.trackEvent({event: 'gtm.init_consent', 'content-view-name':route.name});
+        gtm?.trackEvent({event: 'gtm.init'});
+        gtm?.trackEvent({event: 'gtm.js'});
+        gtm?.trackEvent({event: 'gtm.dom'});
+        gtm?.trackEvent({event: 'gtm.load'});
       }
       init()
     })
