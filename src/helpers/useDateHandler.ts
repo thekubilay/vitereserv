@@ -1,12 +1,13 @@
 import {ref} from "vue";
 import moment from "moment/moment";
 import {useRoute} from "vue-router";
+import {languageSetting} from "@/utils/useVocabularies";
 
 interface D {
   day: string,
   dayShort: string,
   month: number,
-  monthName: string|number,
+  monthName: string | number,
   date: string,
   date2: string,
   dateJP: string,
@@ -14,10 +15,31 @@ interface D {
 }
 
 export default function () {
+  if (languageSetting === "ja") {
+    moment.updateLocale("ja", {
+      weekdays: ["日曜日", "月曜日", "火曜日", "水曜日", "木曜日", "金曜日", "土曜日"],
+      weekdaysShort: ["日", "月", "火", "水", "木", "金", "土"],
+      week: {
+        dow: 0, // Monday is the first day of the week
+        doy: 0 // The week that includes January 1st is the first week of the year
+      }
+    });
+  } else {
+    moment.updateLocale("en", {
+      weekdays: ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"],
+      weekdaysShort: ["sun", "mon", "tue", "wed", "thu", "fri", "sat"],
+      week: {
+        dow: 0, // Monday is the first day of the week
+        doy: 1 // The week that includes January 1st is the first week of the year
+      }
+    });
+  }
+
+
   const route = useRoute()
   const lang = ref("jp");
   const today = ref(moment(new Date()).format("YYYY年MM月DD日"))
-  const weekNum = ref(moment(new Date()).week() - 1)
+  const weekNum = ref(moment().week())
   const weekDates = ref<D[]>([])
   const year = ref(moment().year())
   const weekdays = ref(["日曜日", "月曜日", "火曜日", "水曜日", "木曜日", "金曜日", "土曜日"])
@@ -26,10 +48,11 @@ export default function () {
   const weekdaysShortEN = ref(["sun", "mon", "tue", "wed", "thu", "fri", "sat"])
 
 
-  const getWeekDatesByNum = (num: number = 100): void => {
-    weekDates.value = []
+  const getWeekDatesByNum = (num: number = 0): void => {
+    // console.log(weekNum.value)
 
-    if (num !== 100) weekNum.value += num
+    weekDates.value = []
+    if (num !== 0) weekNum.value += num
 
     if (weekNum.value === 53) {
       weekNum.value = 1
@@ -39,14 +62,27 @@ export default function () {
       year.value += num
     }
 
-    const date = moment().year(year.value).isoWeek(weekNum.value).startOf("week");
+
+    let date;
+    if (year.value === 2023 || year.value === 2022) {
+      if (year.value === 2022){
+        date = moment().year(year.value + 1).isoWeek(weekNum.value - 1);
+      } else {
+        date = moment().year(year.value + 1).isoWeek(weekNum.value);
+      }
+
+      date = date.toString().replace(/^.{4}/, year.value.toString());
+      date = moment(date)
+    } else {
+      date = moment().year(year.value).isoWeeks(weekNum.value);
+    }
 
     for (let i = 0; i < 7; i++) {
       const object = {
         day: lang.value === "ja" ? weekdays.value[i] : weekdaysEN.value[i],
         dayShort: lang.value === "ja" ? weekdaysShort.value[i] : weekdaysShortEN.value[i],
         month: parseInt(date.format('MM')),
-        monthName: lang.value === "ja" ? date.format('MM') : date.format('ll').substring(0,3),
+        monthName: lang.value === "ja" ? date.format('MM') : date.format('ll').substring(0, 3),
         date: date.format('YYYY-MM-DD'),
         date2: date.format('YYYY/MM/DD'),
         dateJP: date.format('YYYY年MM月DD日'),

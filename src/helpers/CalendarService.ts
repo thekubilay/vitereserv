@@ -2,18 +2,6 @@ import moment from "moment";
 import {DateObject, Month, WeekDatesAsObject} from "../types/Calendar";
 import { languageSetting } from "../utils/useVocabularies";
 
-if(languageSetting === "ja") {
-  moment.locale("ja", {
-    weekdays: ["日曜日", "月曜日", "火曜日", "水曜日", "木曜日", "金曜日", "土曜日"],
-    weekdaysShort: ["日", "月", "火", "水", "木", "金", "土"]
-  });
-}else{
-  moment.locale("en", {
-    weekdays: ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"],
-    weekdaysShort: ["sun", "mon", "tue", "wed", "thu", "fri", "sat"]
-  });
-}
-
 
 
 export default class CalendarService {
@@ -48,65 +36,6 @@ export default class CalendarService {
     return ""
   }
 
-  get currentWeekDates(): string[] {
-    return this.getWeekDates(this.currentWeek as number);
-  }
-
-  get currentWeekDatesAsObject(): DateObject[] {
-    return this.getWeekDates(this.currentWeek as number).map(date => {
-      return {
-        date: moment(date).format('YYYY/MM/DD'),
-        day: moment(date).format('ddd'),
-        week: this.currentWeek,
-        month: this.currentMonth + "月"
-      }
-    })
-  }
-
-  get currentWeeks(): number[] {
-    return this.getWeeksOfMonth(this.currentMonth)
-  }
-
-  get currentMonthDates(): string[] {
-    const dates: string[] = []
-    for (const w of this.currentWeeks) {
-      this.getWeekDates(w).forEach(d => {
-        dates.push(d)
-      })
-    }
-    return dates
-  }
-
-  get currentMonthDatesAsObject(): DateObject[] {
-    const dates: DateObject[] = []
-    for (const w of this.currentWeeks) {
-      this.getWeekDates(w).forEach(d => {
-        dates.push({
-          date: d,
-          day: moment(d).format('ddd'),
-          week: w,
-          month: this.currentMonth + "月"
-        })
-      })
-    }
-    return dates
-  }
-
-  get weeksByMonths(): number[][] {
-    let weeks: number[][] = [];
-    moment.months().forEach((month, i) => {
-      weeks.push(this.getWeeksOfMonth(i + 1))
-    })
-    return weeks
-  }
-
-  get calendar(): Month[] {
-    return moment.months().map((month, index) => {
-      return this.getMonthDatesObject(index + 1)
-    }) as []
-  }
-
-
   getWeeksOfMonth(month: number = 1): number[] {
     const firstDayOfMonth = moment(this.currentYear+"-"+month, 'YYYY-MM-DD');
     const numOfDays = firstDayOfMonth.daysInMonth();
@@ -132,46 +61,21 @@ export default class CalendarService {
     return result;
   }
 
-  getMonthDates(month: number): string[] {
-    const dates: string[] = []
-    this.getWeeksOfMonth(month).forEach(week => {
-      this.getWeekDates(week).forEach(date => {
-        dates.push(date)
-      })
-    })
-
-    return dates
-  }
-
-  getMonthDatesObject(month: number): DateObject[] {
-    const dates: DateObject[] = []
-    this.getWeeksOfMonth(month).forEach(week => {
-      this.getWeekDates(week).forEach(date => {
-        dates.push({
-          date: date,
-          day: moment(date).format('ddd'),
-          week: week,
-          month: month + "月"
-        })
-      })
-    })
-
-    return dates
-  }
 
   getWeekDatesAsObject(week_num: number): WeekDatesAsObject[] {
     return this.getWeekDates(week_num).map(date => {
+      const d = date.replaceAll("/", "-")
       //'date' has format of 2022/01/01, but '/' is not ISO standard -> throws deprecated warning
       //See:   https://momentjs.com/docs/#/parsing/string/
       const weekdaysShortEn = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"]
-      const dayJa = this.weekdaysShort[weekdaysShortEn.indexOf( moment(date).format('ddd') )]
+      const dayJa = this.weekdaysShort[weekdaysShortEn.indexOf( moment(d).format('ddd') )]
       return {
-        date: moment(date).format('YYYY/MM/DD'),
-        day: moment(date).format('ddd'),
-        dayJa: (languageSetting === "ja") ? moment(date).format('ddd') : dayJa,
-        week: moment(date, "YYYY-MM-DD").week(),
-        month: (languageSetting === "ja") ? (moment(date).month() + 1) + "月" : moment(date).format('MMM'),
-        timestamp: moment(date).valueOf()
+        date: moment(d).format('YYYY/MM/DD'),
+        day: moment(d).format('ddd'),
+        dayJa: (languageSetting === "ja") ? moment(d).format('ddd') : dayJa,
+        week: moment(d, "YYYY-MM-DD").week(),
+        month: (languageSetting === "ja") ? (moment(d).month() + 1) + "月" : moment(date).format('MMM'),
+        timestamp: moment(d).valueOf()
       }
     })
   }
