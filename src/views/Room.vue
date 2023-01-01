@@ -308,6 +308,7 @@ export default defineComponent({
       getWeekDatesByNum(num)
 
       const currentQuery = Object.assign({}, route.query)
+
       router.push({query: Object.assign(currentQuery, {year:year.value, week:weekNum.value})})
       getRooms();
     }
@@ -428,9 +429,9 @@ export default defineComponent({
     }
 
     function init() {
-
       calendarService.value = new calendarServiceClass();
       currentWeek.value = calendarService.value.currentWeek
+      ////// for query /////
       let currentQuery = Object.assign({}, route.query)
       currentQuery = Object.assign(currentQuery, {lang:setLanguage(), year:year.value, week:weekNum.value})
       if(route.query.hasOwnProperty("vacancy") && route.query.vacancy){
