@@ -49,8 +49,6 @@ export default function () {
 
 
   const getWeekDatesByNum = (num: number = 0): void => {
-    // console.log(weekNum.value)
-
     weekDates.value = []
     if (num !== 0) weekNum.value += num
 
@@ -64,18 +62,20 @@ export default function () {
 
 
     let date;
-    if (year.value === 2023 || year.value === 2022) {
-      if (year.value === 2022){
-        date = moment().year(year.value + 1).isoWeek(weekNum.value - 1);
-      } else {
-        date = moment().year(year.value + 1).isoWeek(weekNum.value);
-      }
+    date = moment().year(year.value).isoWeek(weekNum.value).startOf("week")
 
-      date = date.toString().replace(/^.{4}/, year.value.toString());
-      date = moment(date)
-    } else {
-      date = moment().year(year.value).isoWeeks(weekNum.value);
-    }
+    // if (year.value === 2023 || year.value === 2022) {
+    //   if (year.value === 2022){
+    //     date = moment().year(year.value + 1).isoWeek(weekNum.value - 1);
+    //   } else {
+    //     date = moment().year(year.value + 1).isoWeek(weekNum.value);
+    //   }
+    //
+    //   date = date.toString().replace(/^.{4}/, year.value.toString());
+    //   date = moment(date)
+    // } else {
+    //   date = moment().year(year.value).isoWeeks(weekNum.value);
+    // }
 
     for (let i = 0; i < 7; i++) {
       const object = {
