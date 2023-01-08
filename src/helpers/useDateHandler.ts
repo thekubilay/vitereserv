@@ -30,7 +30,7 @@ export default function () {
       weekdaysShort: ["sun", "mon", "tue", "wed", "thu", "fri", "sat"],
       week: {
         dow: 0, // Monday is the first day of the week
-        doy: 1 // The week that includes January 1st is the first week of the year
+        doy: 0 // The week that includes January 1st is the first week of the year
       }
     });
   }
@@ -39,7 +39,7 @@ export default function () {
   const route = useRoute()
   const lang = ref("jp");
   const today = ref(moment(new Date()).format("YYYY年MM月DD日"))
-  const weekNum = ref(moment().week())
+  const weekNum = ref(moment().isoWeek())
   const weekDates = ref<D[]>([])
   const year = ref(moment().year())
   const weekdays = ref(["日曜日", "月曜日", "火曜日", "水曜日", "木曜日", "金曜日", "土曜日"])
