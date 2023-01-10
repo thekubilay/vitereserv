@@ -24,7 +24,7 @@
             </p>
             <p v-if="['532783550','600799837'].includes(route.params.rid as string)"
                 class="room-body-summary">
-              <span style="color:#e45700;">Translator available for your visit on first to forth Saturday of each month.（Available on 1P.M.~5P.M. on jst）<br>First and third Saturday: English-Japanese translator <br>Second and third Saturday: Chinese-Japanese translator</span>
+              <span style="color:#e45700;">Translator available for your visit on first to forth Saturday of each month.（Available on 1P.M.~5P.M. on jst）<br>First and third Saturday: English-Japanese translator <br>Second and fourth Saturday: Chinese-Japanese translator</span>
             </p>
             <!-- <p v-if="room?.body && room?.body !== 'null'"
                v-html="room?.body"
