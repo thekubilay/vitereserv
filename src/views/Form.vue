@@ -11,6 +11,7 @@
                 <h1 class="title">{{ pageTitle }}</h1>
                 <span class="timeslot">
                   {{ arrangeDate}}
+                  <span v-if="['746935619','600799837'].includes(route.params.rid as string)" class="timeslot-sub">(JST/UTC+9 hours)</span>
                 </span>
 
               </div>
@@ -196,6 +197,9 @@ export default defineComponent({
           optionValue: "value",
           optionLabel: "label",
           invalid: false,
+        }
+        if(formItem.hint) {
+          column['hint'] = formItem.hint
         }
         retColumns.push(column)
       })
@@ -460,6 +464,10 @@ header .title-wrapper span.timeslot {
   font-weight: 600;
   color: #6366f1;
   line-height: 1.1;
+}
+header .title-wrapper span.timeslot-sub {
+  font-size: 0.7rem;
+  padding-left: 3px;
 }
 header .back-calendar {
   height: 34px;

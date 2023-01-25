@@ -41,7 +41,7 @@
                          v-bind="setProps(column)"
                          :class="{'p-invalid':column.invalid}"/>
 
-              <span v-if="column.hint" class="f-hint">{{ column.hint }}</span>
+              <span v-if="column.hint" v-html="column.hint" class="f-hint"></span>
 
               <span v-if="column.invalid" class="f-error">{{ t('formRequireError') }}</span>
               <span v-for="(error, i) in column.errors" :key="i+'error'" class="f-error">{{ error }}</span>
