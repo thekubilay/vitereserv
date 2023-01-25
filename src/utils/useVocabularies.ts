@@ -1,17 +1,9 @@
 import { useI18n } from 'vue-i18n'
 
-function getQuery(name:string) {
-    const url = window.location.href;
-    name = name.replace(/[\[\]]/g, "\\$&");
-    const regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-        results = regex.exec(url);
-    if (!results) return null;
-    if (!results[2]) return '';
-    return decodeURIComponent(results[2].replace(/\+/g, " "));
-}
-
 let queryLang = window.navigator.language==="ja" ? "ja" : "en";
-switch (getQuery("lang")) {
+
+const params = new URLSearchParams(window.location.search);
+switch (params.get("lang")) {
     case "ja":
         queryLang = "ja";
         break;
@@ -23,6 +15,7 @@ switch (getQuery("lang")) {
         break;
 }
 export const languageSetting = queryLang;
+
 
 export function vocabularies() {
     const { t } = useI18n({

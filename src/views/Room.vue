@@ -26,6 +26,16 @@
                 class="room-body-summary">
               <span style="color:#e45700;">Translator available for your visit on first to forth Saturday of each month.（Available on 1P.M.~5P.M. on jst）<br>First and third Saturday: English-Japanese translator <br>Second and fourth Saturday: Chinese-Japanese translator</span>
             </p>
+            <p v-if="['746935619','600799837','532783550','520803050'].includes(route.params.rid as string)"
+                class="room-body-summary">
+              <span style="color:#e45700;font-size: 1.2em;">  *Dates and times shown are all in Japan Standard Time. (JST/UTC+9 hours)</span><br>
+              <a
+                href="https://www.worldtimeserver.com/current_time_in_JP.aspx?city=Tokyo"
+                target="_blank"
+              >
+                <span style="color:#e45700;border-bottom: 1px solid #e45700;">Click here to check the current time in Japan.</span>
+              </a>
+            </p>
             <!-- <p v-if="room?.body && room?.body !== 'null'"
                v-html="room?.body"
               class="room-body-summary"></p> -->

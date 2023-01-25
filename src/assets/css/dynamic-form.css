@@ -107,13 +107,18 @@
 #df.dynamic-form .f-body .ctx .f-row .f-hint,
 #df.dynamic-form .f-body .ctx .f-row .f-error {
   display: block;
-  height: 16px;
-  font-size: .6rem;
+  /* height: 16px; */
+  font-size: .7rem;
   padding-left: 2px;
   margin-top: 4px;
 }
+@media screen and (max-width: 414px) {
+  #df.dynamic-form .f-body .ctx .f-row .f-hint  {
+    margin-top: -5px;
+  }
+}
 #df.dynamic-form .f-body .ctx .f-row .f-hint {
-  color: #8395a7;
+  color: #858585;
 }
 #df.dynamic-form .f-body .ctx .f-row .f-r-column.f-warning .f-hint {
   color: #f0932b;
