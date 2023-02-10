@@ -12,6 +12,7 @@
                 <span class="timeslot">
                   {{ arrangeDate}}
                   <span v-if="['746935619','600799837','532783550','520803050'].includes(route.params.rid as string)" class="timeslot-sub">(JST/UTC+9 hours)</span>
+                  <span v-if="['604030817', '219272972', '830235141', '304155620'].includes(route.params.rid as string)" class="timeslot-sub">(日本標準時間/UTC＋9小時)</span>
                 </span>
 
               </div>
@@ -112,6 +113,11 @@ export default defineComponent({
             ${date.value.split('-')[1]}月
             ${date.value.split('-')[2]}日
             ${time.value.split(':')[0]}:${ time.value.split(':')[1]}`
+      }else if(t('locale') === 'zh') {
+        return `${date.value.split('-')[0]} /
+            ${date.value.split('-')[1]}/
+            ${date.value.split('-')[2]} - 
+            ${time.value.split(':')[0]}:${ time.value.split(':')[1]}`
       }else{
         return `${time.value.split(':')[0]}:${ time.value.split(':')[1]},
             ${date.value.split('-')[1]} /
@@ -155,7 +161,7 @@ export default defineComponent({
         }
       }catch(error){
         isLoading.value = false;
-        store.SET_ERROR({title: "エラー", text: "サーバーのエラーが発生しました。"})
+        store.SET_ERROR({title: "error", text: "An error has occurred."})
         console.log(error)
         goTo("Room")
       }

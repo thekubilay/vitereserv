@@ -36,6 +36,21 @@
                 <span style="color:#e45700;border-bottom: 1px solid #e45700;">Click here to check the current time in Japan.</span>
               </a>
             </p>
+
+            <p v-if="['219272972','830235141'].includes(route.params.rid as string)"
+                class="room-body-summary">
+              <span style="color:#e45700;">第1～4個星期六有傳譯員（日本時間下午1時～下午5時）<br>第1、3個星期六 英文、日文傳譯 <br>第2、4個星期六 中文、日文傳譯</span>
+            </p>
+            <p v-if="['604030817', '219272972', '830235141', '304155620'].includes(route.params.rid as string)"
+                class="room-body-summary">
+              <span style="color:#e45700;font-size: 1.2em;">  *顯示的日期時間為日本時間。 (日本標準時間/UTC＋9小時)</span><br>
+              <a
+                href="https://www.worldtimeserver.com/current_time_in_JP.aspx?city=Tokyo"
+                target="_blank"
+              >
+                <span style="color:#e45700;border-bottom: 1px solid #e45700;">Click here to check the current time in Japan.</span>
+              </a>
+            </p>
             <!-- <p v-if="room?.body && room?.body !== 'null'"
                v-html="room?.body"
               class="room-body-summary"></p> -->
@@ -294,6 +309,20 @@ export default defineComponent({
         {src: "eSalonImages/esalon_flowofuse_onLine_en_sp.png", class:"sp", alt:""},
       ]
     }
+    // reserve chinese
+    if(['219272972', '830235141'].includes(route.params.rid as string)){
+      pageContents.header = [
+        {src: "eSalonImages/esalon_flowofuse_reserve_chinese_pc.png", class:"pc", alt:""},
+        {src: "eSalonImages/esalon_flowofuse_reserve_chinese_sp.png", class:"sp", alt:""},
+      ]
+    }
+    // online chinese
+    if(['604030817', '304155620'].includes(route.params.rid as string)){
+      pageContents.header = [
+        {src: "eSalonImages/esalon_flowofuse_online_chinese_pc.png", class:"pc", alt:""},
+        {src: "eSalonImages/esalon_flowofuse_online_chinese_sp.png", class:"sp", alt:""},
+      ]
+    }
 
     const currentWeekForDisplay = computed(() => {
       if(weekDatesObjs.value){
@@ -466,8 +495,12 @@ export default defineComponent({
         return "en"
 
       /* japanese */
-      } else if (["635834411", "637599256", "249893849"]) {
+      } else if (["635834411", "637599256", "249893849"].includes(route.params.rid as string)) {
         return "ja"
+
+      /* chinese */
+      } else if (["604030817", "219272972", '830235141', '304155620'].includes(route.params.rid as string)) {
+        return "zh"
       }
 
       return "ja"
