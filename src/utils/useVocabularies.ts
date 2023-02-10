@@ -1,19 +1,45 @@
 import { useI18n } from 'vue-i18n'
 
-let queryLang = window.navigator.language==="ja" ? "ja" : "en";
-
-const params = new URLSearchParams(window.location.search);
-switch (params.get("lang")) {
-    case "ja":
-        queryLang = "ja";
-        break;
-    case "en":
-        queryLang = "en";
-        break;
-    case "en-us":
-        queryLang = "en";
-        break;
+let queryLang = "ja";
+function languageDistributor(val:string|null){
+    switch (val) {
+        case "ja":
+            queryLang = "ja";
+            break;
+        case "en":
+            queryLang = "en";
+            break;
+        case "zh":
+            queryLang = "zh";
+            break;
+    }
 }
+
+//for Browser language setting
+languageDistributor(window.navigator.language.slice( 0, 2 ));
+
+//for URL param
+const params = new URLSearchParams(window.location.search);
+languageDistributor(params.get("lang"));
+
+
+// if(queryLang === "zh") {
+//     const fontFace = new FontFace(
+//         'Noto Sans SC',
+//         'url(/fonts/NotoSansSC-Regular.otf)',
+//         { style: 'normal'}
+//     );
+//     fontFace.load().then(function(loadedFace){
+//         /// フォント読み込み成功
+//         /// body要素全体にそれを適用する
+//         document.fonts.add(loadedFace);
+//         document.body.style.fontFamily = '"Noto Sans SC"';
+//     }).catch(function(e){
+//         /// フォント読み込み失敗
+//         console.error('fontError');
+//     });
+// }
+
 export const languageSetting = queryLang;
 
 
@@ -31,14 +57,14 @@ export function vocabularies() {
                 calendarServiceWeekdaysText: 'sunday,monday,tuesday,wednesday,thursday,friday,saturday',
                 calendarServiceWeekdaysShortText: 'sun,mon,tue,wed,thu,fri,sat',
                 roomMaintenanceTitle: "maintenance",
-                roomMaintenanceBody: "maintenance",
+                roomMaintenanceBody: "We apologize for the inconvenience. <br>Please wait for a moment.",
                 roomRegularHoliday: "Regular holiday",
                 roomVacancy: "Available",
                 roomNoVacancy: "Not available",
                 formGoToCalendar: "Calendar",
                 formSubmitButton: "Send",
                 formRequired: "Required",
-                formLimit: "You have reached your reservation limit. Please select another date and time.",
+                formLimit: "The reservation has reached its limit. Please select another date and time.",
                 formErrorTitle: "Error",
                 formErrorBody: "An error has occurred.",
                 formRequireError: "Please enter",
@@ -48,6 +74,34 @@ export function vocabularies() {
                 footerPrivacyPolicy: "Privacy Policy",
                 footerBasicPolicy: "Basic Policy",
                 footerCompanyName: "TOKYU LAND CORPORATION"
+            },
+            zh: {
+                locale: languageSetting,
+                metaDescription: `Create and manage a reservation system from an easy-to-use management screen. We support your business efficiency!`,
+                metaKeywords: `viterve, viterve, reservation system, reservation management, real estate`,
+                year: 'year',
+                month: 'month',
+                day: 'day',
+                calendarServiceWeekdaysText: 'sunday,monday,tuesday,wednesday,thursday,friday,saturday',
+                calendarServiceWeekdaysShortText: 'sun,mon,tue,wed,thu,fri,sat',
+                roomMaintenanceTitle: "maintenance",
+                roomMaintenanceBody: "We apologize for the inconvenience. <br>Please wait for a moment.",
+                roomRegularHoliday: "定休日",
+                roomVacancy: "可預約",
+                roomNoVacancy: "不可預約",
+                formGoToCalendar: "日曆",
+                formSubmitButton: "提交",
+                formRequired: "必須",
+                formLimit: "预订已达到其限制。请选择另一个日期和时间。",
+                formErrorTitle: "Error",
+                formErrorBody: "An error has occurred.",
+                formRequireError: "请您输入",
+                thanksTitle: "多謝您預約參觀示範單位。",
+                thanksBody1: "我們會向您已輸入的電郵地址，<br class='for-sp'>發出確認預約內容的郵件。",
+                thanksBody2: "",
+                footerPrivacyPolicy: "個人資料保護政策",
+                footerBasicPolicy: "使用條款",
+                footerCompanyName: "東急不動産"
             },
             ja: {
                 locale: languageSetting,

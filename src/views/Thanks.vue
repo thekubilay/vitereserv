@@ -56,6 +56,16 @@ onMounted(() => {
     thanksTitle.value = "Thank you for reserving an online consultation.";
     thanksBody2.value = "We will send a confirmation email to the email address you entered <br>so that you can confirm the details of your reservation.<br><br>We look forward to seeing you online on the day of your consultation.";
   }
+  // reserve chinese
+  if(['219272972', '830235141'].includes(route.params.rid as string)){
+    thanksTitle.value = "多謝您預約參觀示範單位。";
+    thanksBody2.value = "我們會向您已輸入的電郵地址，發出確認預約內容的郵件。<br><br>期待您預約參觀示範單位。<br>希望您當日一路順風。";
+  }
+  // online chinese
+  if(['604030817', '304155620'].includes(route.params.rid as string)){
+    thanksTitle.value = "多謝您預約在線查詢。";
+    thanksBody2.value = "為確認預約內容，我們已向您登記了的電郵地址發出確認郵件。<br><br>期待在線上與您見面。";
+  }
 })
 </script>
 <style>
