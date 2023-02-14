@@ -97,7 +97,7 @@ export function vocabularies() {
                 formErrorBody: "An error has occurred.",
                 formRequireError: "请您输入",
                 thanksTitle: "多謝您預約參觀示範單位。",
-                thanksBody1: "我們會向您已輸入的電郵地址，<br class='for-sp'>發出確認預約內容的郵件。",
+                thanksBody1: "",
                 thanksBody2: "",
                 footerPrivacyPolicy: "個人資料保護政策",
                 footerBasicPolicy: "使用條款",
