@@ -5,6 +5,11 @@ html {
 /* body, #app, #main {
   overflow: hidden;
 } */
+
+body.font-zh, .font-zh *:not(.pi) {
+  font-family: 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+}
+
 body #splash {
   z-index: 2;
   position: fixed;
