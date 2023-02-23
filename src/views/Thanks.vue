@@ -12,7 +12,7 @@
         <a href="https://sumai.tokyu-land.co.jp/e-salon/global/en/" class="btn ghost-btn">Home</a>
       </div>
       <div v-if="['219272972', '604030817', '304155620', '830235141'].includes(route.params.rid as string)" class="flex">
-        <a href="https://sumai.tokyu-land.co.jp/e-salon/global/ch/" class="btn ghost-btn">Home</a>
+        <a href="https://sumai.tokyu-land.co.jp/e-salon/global/zh/" class="btn ghost-btn">Home</a>
       </div>
     </div>
   </div>
