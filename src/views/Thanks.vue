@@ -8,8 +8,11 @@
           <p v-html="thanksBody2"></p>
         </section>
       </div>
-      <div v-if="route.params.rid!=='635834411'" class="flex">
+      <div v-if="['746935619','600799837','520803050', '532783550'].includes(route.params.rid as string)" class="flex">
         <a href="https://sumai.tokyu-land.co.jp/e-salon/global/en/" class="btn ghost-btn">Home</a>
+      </div>
+      <div v-if="['219272972', '604030817', '304155620', '830235141'].includes(route.params.rid as string)" class="flex">
+        <a href="https://sumai.tokyu-land.co.jp/e-salon/global/ch/" class="btn ghost-btn">Home</a>
       </div>
     </div>
   </div>
