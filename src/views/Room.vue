@@ -17,7 +17,7 @@
             </h1>
             <div v-if="['637599256','635834411'].includes(route.params.rid as string)"
                 class="summer-campaign custom-content">
-                <img class="" src="https://viterve-dev-bucket.s3.ap-northeast-1.amazonaws.com/static/eSalonImages/summer-campaign.jpg" alt="サマーキャンペーンのお知らせ">
+                <img class="" :src="ENV.STATIC+'eSalonImages/summer-campaign.jpg'" alt="サマーキャンペーンのお知らせ">
             </div>
             <div class="custom-content header flex-column justify-center align-center" v-if="pageContents.header.length>0">
               <img v-for="(img) in pageContents.header" :class="img.class" :src="ENV.STATIC+img.src" :alt="img.alt">
