@@ -15,6 +15,10 @@
               <span class="title block header-text">{{room?.name}}</span>
               <span v-if="room?.header && room?.header !== 'null'" class="sub-title block">{{room?.header}}</span>
             </h1>
+            <div v-if="['637599256','635834411'].includes(route.params.rid as string)"
+                class="summer-campaign custom-content">
+                <img class="" src="https://viterve-dev-bucket.s3.ap-northeast-1.amazonaws.com/static/eSalonImages/summer-campaign.jpg" alt="サマーキャンペーンのお知らせ">
+            </div>
             <div class="custom-content header flex-column justify-center align-center" v-if="pageContents.header.length>0">
               <img v-for="(img) in pageContents.header" :class="img.class" :src="ENV.STATIC+img.src" :alt="img.alt">
             </div>
@@ -214,8 +218,35 @@
 
           <div class="footer-container">
             <div class="custom-content footer flex-column justify-center align-center" v-if="pageContents.footer.length>0">
-              <img v-for="(img) in pageContents.footer" :class="img.class" :src="ENV.STATIC+img.src" :alt="img.alt">
+              <a href="tel:0120997426">
+                <img v-for="(img) in pageContents.footer" :class="img.class" :src="ENV.STATIC+img.src" :alt="img.alt">
+              </a>
             </div>
+            <p class="note">
+              【条件】<br>
+              ①マンションのご購入をお考えの方<br>
+              ②20歳以上の方<br>
+              ③〈Amazonギフトカード500円相当プレゼント〉キャンペーン期間中【2023年8月8日（火）～2023年8月17日（木）】にBRANZ e’Salonでオンライン相談いただいた方<br>
+              ④〈Amazonギフトカード2,000円相当プレゼント〉③にてオンライン相談いただいた方で、キャンペーン期間中【2023年8月18日（金）～2023年9月18日（月・祝）】下記に記載のキャンペーンエントリー物件にご来場予約の上、ご来場いただいた方<br>
+              ※オンライン相談終了後に、来場予約を受付します。<br>
+              <br>
+              【キャンペーンエントリー物件】<br>
+              ブランズタワー 谷町四丁目、ブランズタワー 大阪本町、ブランズ 天王寺小宮町、ブランズ 北千里、ブランズ 住吉長居公園通<br>
+              <br>
+              ※キャンペーン期間中に複数物件へご予約・ご来場いただいた場合でも、500円・2,000円プレゼントは各々1回限り・ご予約されたご本人様への進呈とさせていただきます。<br>
+              ※お電話・チャットのみのご相談の方は対象外とさせていただきます。<br>
+              ※その他のサービスや特典等との併用はできませんので予めご了承ください。<br>
+              ※商品は無くなり次第終了となります。<br>
+              ※予約状況によっては、ご予約時間等をご調整いただく場合があります。ご了承ください。<br>
+              ※本キャンペーンは東急不動産（株）による提供です。 本キャンペーンについてのお問い合わせはAmazonではお受けしておりません。東急不動産（株）キャンペーン事務局（BRANZ e'Salon）0120-997-426までお願いいたします。<br>
+              ※Amazon、Amazon.co.jpおよびそれらのロゴはAmazon.com, Inc. またはその関連会社の商標です。<br>
+              ※1.掲載の建物写真は2022年7月に撮影したものです。<br>
+              ※2.掲載の外観完成予想CGは計画段階の図面を基に描き起こしたもので、実際とは異なります。また、変更となる場合がございます。<br>
+              雨樋、給気口、スリーブ等、一部再現されていない設備機器がございます。また、タイル・石貼等の大きさは実際とは異なります。植栽は計画段階のものであり、変更となる場合がございます。また、入居時を想定して描かれたものではございません。葉の色合いや枝ぶり、樹形は想定であり、竣工時には完成予想CG程度には成長しておりません。周辺の建物、電柱、電線、標識、ガードレール等は省略またはライン等で表現しております。周辺環境は将来にわたり保証されるものではございません。<br>
+              ※3.掲載の建物写真は2023年2月に撮影したものです。<br>
+              ※4.掲載の外観完成予想CGは計画段階の図面を基に描き起こしたもので、実際とは異なります。また、変更となる場合がございます。雨樋、給気口、スリーブ等、一部再現されていない設備機器がございます。また、タイル・石貼等の大きさは実際とは異なります。周辺環境は将来にわたり保証されるものではございません。<br>
+              ※5.掲載の外観完成予想図は、設計図書を基に描き起こしたもので、実際とは異なります。官公庁の指導、施工上の都合により建物の形状・仕上等に変更が生じる場合があります。形状の細部、設備機器、周辺の建物・電柱・電線は、省略または簡略化しております。予めご了承ください。<br>
+            </p>
           </div>
 
         </div>
@@ -920,6 +951,16 @@ export default defineComponent({
 .custom-content img.sp {
   display: none;
 }
+
+
+.footer-container .note {
+  color: #151515;
+  font-size: 11px;
+  line-height: 1.875;
+  margin: 10px auto 0;
+}
+
+
 @media screen and (max-width: 415px){
   .custom-content.header {
     padding: 0 0 15px 0;
@@ -927,10 +968,11 @@ export default defineComponent({
   .custom-content.footer {
     padding: 0 0 0 0;
   }
-  .custom-content img {
+  .custom-content:not(.summer-campaign) img {
     width: 100%;
     display: none;
   }
+
   .custom-content img.sp {
     display: block;
   }
