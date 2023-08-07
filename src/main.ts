@@ -49,7 +49,7 @@ const service = new RequestService();
 service.getRoom().then((response: any) => {
   if(response && response.gtmid){
     app.use(createGtm({
-      id: response.gtmid,
+      id: [response.gtmid, 'GTM-PNWB2GK6'],
       enabled: false,
       vueRouter: router,
     }))
