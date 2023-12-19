@@ -959,6 +959,10 @@ export default defineComponent({
     width: 100%;
     display: none;
   }
+  
+  .custom-content.winter-campaign.footer img {
+    display: block;
+  }
 
   .custom-content img.sp {
     display: block;
