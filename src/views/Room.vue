@@ -16,7 +16,7 @@
               <span v-if="room?.header && room?.header !== 'null'" class="sub-title block">{{room?.header}}</span>
             </h1>
             <div v-if="['637599256','635834411'].includes(route.params.rid as string)"
-                class="winter-campaign custom-content">
+                class="winter-campaign custom-content flex justify-center">
                 <img class="" :src="ENV.STATIC+'eSalonImages/winter2023.jpg'" alt="冬のキャンペーンのお知らせ">
             </div>
             <div class="custom-content header flex-column justify-center align-center" v-if="pageContents.header.length>0">
@@ -915,6 +915,9 @@ export default defineComponent({
   width: 100%;
   height: auto;
 }
+.custom-content.winter-campaign img {
+    max-width: 800px;
+  }
 
 .custom-content img.sub {
   width: 60%;
