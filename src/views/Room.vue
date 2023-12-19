@@ -11,14 +11,14 @@
       <div v-if="!isRest" class="template__Wrapper">
         <div class="container">
           <div class="header-container">
-            <h1 class="flex-column heading">
-              <span class="title block header-text">{{room?.name}}</span>
-              <span v-if="room?.header && room?.header !== 'null'" class="sub-title block">{{room?.header}}</span>
-            </h1>
             <div v-if="['637599256','635834411'].includes(route.params.rid as string)"
                 class="winter-campaign custom-content flex justify-center">
                 <img class="" :src="ENV.STATIC+'eSalonImages/winter2023.jpg'" alt="冬のキャンペーンのお知らせ">
             </div>
+            <h1 class="flex-column heading">
+              <span class="title block header-text">{{room?.name}}</span>
+              <span v-if="room?.header && room?.header !== 'null'" class="sub-title block">{{room?.header}}</span>
+            </h1>
             <div class="custom-content header flex-column justify-center align-center" v-if="pageContents.header.length>0">
               <img v-for="(img) in pageContents.header" :class="img.class" :src="ENV.STATIC+img.src" :alt="img.alt">
             </div>
@@ -221,6 +221,10 @@
               <a href="tel:0120997426">
                 <img v-for="(img) in pageContents.footer" :class="img.class" :src="ENV.STATIC+img.src" :alt="img.alt">
               </a>
+              <div v-if="['637599256','635834411'].includes(route.params.rid as string)"
+                class="winter-campaign custom-content footer flex justify-center">
+                <img class="" :src="ENV.STATIC+'eSalonImages/caption2023.jpg'" alt="冬のキャンペーンの注釈">
+              </div>
             </div>
           </div>
 
@@ -478,6 +482,8 @@ export default defineComponent({
       currentWeek.value = calendarService.value.currentWeek
       ////// for query /////
       let currentQuery = Object.assign({}, route.query)
+      if(currentQuery.year) year.value = Number(currentQuery.year);
+      if(currentQuery.week) weekNum.value = Number(currentQuery.week);
       currentQuery = Object.assign(currentQuery, {lang:setLanguage(), year:year.value, week:weekNum.value})
       if(route.query.hasOwnProperty("vacancy") && route.query.vacancy){
         currentQuery = deleteQueryVacancy(currentQuery)
@@ -917,6 +923,9 @@ export default defineComponent({
 }
 .custom-content.winter-campaign img {
     max-width: 800px;
+  }
+.custom-content.winter-campaign.footer img {
+    max-width: 700px;
   }
 
 .custom-content img.sub {
