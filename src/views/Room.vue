@@ -478,6 +478,8 @@ export default defineComponent({
       currentWeek.value = calendarService.value.currentWeek
       ////// for query /////
       let currentQuery = Object.assign({}, route.query)
+      if(currentQuery.year) year.value = Number(currentQuery.year);
+      if(currentQuery.week) weekNum.value = Number(currentQuery.week);
       currentQuery = Object.assign(currentQuery, {lang:setLanguage(), year:year.value, week:weekNum.value})
       if(route.query.hasOwnProperty("vacancy") && route.query.vacancy){
         currentQuery = deleteQueryVacancy(currentQuery)

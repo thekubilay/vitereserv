@@ -101,6 +101,10 @@ export default function () {
       lang.value = window.navigator.language === "ja" ? "ja" : "en"
     }
 
+    let currentQuery = Object.assign({}, route.query)
+    if(currentQuery.year) year.value = Number(currentQuery.year);
+    if(currentQuery.week) weekNum.value = Number(currentQuery.week);
+
     getWeekDatesByNum()
   }
 
