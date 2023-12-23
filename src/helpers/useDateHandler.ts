@@ -91,6 +91,7 @@ export default function () {
       date.add(1, "day")
       weekDates.value.push(object)
     }
+    console.log(weekDates.value)
   }
 
 
