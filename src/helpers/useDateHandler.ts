@@ -17,8 +17,8 @@ interface D {
 export default function () {
   if (languageSetting === "ja") {
     moment.updateLocale("ja", {
-      weekdays: ["日曜日", "月曜日", "火曜日", "水曜日", "木曜日", "金曜日", "土曜日"],
-      weekdaysShort: ["日", "月", "火", "水", "木", "金", "土"],
+      weekdays: ["月曜日", "火曜日", "水曜日", "木曜日", "金曜日", "土曜日", "日曜日"],
+      weekdaysShort: ["月", "火", "水", "木", "金", "土","日"],
       week: {
         dow: 0, // Monday is the first day of the week
         doy: 0 // The week that includes January 1st is the first week of the year
@@ -26,8 +26,8 @@ export default function () {
     });
   } else {
     moment.updateLocale("en", {
-      weekdays: ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"],
-      weekdaysShort: ["sun", "mon", "tue", "wed", "thu", "fri", "sat"],
+      weekdays: ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"],
+      weekdaysShort: ["mon", "tue", "wed", "thu", "fri", "sat", "sun"],
       week: {
         dow: 0, // Monday is the first day of the week
         doy: 0 // The week that includes January 1st is the first week of the year
@@ -42,10 +42,10 @@ export default function () {
   const weekNum = ref(moment().isoWeek())
   const weekDates = ref<D[]>([])
   const year = ref(moment().year())
-  const weekdays = ref(["日曜日", "月曜日", "火曜日", "水曜日", "木曜日", "金曜日", "土曜日"])
-  const weekdaysShort = ref(["日", "月", "火", "水", "木", "金", "土"])
-  const weekdaysEN = ref(["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"])
-  const weekdaysShortEN = ref(["sun", "mon", "tue", "wed", "thu", "fri", "sat"])
+  const weekdays = ref(["月曜日", "火曜日", "水曜日", "木曜日", "金曜日", "土曜日", "日曜日"])
+  const weekdaysShort = ref(["月", "火", "水", "木", "金", "土","日"])
+  const weekdaysEN = ref(["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"])
+  const weekdaysShortEN = ref(["mon", "tue", "wed", "thu", "fri", "sat", "sun"])
 
 
   const getWeekDatesByNum = (num: number = 0): void => {
@@ -62,7 +62,7 @@ export default function () {
 
 
     let date;
-    date = moment().year(year.value).isoWeek(weekNum.value).startOf("week")
+    date = moment().year(year.value).isoWeek(weekNum.value).startOf("week").isoWeekday(8);
 
     // if (year.value === 2023 || year.value === 2022) {
     //   if (year.value === 2022){
