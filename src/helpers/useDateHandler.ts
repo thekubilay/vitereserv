@@ -62,7 +62,7 @@ export default function () {
 
 
     let date;
-    date = moment().year(year.value).isoWeek(weekNum.value).startOf("week").isoWeekday(8);
+    date = moment().year(year.value).isoWeek(weekNum.value).startOf('isoWeek');
 
     // if (year.value === 2023 || year.value === 2022) {
     //   if (year.value === 2022){
@@ -91,7 +91,6 @@ export default function () {
       date.add(1, "day")
       weekDates.value.push(object)
     }
-    console.log(weekDates.value)
   }
 
 
