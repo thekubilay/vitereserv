@@ -11,10 +11,6 @@
       <div v-if="!isRest" class="template__Wrapper">
         <div class="container">
           <div class="header-container">
-            <div v-if="['637599256','635834411'].includes(route.params.rid as string)"
-                class="winter-campaign custom-content flex justify-center">
-                <img class="" :src="ENV.STATIC+'eSalonImages/winter2023.jpg'" alt="冬のキャンペーンのお知らせ">
-            </div>
             <h1 class="flex-column heading">
               <span class="title block header-text">{{room?.name}}</span>
               <span v-if="room?.header && room?.header !== 'null'" class="sub-title block">{{room?.header}}</span>
@@ -221,10 +217,6 @@
               <a href="tel:0120997426">
                 <img v-for="(img) in pageContents.footer" :class="img.class" :src="ENV.STATIC+img.src" :alt="img.alt">
               </a>
-              <div v-if="['637599256','635834411'].includes(route.params.rid as string)"
-                class="winter-campaign custom-content footer flex justify-center">
-                <img class="" :src="ENV.STATIC+'eSalonImages/caption2023.jpg'" alt="冬のキャンペーンの注釈">
-              </div>
             </div>
           </div>
 
