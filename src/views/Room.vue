@@ -1,246 +1,248 @@
 <template>
-    <div id="index" class="main flex-column">
-      <transition name="slide-fade" appear>
-        <div v-if="isNotification"
-              id="notification" class="notification">
-          <span class="close" @click="closeNotification()">×</span>
-          <h3 class="title">{{errorMessage.title}}</h3>
-          <p class="body-text">{{errorMessage.text}}</p>
-        </div>
-      </transition>
-      <div v-if="!isRest" class="template__Wrapper">
-        <div class="container">
-          <div class="header-container">
-            <h1 class="flex-column heading">
-              <span class="title block header-text">{{room?.name}}</span>
-              <span v-if="room?.header && room?.header !== 'null'" class="sub-title block">{{room?.header}}</span>
-            </h1>
-            <div class="custom-content header flex-column justify-center align-center" v-if="pageContents.header.length>0">
-              <img v-for="(img) in pageContents.header" :class="img.class" :src="ENV.STATIC+img.src" :alt="img.alt">
-            </div>
-
-            <!--              <span style="color:#e45700;">ご希望の予約時間直前にエントリーされる場合は、出来れば15分程度事前にエントリーいただく事をお勧めします。<br>( ご希望時間直前でのご予約の場合、システムの関係上、ご希望の開始時間を少し遅れる場合がございますので、予めご了承ください。)</span>-->
-
-            <p v-if="['637599256','635834411'].includes(route.params.rid as string)" class="room-body-summary" v-html="room?.body"></p>
-            <p v-if="['532783550','600799837'].includes(route.params.rid as string)"
-                class="room-body-summary">
-              <span style="color:#e45700;">Translator available for your visit on first to forth Saturday of each month.（Available on 1P.M.~5P.M. on jst）<br>First and third Saturday: English-Japanese translator <br>Second and fourth Saturday: Chinese-Japanese translator</span>
-            </p>
-            <p v-if="['746935619','600799837','532783550','520803050'].includes(route.params.rid as string)"
-                class="room-body-summary">
-              <span style="color:#e45700;font-size: 1.2em;">  *Dates and times shown are all in Japan Standard Time. (JST/UTC+9 hours)</span><br>
-              <a
-                href="https://www.worldtimeserver.com/current_time_in_JP.aspx?city=Tokyo"
-                target="_blank"
-              >
-                <span style="color:#e45700;border-bottom: 1px solid #e45700;">Click here to check the current time in Japan.</span>
-              </a>
-            </p>
-
-            <p v-if="['219272972','830235141'].includes(route.params.rid as string)"
-                class="room-body-summary">
-              <span style="color:#e45700;">第1～4個星期六有傳譯員（日本時間下午1時～下午5時）<br>第1、3個星期六 英文、日文傳譯 <br>第2、4個星期六 中文、日文傳譯</span>
-            </p>
-            <p v-if="['604030817', '219272972', '830235141', '304155620'].includes(route.params.rid as string)"
-                class="room-body-summary">
-              <span style="color:#e45700;font-size: 1.2em;">  *顯示的日期時間為日本時間。 (日本標準時間/UTC＋9小時)</span><br>
-              <a
-                href="https://www.worldtimeserver.com/current_time_in_JP.aspx?city=Tokyo"
-                target="_blank"
-              >
-                <span style="color:#e45700;border-bottom: 1px solid #e45700;">Click here to check the current time in Japan.</span>
-              </a>
-            </p>
-            <!-- <p v-if="room?.body && room?.body !== 'null'"
-               v-html="room?.body"
-              class="room-body-summary"></p> -->
+  <div id="index" class="main flex-column">
+    <transition name="slide-fade" appear>
+      <div v-if="isNotification"
+           id="notification" class="notification">
+        <span class="close" @click="closeNotification()">×</span>
+        <h3 class="title">{{ errorMessage.title }}</h3>
+        <p class="body-text">{{ errorMessage.text }}</p>
+      </div>
+    </transition>
+    <div v-if="!isRest" class="template__Wrapper">
+      <div class="container">
+        <div class="header-container">
+          <h1 class="flex-column heading">
+            <span class="title block header-text">{{ room?.name }}</span>
+            <span v-if="room?.header && room?.header !== 'null'" class="sub-title block">{{ room?.header }}</span>
+          </h1>
+          <div class="custom-content header flex-column justify-center align-center" v-if="pageContents.header.length>0">
+            <img v-for="(img) in pageContents.header" :class="img.class" :src="ENV.STATIC+img.src" :alt="img.alt">
           </div>
 
+          <p v-if="['635834411'].includes(route.params.rid as string)" class="room-body-summary" v-html="room?.body"></p>
+          <p v-if="['637599256'].includes(route.params.rid as string)" class="room-body-summary">
+            <span style="color:#e45700;">ご希望の予約時間直前にエントリーされる場合は、出来れば15分程度事前にエントリーいただく事をお勧めします。<br>( ご希望時間直前でのご予約の場合、システムの関係上、ご希望の開始時間を少し遅れる場合がございますので、予めご了承ください。)</span>
+          </p>
+          <p v-if="['532783550','600799837'].includes(route.params.rid as string)"
+             class="room-body-summary">
+            <span style="color:#e45700;">Translator available for your visit on first to forth Saturday of each month.（Available on 1P.M.~5P.M. on jst）<br>First and third Saturday: English-Japanese translator <br>Second and fourth Saturday: Chinese-Japanese translator</span>
+          </p>
+          <p v-if="['746935619','600799837','532783550','520803050'].includes(route.params.rid as string)"
+             class="room-body-summary">
+            <span style="color:#e45700;font-size: 1.2em;">  *Dates and times shown are all in Japan Standard Time. (JST/UTC+9 hours)</span><br>
+            <a
+              href="https://www.worldtimeserver.com/current_time_in_JP.aspx?city=Tokyo"
+              target="_blank"
+            >
+              <span style="color:#e45700;border-bottom: 1px solid #e45700;">Click here to check the current time in Japan.</span>
+            </a>
+          </p>
 
-          <!-- Calendar -->
-          <div class="calendar-wrapper">
-            <div class="sp-buttons flex justify-center align-center">
-              <div class="selected-week-wrapper flex align-center justify-center">
-                <button class="flex justify-center align-center arrow prev" @click="changeWeek(-1)">
-                  <i class="pi pi-chevron-left"></i>
-                </button>
-                <button class="flex justify-center align-center arrow next" @click="changeWeek(1)">
-                  <i class="pi pi-chevron-right"></i>
-                </button>
+          <p v-if="['219272972','830235141'].includes(route.params.rid as string)"
+             class="room-body-summary">
+            <span style="color:#e45700;">第1～4個星期六有傳譯員（日本時間下午1時～下午5時）<br>第1、3個星期六 英文、日文傳譯 <br>第2、4個星期六 中文、日文傳譯</span>
+          </p>
+          <p v-if="['604030817', '219272972', '830235141', '304155620'].includes(route.params.rid as string)"
+             class="room-body-summary">
+            <span style="color:#e45700;font-size: 1.2em;">  *顯示的日期時間為日本時間。 (日本標準時間/UTC＋9小時)</span><br>
+            <a
+              href="https://www.worldtimeserver.com/current_time_in_JP.aspx?city=Tokyo"
+              target="_blank"
+            >
+              <span style="color:#e45700;border-bottom: 1px solid #e45700;">Click here to check the current time in Japan.</span>
+            </a>
+          </p>
+          <!-- <p v-if="room?.body && room?.body !== 'null'"
+             v-html="room?.body"
+            class="room-body-summary"></p> -->
+        </div>
+
+
+        <!-- Calendar -->
+        <div class="calendar-wrapper">
+          <div class="sp-buttons flex justify-center align-center">
+            <div class="selected-week-wrapper flex align-center justify-center">
+              <button class="flex justify-center align-center arrow prev" @click="changeWeek(-1)">
+                <i class="pi pi-chevron-left"></i>
+              </button>
+              <button class="flex justify-center align-center arrow next" @click="changeWeek(1)">
+                <i class="pi pi-chevron-right"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="calendar-dates-header flex justify-space-between align-center">
+            <div class="header-btn-wrapper flex justify-center align-center">
+              <button class="flex justify-center align-center arrow prev" @click="changeWeek(-1)">
+                <i class="pi pi-chevron-left"></i>
+              </button>
+            </div>
+            <div class="header-date flex-column align-center justify-center" v-for="(object, idx) in weekDates"
+                 :class="{addafter: idx+1!==weekDates?.length, today: object.dateJP === today}"
+            >
+              <div class="header-date-inner flex-column align-center justify-center">
+                <span class="month">{{ object.monthName }}</span>
+                <span class="day">{{ object.date.substring(8) }}</span>
+                <span class="weekday">{{ object.dayShort }}</span>
               </div>
             </div>
-
-            <div class="calendar-dates-header flex justify-space-between align-center">
-              <div class="header-btn-wrapper flex justify-center align-center">
-                <button class="flex justify-center align-center arrow prev" @click="changeWeek(-1)">
-                   <i class="pi pi-chevron-left"></i>
-                 </button>
-              </div>
-              <div class="header-date flex-column align-center justify-center" v-for="(object, idx) in weekDates"
-                  :class="{addafter: idx+1!==weekDates?.length, today: object.dateJP === today}"
-                  >
-                <div class="header-date-inner flex-column align-center justify-center">
-                  <span class="month">{{object.monthName}}</span>
-                  <span class="day">{{ object.date.substring(8) }}</span>
-                  <span class="weekday">{{object.dayShort}}</span>
-                </div>
-              </div>
-              <div class="header-btn-wrapper flex justify-center align-center">
-                <button class="flex justify-center align-center arrow next" @click="changeWeek(1)">
-                  <i class="pi pi-chevron-right"></i>
-                </button>
-              </div>
+            <div class="header-btn-wrapper flex justify-center align-center">
+              <button class="flex justify-center align-center arrow next" @click="changeWeek(1)">
+                <i class="pi pi-chevron-right"></i>
+              </button>
             </div>
+          </div>
 
-            <section class="calendar-outer flex justify-space-between" style="position:relative;">
-              <LoadingSpinner v-model="isLoading" relative/>
-              <div class="times-wrapper flex-column">
+          <section class="calendar-outer flex justify-space-between" style="position:relative;">
+            <LoadingSpinner v-model="isLoading" relative/>
+            <div class="times-wrapper flex-column">
 
-                <div class="times-cells flex-column justify-space-between align-center">
-                  <div v-for="(time, index) in betweenHours" :key="index" class="time-cell">
-                    <div>
-                      <p class="sp-time">
+              <div class="times-cells flex-column justify-space-between align-center">
+                <div v-for="(time, index) in betweenHours" :key="index" class="time-cell">
+                  <div>
+                    <p class="sp-time">
                         <span>
-                          {{time}}
+                          {{ time }}
                         </span>
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div v-for="(item, idx) in weekDates" :key="idx" class="weekday-wrapper flex-column" :class="{first : idx === 0}">
-                <div class="week-cell__contents flex-column justify-space-around align-center">
-                  <!-- 休日の場合 -->
-                  <div v-if="holidays.includes(weekdaysShort[idx]) || separatedHolidaysCheck(item.date2)" class="sec holiday">
-                    <p class="holiday flex align-center justify-center">
-                      {{ t('roomRegularHoliday') }}
                     </p>
                   </div>
+                </div>
+              </div>
+            </div>
 
-                  <template v-else-if="room && betweenHours.length > 0">
-                    <div v-for="(time, index) in betweenHours" :key="index" class="sec flex-column justify-center align-center">
-                      <!-- マル -->
-                      <div v-if="findHourBefore(time, item.date2) && vacanciesCheck(item.date2, time).mark==='circle' && !pastTimeCheck(item.timestamp,time)"
-                            class="flex-column justify-center btn_select sec-circle" 
-                            @click="goToForm(item.date2, time, room)">
-                        <div class="icon-wrapper">
-                          <figure class="icon circle">
-                            <svg stroke="#6366f1" fill="none" viewBox="0 0 40.00 40.00">
-                              <circle class="cls-1" cx="20" cy="20" r="15" />
-                            </svg>
-                          </figure>
-                        </div>
-                      </div>
-                      <!-- 三角 -->
-
-                      <div v-else-if="findHourBefore(time, item.date2) && vacanciesCheck(item.date2, time).mark==='triangle'"
-                            class="flex-column justify-center btn_select sec-triangle" 
-                            @click="goToForm(item.date2, time, room)">
-                        <div class="icon-wrapper">
-                          <figure class="icon triangle">
-                            <svg fill="#6366f1" fill-opacity="0.7" viewBox="0 0 512 512">
-                              <path
-                                d="M408.95,482.41H103.05c-37.76,0-72.41-20.12-90.43-52.49A97.36,97.36,0,0,1,15,330.06L172.31, 76.18a98.47,98.47,0,0,1,167.38,0L497,330.06a97.36,97.36,0,0,1,2.37,99.86C481.35,462.29,446.7,482.41, 408.95,482.41ZM256,108.34a19.42,19.42,0,0,0-16.75,9.32L81.94,371.54a19.14,19.14,0,0,0-.52,20.07c4.2, 7.55,12.29,12.05,21.63,12.05H408.95c9.34,0,17.43-4.5,21.63-12.05a19.14,19.14,0,0,0-.52-20.07L272.75, 117.66A19.42,19.42,0,0,0,256,108.34Z"
-                              ></path>
-                            </svg>
-                          </figure>
-                        </div>
-                      </div>
-
-                      <div v-else class="flex-column justify-center btn_select disable">
-                        <div class="icon-wrapper noflame">
-                          <figure class="icon cross">
-                            <svg stroke="#edebe7" fill="none" stroke-linecap="round" viewBox="0 0 40 40">
-                              <line class="cls-1" x1="5" y1="5" x2="35" y2="35" />
-                              <line class="cls-1" x1="35" y1="5" x2="5" y2="35" />
-                            </svg>
-                          </figure>
-                        </div>
-                      </div>
-                    </div>
-                  </template>
+            <div v-for="(item, idx) in weekDates" :key="idx" class="weekday-wrapper flex-column" :class="{first : idx === 0}">
+              <div class="week-cell__contents flex-column justify-space-around align-center">
+                <!-- 休日の場合 -->
+                <div v-if="holidays.includes(weekdaysShort[idx]) || separatedHolidaysCheck(item.date2)" class="sec holiday">
+                  <p class="holiday flex align-center justify-center">
+                    {{ t('roomRegularHoliday') }}
+                  </p>
                 </div>
 
+                <template v-else-if="room && betweenHours.length > 0">
+                  <div v-for="(time, index) in betweenHours" :key="index" class="sec flex-column justify-center align-center">
+                    <!-- マル -->
+                    <div v-if="findHourBefore(time, item.date2) && vacanciesCheck(item.date2, time).mark==='circle' && !pastTimeCheck(item.timestamp,time)"
+                         class="flex-column justify-center btn_select sec-circle"
+                         @click="goToForm(item.date2, time, room)">
+                      <div class="icon-wrapper">
+                        <figure class="icon circle">
+                          <svg stroke="#6366f1" fill="none" viewBox="0 0 40.00 40.00">
+                            <circle class="cls-1" cx="20" cy="20" r="15"/>
+                          </svg>
+                        </figure>
+                      </div>
+                    </div>
+                    <!-- 三角 -->
+
+                    <div v-else-if="findHourBefore(time, item.date2) && vacanciesCheck(item.date2, time).mark==='triangle'"
+                         class="flex-column justify-center btn_select sec-triangle"
+                         @click="goToForm(item.date2, time, room)">
+                      <div class="icon-wrapper">
+                        <figure class="icon triangle">
+                          <svg fill="#6366f1" fill-opacity="0.7" viewBox="0 0 512 512">
+                            <path
+                              d="M408.95,482.41H103.05c-37.76,0-72.41-20.12-90.43-52.49A97.36,97.36,0,0,1,15,330.06L172.31, 76.18a98.47,98.47,0,0,1,167.38,0L497,330.06a97.36,97.36,0,0,1,2.37,99.86C481.35,462.29,446.7,482.41, 408.95,482.41ZM256,108.34a19.42,19.42,0,0,0-16.75,9.32L81.94,371.54a19.14,19.14,0,0,0-.52,20.07c4.2, 7.55,12.29,12.05,21.63,12.05H408.95c9.34,0,17.43-4.5,21.63-12.05a19.14,19.14,0,0,0-.52-20.07L272.75, 117.66A19.42,19.42,0,0,0,256,108.34Z"
+                            ></path>
+                          </svg>
+                        </figure>
+                      </div>
+                    </div>
+
+                    <div v-else class="flex-column justify-center btn_select disable">
+                      <div class="icon-wrapper noflame">
+                        <figure class="icon cross">
+                          <svg stroke="#edebe7" fill="none" stroke-linecap="round" viewBox="0 0 40 40">
+                            <line class="cls-1" x1="5" y1="5" x2="35" y2="35"/>
+                            <line class="cls-1" x1="35" y1="5" x2="5" y2="35"/>
+                          </svg>
+                        </figure>
+                      </div>
+                    </div>
+                  </div>
+                </template>
               </div>
 
-              <div class="times-wrapper right flex-column">
-                <!-- <div class="week-cell-header flex">
-                </div> -->
-                <div class="times-cells flex-column justify-space-between align-center">
-                  <div v-for="(time, index) in betweenHours" :key="index" class="time-cell">
-                    <div>
-                      <p class="sp-time">
+            </div>
+
+            <div class="times-wrapper right flex-column">
+              <!-- <div class="week-cell-header flex">
+              </div> -->
+              <div class="times-cells flex-column justify-space-between align-center">
+                <div v-for="(time, index) in betweenHours" :key="index" class="time-cell">
+                  <div>
+                    <p class="sp-time">
                         <span>
-                          {{time}}
+                          {{ time }}
                         </span>
-                      </p>
-                    </div>
+                    </p>
                   </div>
                 </div>
               </div>
-            </section>
-
-
-            <div class="calendar-legend flex justify-end" v-if="!isLoading">
-              <ul class="icon-list flex flex-wrap">
-                <li class="flex align-center">
-                  <svg
-                    width="12"
-                    height="12"
-                    fill="#a6cb90"
-                    viewBox="0 0 512 512"
-                  >
-                    <path d="M256,78.77c97.73,0,177.23,79.51,177.23,177.23S353.73,433.23,256,433.23,78.77,353.73,78.77,256,158.27,78.77, 256,78.77M256,0C114.62,0,0,114.62,0,256S114.62,512,256,512,512,397.38,512,256,397.38,0,256,0Z"></path>
-                  </svg>
-                  <span class="">{{ t('roomVacancy') }}</span>
-                </li>
-                <li class="flex align-center">
-                  <svg
-                    width="9"
-                    height="9"
-                    fill="#e0deda"
-                    viewBox="0 0 512 512"
-                  >
-                    <path
-                      d="M321.83,256,498.37,79.46a46.55,46.55,0,1,0-65.83-65.83L256,190.17,79.46,13.63A46.55,46.55,0,0,0, 13.63,79.46L190.17,256,13.63,432.54a46.55,46.55,0,0,0,65.83,65.83L256,321.83,432.54,498.37a46.55,46.55, 0,0,0,65.83-65.83Z"
-                    ></path>
-                  </svg>
-                  <span class="">{{ t('roomNoVacancy') }}</span>
-                </li>
-              </ul>
             </div>
-          </div>
+          </section>
 
-          <div class="footer-container">
-            <div class="custom-content footer flex-column justify-center align-center" v-if="pageContents.footer.length>0">
-              <a href="tel:0120997426">
-                <img v-for="(img) in pageContents.footer" :class="img.class" :src="ENV.STATIC+img.src" :alt="img.alt">
-              </a>
-            </div>
-          </div>
 
+          <div class="calendar-legend flex justify-end" v-if="!isLoading">
+            <ul class="icon-list flex flex-wrap">
+              <li class="flex align-center">
+                <svg
+                  width="12"
+                  height="12"
+                  fill="#a6cb90"
+                  viewBox="0 0 512 512"
+                >
+                  <path
+                    d="M256,78.77c97.73,0,177.23,79.51,177.23,177.23S353.73,433.23,256,433.23,78.77,353.73,78.77,256,158.27,78.77, 256,78.77M256,0C114.62,0,0,114.62,0,256S114.62,512,256,512,512,397.38,512,256,397.38,0,256,0Z"></path>
+                </svg>
+                <span class="">{{ t('roomVacancy') }}</span>
+              </li>
+              <li class="flex align-center">
+                <svg
+                  width="9"
+                  height="9"
+                  fill="#e0deda"
+                  viewBox="0 0 512 512"
+                >
+                  <path
+                    d="M321.83,256,498.37,79.46a46.55,46.55,0,1,0-65.83-65.83L256,190.17,79.46,13.63A46.55,46.55,0,0,0, 13.63,79.46L190.17,256,13.63,432.54a46.55,46.55,0,0,0,65.83,65.83L256,321.83,432.54,498.37a46.55,46.55, 0,0,0,65.83-65.83Z"
+                  ></path>
+                </svg>
+                <span class="">{{ t('roomNoVacancy') }}</span>
+              </li>
+            </ul>
+          </div>
         </div>
-      </div>
-      <div v-else-if="isRest" class="maintenance template__Wrapper">
-        <div class="container">
-          <h2 class="h2">{{ t('maintenanceTitle') }}</h2>
-          <div>
-            <section class="message__Wrapper">
-              <h3 class="h3" v-html="t('maintenanceTitle')"></h3>
-            </section>
+
+        <div class="footer-container">
+          <div class="custom-content footer flex-column justify-center align-center" v-if="pageContents.footer.length>0">
+            <a href="tel:0120997426">
+              <img v-for="(img) in pageContents.footer" :class="img.class" :src="ENV.STATIC+img.src" :alt="img.alt">
+            </a>
           </div>
+        </div>
+
+      </div>
+    </div>
+    <div v-else-if="isRest" class="maintenance template__Wrapper">
+      <div class="container">
+        <h2 class="h2">{{ t('maintenanceTitle') }}</h2>
+        <div>
+          <section class="message__Wrapper">
+            <h3 class="h3" v-html="t('maintenanceTitle')"></h3>
+          </section>
         </div>
       </div>
     </div>
+  </div>
 </template>
 
 <script lang="ts">
-import { reactive, defineComponent, onMounted, ref, computed } from "vue";
+import {reactive, defineComponent, onMounted, ref, computed} from "vue";
 import useStore from "@/helpers/useStore"
 import {useRouter, useRoute, LocationQuery} from "vue-router";
-import { Room, SeparatedHoliday, Vacancy, Error, PageContents } from "@/types/Room"
-import { WeekDatesAsObject } from "@/types/Calendar";
+import {Room, SeparatedHoliday, Vacancy, Error, PageContents} from "@/types/Room"
+import {WeekDatesAsObject} from "@/types/Calendar";
 import axios from "axios";
 import ENV from "../config"
 import calendarServiceClass from "../helpers/CalendarService";
@@ -248,8 +250,8 @@ import LoadingSpinner from "../components/loaders/LoadingSpinner.vue"
 import VitFooter from "../components/Footer.vue"
 import VitHeader from "../components/Header.vue"
 import moment from "moment";
-import { useGtm } from "@gtm-support/vue-gtm";
-import { vocabularies } from '../utils/useVocabularies'
+import {useGtm} from "@gtm-support/vue-gtm";
+import {vocabularies} from '../utils/useVocabularies'
 import useDateHandler from "@/helpers/useDateHandler";
 
 export default defineComponent({
@@ -279,84 +281,84 @@ export default defineComponent({
     const isRest = ref<boolean>(false)
     // const currentQuery = ref<LocationQueryRaw | null>(null)
     const gtm = useGtm()
-    const { t } = vocabularies();
+    const {t} = vocabularies();
 
-    const pageContents:{header: PageContents[], footer: PageContents[]} = {
+    const pageContents: { header: PageContents[], footer: PageContents[] } = {
       header: [],
       footer: [],
     }
 
     // Test id,      eSalon id
-    if(['637599256','635834411'].includes(route.params.rid as string)){
+    if (['637599256', '635834411'].includes(route.params.rid as string)) {
       pageContents.header = [
-        {src: "eSalonImages/esalon_flowofuse.png", class:"pc", alt:""},
-        {src: "eSalonImages/esalon_flowofuse_sp.png", class:"sp", alt:""},
+        {src: "eSalonImages/esalon_flowofuse.png", class: "pc", alt: ""},
+        {src: "eSalonImages/esalon_flowofuse_sp.png", class: "sp", alt: ""},
       ]
       pageContents.footer = [
-        {src: "eSalonImages/esalon_telButton.png", class:"pc", alt:""},
-        {src: "eSalonImages/esalon_telButton_sp.png", class:"sp", alt:""},
+        {src: "eSalonImages/esalon_telButton.png", class: "pc", alt: ""},
+        {src: "eSalonImages/esalon_telButton_sp.png", class: "sp", alt: ""},
       ]
     }
     // reserve en
-    if(['532783550','600799837'].includes(route.params.rid as string)){
+    if (['532783550', '600799837'].includes(route.params.rid as string)) {
       pageContents.header = [
-        {src: "eSalonImages/esalon_flowofuse_en.png", class:"pc", alt:""},
-        {src: "eSalonImages/esalon_flowofuse_en_sp.png", class:"sp", alt:""},
+        {src: "eSalonImages/esalon_flowofuse_en.png", class: "pc", alt: ""},
+        {src: "eSalonImages/esalon_flowofuse_en_sp.png", class: "sp", alt: ""},
       ]
     }
     // online en
-    if(['520803050','746935619'].includes(route.params.rid as string)){
+    if (['520803050', '746935619'].includes(route.params.rid as string)) {
       pageContents.header = [
-        {src: "eSalonImages/esalon_flowofuse_onLine_en.png", class:"pc", alt:""},
-        {src: "eSalonImages/esalon_flowofuse_onLine_en_sp.png", class:"sp", alt:""},
+        {src: "eSalonImages/esalon_flowofuse_onLine_en.png", class: "pc", alt: ""},
+        {src: "eSalonImages/esalon_flowofuse_onLine_en_sp.png", class: "sp", alt: ""},
       ]
     }
     // reserve chinese
-    if(['219272972', '830235141'].includes(route.params.rid as string)){
+    if (['219272972', '830235141'].includes(route.params.rid as string)) {
       pageContents.header = [
-        {src: "eSalonImages/esalon_flowofuse_reserve_chinese_pc.png", class:"pc", alt:""},
-        {src: "eSalonImages/esalon_flowofuse_reserve_chinese_sp.png", class:"sp", alt:""},
+        {src: "eSalonImages/esalon_flowofuse_reserve_chinese_pc.png", class: "pc", alt: ""},
+        {src: "eSalonImages/esalon_flowofuse_reserve_chinese_sp.png", class: "sp", alt: ""},
       ]
     }
     // online chinese
-    if(['604030817', '304155620'].includes(route.params.rid as string)){
+    if (['604030817', '304155620'].includes(route.params.rid as string)) {
       pageContents.header = [
-        {src: "eSalonImages/esalon_flowofuse_online_chinese_pc.png", class:"pc", alt:""},
-        {src: "eSalonImages/esalon_flowofuse_online_chinese_sp.png", class:"sp", alt:""},
+        {src: "eSalonImages/esalon_flowofuse_online_chinese_pc.png", class: "pc", alt: ""},
+        {src: "eSalonImages/esalon_flowofuse_online_chinese_sp.png", class: "sp", alt: ""},
       ]
     }
 
     const currentWeekForDisplay = computed(() => {
-      if(weekDatesObjs.value){
-        return weekDatesObjs.value[0].date+ "  (" + weekDatesObjs.value[0].day + ")"
+      if (weekDatesObjs.value) {
+        return weekDatesObjs.value[0].date + "  (" + weekDatesObjs.value[0].day + ")"
       }
       return ""
     })
 
-    const findHourBefore = (param:any, date:string):boolean => {
+    const findHourBefore = (param: any, date: string): boolean => {
       return true
     }
 
-    const formatDate = (val:string):string => {
+    const formatDate = (val: string): string => {
       return val.replaceAll("-", "/")
     }
 
-    const formatTime = (val:string):string => {
-      return val.slice( -9, -4 )
+    const formatTime = (val: string): string => {
+      return val.slice(-9, -4)
     }
 
-    const changeWeek = (num:number):void => {
+    const changeWeek = (num: number): void => {
       getWeekDatesByNum(num)
 
       const currentQuery = Object.assign({}, route.query)
 
-      router.push({query: Object.assign(currentQuery, {year:year.value, week:weekNum.value})})
+      router.push({query: Object.assign(currentQuery, {year: year.value, week: weekNum.value})})
       getRooms();
     }
 
-    const separatedHolidaysCheck = (date:string):Boolean => {
+    const separatedHolidaysCheck = (date: string): Boolean => {
       date = date.replaceAll("-", "/")
-      if(room.value && room.value.separate_holidays){
+      if (room.value && room.value.separate_holidays) {
         return room.value.separate_holidays.some((element: SeparatedHoliday) => formatDate(String(element.date)) === date)
       }
       return false
@@ -366,73 +368,74 @@ export default defineComponent({
       id: number,
       mark: string,
     }
-    const vacanciesCheck = (date:string, time:string):Mark=> {
+
+    const vacanciesCheck = (date: string, time: string): Mark => {
       const vacancy = findVacancy(date, time)
-      if(vacancy) {
-        const left:number = vacancy.limit - vacancy.applicants.length;
-        if(left > Number(vacancy.status_triangle)){
+      if (vacancy) {
+        const left: number = vacancy.limit - vacancy.applicants.length;
+        if (left > Number(vacancy.status_triangle)) {
           return {id: vacancy.id, mark: "circle"}
-        }else if(left <= Number(vacancy.status_triangle) && left > 0){
+        } else if (left <= Number(vacancy.status_triangle) && left > 0) {
           return {id: vacancy.id, mark: "triangle"}
-        }else if(left  <= 0) {
+        } else if (left <= 0) {
           return {id: vacancy.id, mark: "cross"}
         }
       }
       return {id: 0, mark: "none"}
     }
 
-    const pastTimeCheck = (timestamp:number,time:string):boolean => {
-      const todayTimestamp = moment().unix()*1000
-      const targetTime = timestamp+(parseInt(time.split(':')[0]))*3600000 - 3600000;
+    const pastTimeCheck = (timestamp: number, time: string): boolean => {
+      const todayTimestamp = moment().unix() * 1000
+      const targetTime = timestamp + (parseInt(time.split(':')[0])) * 3600000 - 3600000;
       return targetTime < todayTimestamp;
     }
-    
+
     const getPrepTime = (time: string) => {
       let splits = time.split(":")
-      if(splits.length>1 && splits[1]=="00")
-        return splits[0]+"時"
+      if (splits.length > 1 && splits[1] == "00")
+        return splits[0] + "時"
       return time
     }
 
-    const goToForm = (date:string, time:string, room:Room|null) => {
+    const goToForm = (date: string, time: string, room: Room | null) => {
       const vacancy = findVacancy(date, time)
       let currentQuery = Object.assign({}, route.query)
-      if(vacancy){
+      if (vacancy) {
         currentQuery = Object.assign(currentQuery, {vacancy: vacancy.id})
         router.push({
           name: "Form",
-          params: {rid:route.params.rid, fid:room?.form},
+          params: {rid: route.params.rid, fid: room?.form},
           query: currentQuery
         })
       }
     }
 
     const closeNotification = () => {
-      isNotification.value =! isNotification.value
+      isNotification.value = !isNotification.value
       store.SET_ERROR(null)
     }
 
-    const getBetweenHours = (start:string, end:string):void => {
+    const getBetweenHours = (start: string, end: string): void => {
       const hours: string[] = []
       let startIdx, endIdx;
       for (let i = 0; i < 24; i++) {
         hours.push(moment(new Date().setHours(0, 0, 0, 0)).add(i, 'hours').format('HH:mm'))
       }
       hours.findIndex((hour, idx) => {
-        if (start=== hour) startIdx = idx
+        if (start === hour) startIdx = idx
         else if (end === hour) endIdx = idx
         else return;
       })
       betweenHours.value = hours.slice(startIdx, endIdx)
     }
 
-    function findVacancy(date:string, time:string):any{
-      return vacancies.value.find((element:Vacancy) => {
+    function findVacancy(date: string, time: string): any {
+      return vacancies.value.find((element: Vacancy) => {
         return (formatDate(element.date) === date) && (formatTime(element.date_time_start) === time)
       })
     }
 
-    function getRooms(){
+    function getRooms() {
       isLoading.value = true
       axios.request({
         method: "get",
@@ -440,31 +443,31 @@ export default defineComponent({
         url: "rooms/" + route.params.rid + "/",
         params: {year: year.value, week: weekNum.value}
       })
-      .then((response) => {
+        .then((response) => {
 
-        const data = JSON.parse(JSON.stringify(response.data))
+          const data = JSON.parse(JSON.stringify(response.data))
 
-        room.value = data
-        isRest.value = data.rest
-        holidays.value = data.holidays.includes(",") ? data.holidays.split(",") : [data.holidays]
-        vacancies.value = data.vacancies
-        document.getElementsByTagName('title')[0].innerHTML = (room.value)?room.value.name:"ビターブ｜予約システム作成・予約管理ならおまかせ｜viterve"
-        isLoading.value = false
-        getBetweenHours(data.settings.time_start, data.settings.time_end)
+          room.value = data
+          isRest.value = data.rest
+          holidays.value = data.holidays.includes(",") ? data.holidays.split(",") : [data.holidays]
+          vacancies.value = data.vacancies
+          document.getElementsByTagName('title')[0].innerHTML = (room.value) ? room.value.name : "ビターブ｜予約システム作成・予約管理ならおまかせ｜viterve"
+          isLoading.value = false
+          getBetweenHours(data.settings.time_start, data.settings.time_end)
 
-      })
-      .catch((eroor) => {
-        isLoading.value = false
-        console.log(eroor)
-      })
+        })
+        .catch((eroor) => {
+          isLoading.value = false
+          console.log(eroor)
+        })
     }
 
     /**
-    * If the query has vacancy when returning from the form, delete it
-    * @param {object} currentQuery
-    * @return {object} trimed currentQuery
-    */
-    function deleteQueryVacancy(currentQuery:LocationQuery){
+     * If the query has vacancy when returning from the form, delete it
+     * @param {object} currentQuery
+     * @return {object} trimed currentQuery
+     */
+    function deleteQueryVacancy(currentQuery: LocationQuery) {
       delete currentQuery.vacancy
       return currentQuery
     }
@@ -474,20 +477,20 @@ export default defineComponent({
       currentWeek.value = calendarService.value.currentWeek
       ////// for query /////
       let currentQuery = Object.assign({}, route.query)
-      if(currentQuery.year) year.value = Number(currentQuery.year);
-      if(currentQuery.week) weekNum.value = Number(currentQuery.week);
-      currentQuery = Object.assign(currentQuery, {lang:setLanguage(), year:year.value, week:weekNum.value})
-      if(route.query.hasOwnProperty("vacancy") && route.query.vacancy){
+      if (currentQuery.year) year.value = Number(currentQuery.year);
+      if (currentQuery.week) weekNum.value = Number(currentQuery.week);
+      currentQuery = Object.assign(currentQuery, {lang: setLanguage(), year: year.value, week: weekNum.value})
+      if (route.query.hasOwnProperty("vacancy") && route.query.vacancy) {
         currentQuery = deleteQueryVacancy(currentQuery)
       }
       router.push({query: currentQuery})
       ////// for query end /////
       weekDatesObjs.value = calendarService.value.getWeekDatesAsObject(currentWeek.value as number)
-      currentDate.value = calendarService.value.currentDate.replace("年","/").replace("月","/").replace("日","")
+      currentDate.value = calendarService.value.currentDate.replace("年", "/").replace("月", "/").replace("日", "")
 
       getRooms();
 
-      if(store.error){
+      if (store.error) {
         Object.assign(errorMessage, store.error)
         isNotification.value = true
       }
@@ -498,11 +501,11 @@ export default defineComponent({
       if (["600799837", "746935619", "520803050", "532783550"].includes(route.params.rid as string)) {
         return "en"
 
-      /* japanese */
+        /* japanese */
       } else if (["635834411", "637599256", "249893849"].includes(route.params.rid as string)) {
         return "ja"
 
-      /* chinese */
+        /* chinese */
       } else if (["604030817", "219272972", '830235141', '304155620'].includes(route.params.rid as string)) {
         return "zh"
       }
@@ -511,16 +514,16 @@ export default defineComponent({
     }
 
     onMounted(() => {
-      if(!gtm?.enabled()){
+      if (!gtm?.enabled()) {
         gtm?.enable(true)
-      }else{
+      } else {
         window.dataLayer?.push({
           google_tag_params: {
             dynx_pagetype: 'other',
             dynx_device: 'pc'
           }
         });
-        gtm?.trackEvent({event: 'gtm.init_consent', 'content-view-name':route.name});
+        gtm?.trackEvent({event: 'gtm.init_consent', 'content-view-name': route.name});
         gtm?.trackEvent({event: 'gtm.init'});
         gtm?.trackEvent({event: 'gtm.js'});
         gtm?.trackEvent({event: 'gtm.dom'});
@@ -551,16 +554,19 @@ export default defineComponent({
   box-shadow: rgb(149 157 165 / 20%) 0px 8px 24px;
   z-index: 99;
 }
+
 .notification .title {
   padding: 7px 15px;
   color: aliceblue;
   background-color: #ff7979;
   min-height: 38px;
 }
+
 .notification .body-text {
   padding: 7px 15px;
   min-height: 80px;
 }
+
 .notification > .close {
   z-index: 20;
   position: absolute;
@@ -585,10 +591,12 @@ export default defineComponent({
 .slide-fade-enter-active {
   transition: all .3s ease;
 }
+
 .slide-fade-leave-active {
   transition: all .6s cubic-bezier(1.0, 0.5, 0.8, 1.0);
 }
-.slide-fade-enter, .slide-fade-leave-to{
+
+.slide-fade-enter, .slide-fade-leave-to {
   transform: translateX(10px);
   opacity: 0;
 }
@@ -602,13 +610,15 @@ export default defineComponent({
   padding-top: 66px;
 }
 
-.container{
-  max-width:1160px;
+.container {
+  max-width: 1160px;
   /* min-width: 400px; */
 }
+
 .container .calendar-wrapper {
   margin-top: 10px;
 }
+
 .container .calendar-wrapper .calendar-outer {
   min-height: 50px;
 }
@@ -618,12 +628,14 @@ export default defineComponent({
   display: inline-block;
   font-size: 1.8rem;
 }
+
 .container .header-container h1 .sub-title {
   display: inline-block;
   font-size: 1.0rem;
   font-weight: 500;
 }
-.container .header-container p.room-body-summary{
+
+.container .header-container p.room-body-summary {
   font-size: 0.75rem;
   margin-top: 20px;
   background-color: #faebd76f;
@@ -632,12 +644,13 @@ export default defineComponent({
 }
 
 /* ---- Smartphone buttons ---- */
-.calendar-wrapper .sp-buttons{
+.calendar-wrapper .sp-buttons {
   display: none;
   margin-top: 14px;
   height: 44px;
 }
-.calendar-wrapper .sp-buttons .selected-week-wrapper{
+
+.calendar-wrapper .sp-buttons .selected-week-wrapper {
   position: relative;
   width: 100%;
   height: 44px;
@@ -646,6 +659,7 @@ export default defineComponent({
   border-radius: 6px;
   padding: 2px;
 }
+
 /*.calendar-wrapper .sp-buttons .selected-week-wrapper .currentWeek{
   position: absolute;
   left: 10px;
@@ -675,21 +689,23 @@ export default defineComponent({
   width: 50%;
   transition: 0.3s;
 }
+
 .calendar-wrapper .sp-buttons .selected-week-wrapper .arrow:first-of-type {
   margin-right: 2px;
 }
+
 .calendar-wrapper .sp-buttons .selected-week-wrapper .arrow i {
   font-size: 0.9rem;
   position: relative;
   top: 1px;
 }
 
-.calendar-wrapper .sp-buttons .selected-week-wrapper .arrow:active{
+.calendar-wrapper .sp-buttons .selected-week-wrapper .arrow:active {
   transform: translateY(2px);
   /* background-color: rgb(99, 102, 241,0.05); */
 }
 
-.calendar-wrapper .sp-buttons .selected-week-wrapper .arrow:hover{
+.calendar-wrapper .sp-buttons .selected-week-wrapper .arrow:hover {
   background-color: #fafafa;
   color: #6366f1;
 }
@@ -700,6 +716,7 @@ export default defineComponent({
 .calendar-dates-header .header-btn-wrapper {
   width: 60px;
 }
+
 .calendar-dates-header .header-date {
   height: 120px;
   width: calc((100% - 60px) / 7);
@@ -707,6 +724,7 @@ export default defineComponent({
   margin: 15px 0;
   position: relative;
 }
+
 .calendar-dates-header .header-date.addafter::after {
   content: "";
   position: absolute;
@@ -716,9 +734,11 @@ export default defineComponent({
   border-radius: 30px;
   background-color: #f1f2f6;
 }
+
 .calendar-dates-header .header-date .header-date-inner {
   padding: 10px;
 }
+
 .calendar-dates-header .header-date.today .header-date-inner {
   background-color: #6366f1;
   border-radius: 10px;
@@ -730,6 +750,7 @@ export default defineComponent({
   font-size: 1.6rem;
   font-weight: 600;
 }
+
 /* .calendar-dates-header .header-date .weekday {} */
 
 
@@ -742,11 +763,13 @@ export default defineComponent({
   background-color: #f4f6f9;
   transition: transform 0.15s;
 }
+
 .calendar-dates-header .header-btn-wrapper button.arrow.disable {
   opacity: 0.3;
   pointer-events: none;
 }
-.calendar-dates-header .header-btn-wrapper button.arrow:active{
+
+.calendar-dates-header .header-btn-wrapper button.arrow:active {
   transform: translateY(2px);
 }
 
@@ -761,7 +784,8 @@ export default defineComponent({
 .calendar-outer .weekday-wrapper {
   width: calc((100% - 60px) / 7);
 }
-.calendar-outer .weekday-wrapper .week-cell__contents{
+
+.calendar-outer .weekday-wrapper .week-cell__contents {
   transition: all 0.3s;
   height: 100%;
 }
@@ -788,7 +812,7 @@ export default defineComponent({
 } */
 
 /* .calendar-outer .times-wrapper .week-cell__contents .sec { */
-.calendar-outer .times-wrapper .times-cells .time-cell{
+.calendar-outer .times-wrapper .times-cells .time-cell {
   height: 75px;
   width: 100%;
   margin: 0px auto 0px;
@@ -799,7 +823,8 @@ export default defineComponent({
   position: relative;
   z-index: 12;
 }
-.calendar-outer .times-wrapper .times-cells .time-cell::after{
+
+.calendar-outer .times-wrapper .times-cells .time-cell::after {
   content: "";
   position: absolute;
   top: -1px;
@@ -808,7 +833,8 @@ export default defineComponent({
   height: 1px;
   background-color: white;
 }
-.calendar-outer .times-wrapper.right .times-cells .time-cell::after{
+
+.calendar-outer .times-wrapper.right .times-cells .time-cell::after {
   right: auto;
   left: 50%;
 }
@@ -825,6 +851,7 @@ export default defineComponent({
   /* transform: translateX(-50%); */
   z-index: 15;
 }
+
 .calendar-outer .times-wrapper.times-wrapper.right .times-cells p.sp-time {
   left: auto;
   right: -15%;
@@ -834,6 +861,7 @@ export default defineComponent({
 .calendar-legend {
   margin-right: 60px;
 }
+
 .calendar-legend .icon-list {
   font-size: 0.8rem;
   font-weight: 300;
@@ -842,45 +870,53 @@ export default defineComponent({
   /* border-left: 4px solid rgb(99, 102, 241); */
   /* background-color: rgb(99, 102, 241,0.05); */
 }
+
 .calendar-legend .icon-list li {
   margin-left: 8px;
   color: #555;
 }
 
-.calendar-legend .icon-list li span{
+.calendar-legend .icon-list li span {
   padding-left: 5px;
 }
 
 /* ---- Media for smart phone ---- */
 
-@media screen and (max-width: 415px){
-  .calendar-wrapper .sp-buttons{
+@media screen and (max-width: 415px) {
+  .calendar-wrapper .sp-buttons {
     display: block;
     align-items: center;
     justify-content: center;
     flex-direction: column-reverse;
   }
+
   .calendar-dates-header {
     justify-content: space-around;
   }
+
   .calendar-dates-header .header-date {
     height: 85px;
   }
+
   .calendar-dates-header .header-date::after {
     display: none;
     content: none;
   }
-  .calendar-dates-header .header-date .header-date-inner{
+
+  .calendar-dates-header .header-date .header-date-inner {
     padding: 5px;
     font-size: 0.9rem;
   }
+
   .calendar-dates-header .header-date .header-date-inner .day {
     font-size: 1rem;
   }
+
   /* Calendar legend */
   .calendar-legend {
     margin: 0;
   }
+
   .calendar-legend .icon-list {
     border: none;
     justify-content: center;
@@ -890,10 +926,12 @@ export default defineComponent({
   #index .calendar-outer .times-wrapper.right {
     display: none;
   }
+
   .calendar-dates-header .header-btn-wrapper {
     display: none;
   }
-  #index .calendar-outer .times-wrapper .times-cells .time-cell{
+
+  #index .calendar-outer .times-wrapper .times-cells .time-cell {
     height: 45px;
   }
 }
@@ -902,31 +940,38 @@ export default defineComponent({
   width: 100%;
   padding: 20px 0;
 }
+
 .custom-content.header {
   border-bottom: solid 3px #000000;
 }
+
 .custom-content.footer {
   border-top: solid 3px #000000;
   margin: 20px auto 0;
 }
+
 .custom-content img {
   width: 100%;
   height: auto;
 }
+
 .custom-content.winter-campaign img {
-    max-width: 800px;
-  }
+  max-width: 800px;
+}
+
 .custom-content.winter-campaign.footer img {
-    max-width: 700px;
-  }
+  max-width: 700px;
+}
 
 .custom-content img.sub {
   width: 60%;
   /* padding: 0 40px; */
-} 
+}
+
 .custom-content img:not(:first-child) {
   margin-top: 20px;
 }
+
 .custom-content img.sp {
   display: none;
 }
@@ -940,18 +985,20 @@ export default defineComponent({
 }
 
 
-@media screen and (max-width: 415px){
+@media screen and (max-width: 415px) {
   .custom-content.header {
     padding: 0 0 15px 0;
   }
+
   .custom-content.footer {
     padding: 0 0 0 0;
   }
+
   .custom-content:not(.winter-campaign) img {
     width: 100%;
     display: none;
   }
-  
+
   .custom-content.winter-campaign.footer img {
     display: block;
   }
@@ -996,6 +1043,7 @@ export default defineComponent({
 #index .week-cell-header .day {
   font-weight: 500;
 }
+
 #index .week-cell-header.today .day {
   background-color: #6366f1;
   color: #fff;
@@ -1004,7 +1052,7 @@ export default defineComponent({
   line-height: 1;
 }
 
-#index .week-cell-header .date{
+#index .week-cell-header .date {
   color: #757383;
   font-weight: 500;
   font-size: 0.8rem;
@@ -1023,11 +1071,12 @@ export default defineComponent({
   border-right: 1px solid #f1f2f6;
   border-bottom: 1px solid #f1f2f6;
 }
+
 #index .calendar-outer .weekday-wrapper.first .week-cell__contents .sec {
   border-left: 1px solid #f1f2f6;
 }
 
-#index .calendar-outer .week-cell__contents .icon-wrapper{
+#index .calendar-outer .week-cell__contents .icon-wrapper {
   background-color: transparent;
   width: 100%;
 }
@@ -1037,13 +1086,15 @@ export default defineComponent({
   height: 45px;
   stroke-width: 5px;
 }
+
 #index .calendar-outer .week-cell__contents .icon.circle svg {
   padding: 0;
 }
+
 #index .calendar-outer .week-cell__contents .icon.bar svg,
 #index .calendar-outer .week-cell__contents .icon.circle svg,
 #index .calendar-outer .week-cell__contents .icon.triangle svg,
-#index .calendar-outer .week-cell__contents .icon.cross svg{
+#index .calendar-outer .week-cell__contents .icon.cross svg {
   width: 100%;
   height: 100%;
 }
@@ -1056,11 +1107,11 @@ export default defineComponent({
   transition: all 0.3s;
 }
 
-#index .calendar-outer .week-cell__contents .sp-sec .space{
+#index .calendar-outer .week-cell__contents .sp-sec .space {
   height: 60px;
 }
 
-#index .calendar-outer .week-cell__contents .sec.holiday{
+#index .calendar-outer .week-cell__contents .sec.holiday {
   height: 100%;
   width: 100%;
   display: flex;
@@ -1072,7 +1123,7 @@ export default defineComponent({
   color: #dfe4ea;
 }
 
-#index .sec.holiday p{
+#index .sec.holiday p {
   width: 90%;
   height: 99%;
   /* margin: 0; */
@@ -1080,7 +1131,7 @@ export default defineComponent({
   font-weight: bold;
 }
 
-#index .calendar-outer .week-cell__contents .sec.empty{
+#index .calendar-outer .week-cell__contents .sec.empty {
   height: 100%;
 }
 
@@ -1088,7 +1139,7 @@ export default defineComponent({
   border-top: 1px solid #f1f2f6;
 }
 
-#index .weekday-wrapper .sec .btn_select{
+#index .weekday-wrapper .sec .btn_select {
   width: 100%;
   height: 100%;
   color: #555;
@@ -1102,31 +1153,32 @@ export default defineComponent({
   /* border-left: 4px solid #16a085; */
 }
 
-#index .weekday-wrapper .sec .btn_select.sec-circle svg{
+#index .weekday-wrapper .sec .btn_select.sec-circle svg {
   /* stroke: #fff; */
   stroke: #2ECC71;
   margin: 0;
 }
 
-#index .weekday-wrapper .sec .btn_select.disable svg{
+#index .weekday-wrapper .sec .btn_select.disable svg {
   /* stroke: #d5d5d5; */
   /* clouds */
   /* stroke: #ecf0f1; */
   /* lynx white */
-  stroke: #f5f6fa; 
+  stroke: #f5f6fa;
   margin: 0;
 }
 
-#index .weekday-wrapper .sec .btn_select.sec-circle:hover{
+#index .weekday-wrapper .sec .btn_select.sec-circle:hover {
   color: #fff;
   background-color: #2ECC71;
 }
-#index .weekday-wrapper .sec .btn_select.sec-circle:hover svg{
+
+#index .weekday-wrapper .sec .btn_select.sec-circle:hover svg {
   stroke: #fff;
 }
 
 
-#index .weekday-wrapper .sec .btn_select.sec-circle:hover p.time{
+#index .weekday-wrapper .sec .btn_select.sec-circle:hover p.time {
   margin-left: 10px;
 }
 
@@ -1147,26 +1199,29 @@ export default defineComponent({
 }
 
 @media screen and (max-width: 414px) {
-  #index h1 .title{
+  #index h1 .title {
     text-align: center;
     font-size: 1.5rem;
   }
-  #index .header-container h1 .sub-title{
+
+  #index .header-container h1 .sub-title {
     text-align: center
   }
-  #index .weekday-wrapper{
+
+  #index .weekday-wrapper {
     margin: 0;
     width: 100%;
   }
 
-  #index .week-cell-header{
+  #index .week-cell-header {
     flex-direction: column;
     align-items: center;
     margin-bottom: 5px;
     padding-bottom: 0px;
     height: 50px;
   }
-  #index .week-cell-header .date{
+
+  #index .week-cell-header .date {
     font-size: 0.6rem;
   }
 
@@ -1175,6 +1230,7 @@ export default defineComponent({
     left: 0;
     font-weight: 400;
   }
+
   #index .calendar-outer .times-wrapper .times-cells .time-cell::after {
     width: 80%;
     right: 20%;
@@ -1184,20 +1240,23 @@ export default defineComponent({
   #index .calendar-outer .week-cell__contents {
     margin-bottom: 5px;
   }
+
   #index .calendar-outer .week-cell__contents .icon {
     height: 18px;
     width: 18px;
   }
+
   #index .calendar-outer .week-cell__contents .icon.circle svg,
   #index .calendar-outer .week-cell__contents .icon.triangle svg,
   #index .calendar-outer .week-cell__contents .icon.cross svg {
     margin: 0;
   }
+
   #index .calendar-outer .week-cell__contents .icon-wrapper {
     padding: 0;
   }
 
-  #index .top-line{
+  #index .top-line {
     flex-direction: column;
     margin-bottom: 10px;
   }
@@ -1205,12 +1264,14 @@ export default defineComponent({
   #index .calendar-outer .week-cell__contents p.sp-time {
     font-size: 0.7rem;
   }
+
   #index .calendar-outer .week-cell__contents .sec.holiday {
     font-size: 0.7rem;
     border-width: 1px;
     min-width: 35px;
   }
-  #index .selected-week-wrapper span.week-text{
+
+  #index .selected-week-wrapper span.week-text {
     padding-bottom: 1px;
   }
 
@@ -1232,10 +1293,11 @@ export default defineComponent({
     border-width: 1px;
   }
 
-  #index .week-cell__contents .sec.empty{
+  #index .week-cell__contents .sec.empty {
     min-height: 0;
   }
-  #index .selected-week-wrapper .arrow i{
+
+  #index .selected-week-wrapper .arrow i {
     font-size: 1.3rem;
   }
 
@@ -1250,7 +1312,8 @@ export default defineComponent({
     display: none;
 
   }
-  #index .sec .btn_select:hover p.time{
+
+  #index .sec .btn_select:hover p.time {
     margin-left: 0px;
   }
 
@@ -1258,6 +1321,7 @@ export default defineComponent({
     padding-left: 45px;
     min-width: 290px;
   }
+
   #index .calendar-outer .times-wrapper {
     min-width: 45px;
   }
