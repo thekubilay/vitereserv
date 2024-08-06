@@ -216,7 +216,7 @@
 
         <div class="footer-container">
           <div class="custom-content footer flex-column justify-center align-center" v-if="pageContents.footer.length>0">
-            <a href="tel:0120997426">
+            <a href="tel:0120109679">
               <img v-for="(img) in pageContents.footer" :class="img.class" :src="ENV.STATIC+img.src" :alt="img.alt">
             </a>
           </div>
