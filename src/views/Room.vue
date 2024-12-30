@@ -429,6 +429,7 @@ export default defineComponent({
     }
 
     function findVacancy(date: string, time: string): any {
+      console.log(date)
       return vacancies.value.find((element: Vacancy) => {
         return (formatDate(element.date) === date) && (formatTime(element.date_time_start) === time)
       })
