@@ -32,12 +32,14 @@ export default class RequestService {
   getRoom(): Promise<any> {
     return new Promise((resolve, reject) => {
       if(this.getRoomId()!=="404"){
-        this.request(this.getRoomId()).then(response => {
-          this.data = response
-          resolve(response)
-        }).catch((e: Error) =>{
-          reject(false)
-        })
+        // this.request(this.getRoomId()).then(response => {
+        //   this.data = response
+        //   resolve(response)
+        // }).catch((e: Error) =>{
+        //   reject(false)
+        // })
+
+        resolve(true)
       }else{
         reject("404")
       }
