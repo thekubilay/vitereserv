@@ -18,7 +18,7 @@ export default function () {
   if (languageSetting === "ja") {
     moment.updateLocale("ja", {
       weekdays: ["月曜日", "火曜日", "水曜日", "木曜日", "金曜日", "土曜日", "日曜日"],
-      weekdaysShort: ["月", "火", "水", "木", "金", "土","日"],
+      weekdaysShort: ["月", "火", "水", "木", "金", "土", "日"],
       week: {
         dow: 0, // Monday is the first day of the week
         doy: 0 // The week that includes January 1st is the first week of the year
@@ -41,42 +41,37 @@ export default function () {
   const today = ref(moment(new Date()).format("YYYY年MM月DD日"))
   const weekNum = ref(moment().isoWeek())
   const weekDates = ref<D[]>([])
-  // const year = ref(moment().year())
-  const year = ref(2025)
+  const year = ref(moment().year())
   const weekdays = ref(["月曜日", "火曜日", "水曜日", "木曜日", "金曜日", "土曜日", "日曜日"])
-  const weekdaysShort = ref(["月", "火", "水", "木", "金", "土","日"])
+  const weekdaysShort = ref(["月", "火", "水", "木", "金", "土", "日"])
   const weekdaysEN = ref(["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"])
   const weekdaysShortEN = ref(["mon", "tue", "wed", "thu", "fri", "sat", "sun"])
 
 
-  const getWeekDatesByNum = (num: number = 0): void => {
+  const getWeekDatesByNum = (wn: number = 0): void => {
     weekDates.value = []
-    if (num !== 0) weekNum.value += num
 
-    if (weekNum.value === 53) {
-      weekNum.value = 1
-      year.value += num
-    } else if (weekNum.value === 0) {
-      weekNum.value = 52
-      year.value += num
+    // First, check if we're going to exceed the last week
+    const currentWeekNumber = moment().isoWeek();
+    const weeksInYear = moment().isoWeeksInYear();
+    const nextWeekNum = weekNum.value + wn;
+
+    // If next week number exceeds weeks in year, reset to week 1 and increment year
+    if (nextWeekNum > weeksInYear) {
+      weekNum.value = 1;
+      year.value += 1;
+    }
+    // If next week number becomes less than 1, go to last week of previous year
+    else if (nextWeekNum < 1) {
+      const previousYearWeeks = moment().year(year.value - 1).isoWeeksInYear();
+      weekNum.value = previousYearWeeks;
+      year.value -= 1;
+    }
+    else {
+      weekNum.value = nextWeekNum;
     }
 
-
-    let date;
-    date = moment().year(year.value-1).isoWeek(weekNum.value).startOf('isoWeek');
-
-    // if (year.value === 2023 || year.value === 2022) {
-    //   if (year.value === 2022){
-    //     date = moment().year(year.value + 1).isoWeek(weekNum.value - 1);
-    //   } else {
-    //     date = moment().year(year.value + 1).isoWeek(weekNum.value);
-    //   }
-    //
-    //   date = date.toString().replace(/^.{4}/, year.value.toString());
-    //   date = moment(date)
-    // } else {
-    //   date = moment().year(year.value).isoWeeks(weekNum.value);
-    // }
+    const date = moment().year(year.value).isoWeek(weekNum.value).startOf('isoWeek');
 
     for (let i = 0; i < 7; i++) {
       const object = {
@@ -89,11 +84,11 @@ export default function () {
         dateJP: date.format('YYYY年MM月DD日'),
         timestamp: moment(date).valueOf()
       }
+
       date.add(1, "day")
       weekDates.value.push(object)
     }
   }
-
 
   function init() {
     if (route.query?.lang) {
@@ -103,8 +98,9 @@ export default function () {
     }
 
     let currentQuery = Object.assign({}, route.query)
-    if(currentQuery.year) year.value = Number(currentQuery.year);
-    if(currentQuery.week) weekNum.value = Number(currentQuery.week);
+
+    if (currentQuery.year) year.value = Number(currentQuery.year);
+    if (currentQuery.week) weekNum.value = Number(currentQuery.week);
 
     getWeekDatesByNum()
   }
