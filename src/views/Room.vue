@@ -148,7 +148,6 @@
                         </figure>
                       </div>
                     </div>
-
                     <div v-else class="flex-column justify-center btn_select disable">
                       <div class="icon-wrapper noflame">
                         <figure class="icon cross">

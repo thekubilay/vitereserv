@@ -63,7 +63,7 @@ export default function () {
 
 
     let date;
-    date = moment().year(year.value).isoWeek(weekNum.value).startOf('isoWeek');
+    date = moment().year(year.value-1).isoWeek(weekNum.value).startOf('isoWeek');
 
     // if (year.value === 2023 || year.value === 2022) {
     //   if (year.value === 2022){
