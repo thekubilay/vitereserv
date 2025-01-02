@@ -41,7 +41,7 @@ export default function () {
   const today = ref(moment(new Date()).format("YYYY年MM月DD日"))
   const weekNum = ref(moment().isoWeek())
   const weekDates = ref<D[]>([])
-  const year = ref(moment().year()+1)
+  const year = ref(moment().year())
   const weekdays = ref(["月曜日", "火曜日", "水曜日", "木曜日", "金曜日", "土曜日", "日曜日"])
   const weekdaysShort = ref(["月", "火", "水", "木", "金", "土", "日"])
   const weekdaysEN = ref(["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"])
@@ -72,6 +72,8 @@ export default function () {
     }
 
     const date = moment().year(year.value).isoWeek(weekNum.value).startOf('isoWeek');
+    console.log(year.value)
+    console.log(date.format('YYYY-MM-DD'))
 
     for (let i = 0; i < 7; i++) {
       const object = {
