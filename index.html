@@ -1,33 +1,54 @@
 <!DOCTYPE html>
 <html lang="ja" theme="light">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="keywords" content="ビターブ, viterve, 予約システム, 予約管理, 不動産">
-    <meta name="description" content="使いやすい管理画面から予約システムを作成・管理。業務の効率化をサポート！">
-    <link rel="icon" href="/favicon.ico" />
-    <title>ビターブ｜予約システム作成・予約管理ならおまかせ｜viterve</title>
-    <script type="text/javascript">
-      /* <![CDATA[ */
-      var google_tag_params = {
-        dynx_pagetype: 'other',
-        dynx_device: 'pc'
-      };
-      
-      var dataLayer = [{
-        google_tag_params: window.google_tag_params
-      }];
-      /* ]]> */
-      </script>
-  </head>
-  <body>
-    <div id="app"></div>
-    <script>
-      const params = new URLSearchParams(window.location.search);
-      if(params.get("lang") === "zh"){
-        document.body.classList.add('font-zh');
-      }
-    </script>
-    <script type="module" src="/src/main.ts"></script>
-  </body>
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="keywords" content="ビターブ, viterve, 予約システム, 予約管理, 不動産">
+  <meta name="description" content="使いやすい管理画面から予約システムを作成・管理。業務の効率化をサポート！">
+  <link rel="icon" href="/favicon.ico"/>
+  <title>ビターブ｜予約システム作成・予約管理ならおまかせ｜viterve</title>
+  <script type="text/javascript">
+    /* <![CDATA[ */
+    var google_tag_params = {
+      dynx_pagetype: 'other',
+      dynx_device: 'pc'
+    };
+
+    var dataLayer = [{
+      google_tag_params: window.google_tag_params
+    }];
+    /* ]]> */
+
+  </script>
+  <!-- Google Tag Manager -->
+  <script>(function (w, d, s, l, i) {
+    w[l] = w[l] || [];
+    w[l].push({
+      'gtm.start':
+        new Date().getTime(), event: 'gtm.js'
+    });
+    var f = d.getElementsByTagName(s)[0],
+      j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : '';
+    j.async = true;
+    j.src =
+      'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+    f.parentNode.insertBefore(j, f);
+  })(window, document, 'script', 'dataLayer', 'GTM-PNWB2GK6');</script>
+  <!-- End Google Tag Manager -->
+
+</head>
+<noscript>
+  <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PNWB2GK6"
+          height="0" width="0" style="display:none;visibility:hidden"></iframe>
+</noscript>
+<body>
+<div id="app"></div>
+<script>
+  const params = new URLSearchParams(window.location.search);
+  if (params.get("lang") === "zh") {
+    document.body.classList.add('font-zh');
+  }
+</script>
+<script type="module" src="/src/main.ts"></script>
+</body>
 </html>
