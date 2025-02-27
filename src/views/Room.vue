@@ -11,9 +11,9 @@
     <div v-if="!isRest" class="template__Wrapper">
       <div class="container">
         <div class="header-container">
-          <h1 class="flex-column heading">
-            <span class="title block header-text">{{ room?.name }}</span>
-            <span v-if="room?.header && room?.header !== 'null'" class="sub-title block" :style="subTitleStyle">{{ room?.header }}</span>
+          <h1 class="flex-column heading" style="display: inline-block;">
+            <span class="title header-text">{{ room?.name }}</span>
+            <span v-if="room?.header && room?.header !== 'null'" class="sub-title" :style="subTitleStyle">{{ room?.header }}</span>
           </h1>
           <div class="custom-content header flex-column justify-center align-center" v-if="pageContents.header.length>0">
             <img v-for="(img) in pageContents.header" :class="img.class" :src="ENV.STATIC+img.src" :alt="img.alt">
@@ -273,9 +273,10 @@ export default defineComponent({
       text: ""
     })
     const subTitleStyle = computed(() => {
-      console.log(room.value?.id)
       return {
-        color: Number(room.value?.id) === 880808284 ? "red" : ""
+        paddingLeft: "10px",
+        color: Number(room.value?.id) === 880808284 ? "red" : "",
+        border: Number(room.value?.id) === 880808284 ? "1px solid red" : ""
       }
     })
     const isNotification = ref<boolean>(false)
