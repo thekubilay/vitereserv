@@ -72,8 +72,8 @@ export default function () {
     }
 
     const date = moment().year(year.value).isoWeek(weekNum.value).startOf('isoWeek');
-    console.log(year.value)
-    console.log(date.format('YYYY-MM-DD'))
+    // console.log(year.value)
+    // console.log(date.format('YYYY-MM-DD'))
 
     for (let i = 0; i < 7; i++) {
       const object = {
