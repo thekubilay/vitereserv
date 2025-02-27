@@ -11,7 +11,7 @@
     <div v-if="!isRest" class="template__Wrapper">
       <div class="container">
         <div class="header-container">
-          <h1 class="flex-column heading" style="display: inline-block;">
+          <h1 class="flex-column heading" style="display: contents;">
             <span class="title header-text">{{ room?.name }}</span>
             <span v-if="room?.header && room?.header !== 'null'" class="sub-title" :style="subTitleStyle">{{ room?.header }}</span>
           </h1>
