@@ -25,13 +25,13 @@
         </div>
 
         <div v-else class="ctx flex-column align-start">
-          <div v-for="(row, idx) in reform.rows" :key="idx" :style="{margin: row.margin}" :class="row.class"
+          <div v-for="(row, idx) in reform.rows" :id="`row_${idx}`" :key="idx" :style="{margin: row.margin}" :class="row.class"
                class="f-row">
             <div v-for="(column, cid) in row.columns" :key="column.db" :class="[column.class]" :style="{width:column.columnWidth}" class="f-r-column">
 
               <span v-if="column.name" class="f-name flex align-center">
                 {{ column.name }}
-                <span v-if="column.required" class="required">[{{t('formRequired')}}]</span>
+                <span v-if="column.required" class="required">[{{ t('formRequired') }}]</span>
               </span>
 
               <component @change="useTypeValidation($event, idx, cid)"
@@ -83,7 +83,7 @@ import {changeTab, setProps} from "@/components/dynamic-form/helpers/events";
 import {useResetErrors, useSubmitValidation} from "@/components/dynamic-form/helpers/useValidation";
 import {pvcl} from "@/components/dynamic-form/helpers/usePrimeInputs";
 import {Crud} from "../types/Crud";
-import { vocabularies } from '../../../utils/useVocabularies';
+import {vocabularies} from '../../../utils/useVocabularies';
 
 interface Emits {
   (e: "update:modelValue", modelValue: boolean): void;
@@ -98,11 +98,13 @@ interface Emits {
 const emits = defineEmits<Emits>()
 const props = defineProps({
   form: Object as PropType<DynamicForm>,
+  formId: {type: Number as PropType<number>},
   tabs: {type: Array as PropType<string[]>, default: []},
   data: {type: Object as PropType<object>, default: {}},
   extraData: {type: Object as PropType<object>, default: {}},
   confirm: Boolean as PropType<boolean>,
   submit: Function as PropType<any>,
+  vacancy: {type: Object as PropType<any>, default: {}},
   onError: {
     type: Function as PropType<any>, default: (): void => {
     }
@@ -120,7 +122,7 @@ const components = ref<boolean>(false)
 const reform = ref<DynamicForm>({} as DynamicForm)
 const syncWatchOnNulls = ref<boolean>(false)
 const serverSideErrors = ref<string[]>([])
-const { t } = vocabularies();
+const {t} = vocabularies();
 
 onMounted((): void => {
   reform.value = props.form as DynamicForm
@@ -128,8 +130,14 @@ onMounted((): void => {
     setTimeout((): void => {
       components.value = response
       setWatchers()
+
     }, 500)
   })
+
+  setTimeout(() => {
+    getParticipantsDivAndAddVacancyInfo()
+
+  }, 1000)
 })
 
 onBeforeUnmount((): void => {
@@ -205,6 +213,39 @@ function setWatchers() {
       })
     })
   }
+}
+
+const getParticipantsDivAndAddVacancyInfo = () => {
+  if (props.formId === 112806573) {
+    // First, make sure the element exists
+    const element = document.getElementById("row_4");
+
+    if (!element) {
+      // console.error("Element with ID 'row_4' not found in the document");
+    } else {
+      // Create a p element with the text
+      const p = document.createElement("p");
+      p.innerText = `申し込み可能人数：残り${props.vacancy.limit}人`;
+      p.style.margin = "35px auto 0 10px";
+      p.style.fontSize = "14px";
+      // Append it to the element
+      element.appendChild(p);
+    }
+  }
+  // const participants = document.querySelectorAll(".p-inputtext");
+  // // participants.forEach((participant) => {
+  // //   participant.addEventListener("change", (event) => {
+  // //     const target = event.target as HTMLInputElement;
+  // //     const value = target.value;
+  // //     if (value === "other") {
+  // //       // Show the input field for "other" option
+  // //       const otherInput = document.createElement("input");
+  // //       otherInput.type = "text";
+  // //       otherInput.placeholder = "Please specify";
+  // //       participant.parentNode?.appendChild(otherInput);
+  // //     }
+  // //   });
+  // // });
 }
 
 

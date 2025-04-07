@@ -32,7 +32,9 @@
           <Form
             v-if="Object.keys(dynForm).length > 0"
             v-model:form="dynForm"
+            :form-id="formID"
             :data="modelData"
+            :vacancy="vacancy"
             :extraData="extraData"
             :config="config"
             :confirm="false"
@@ -83,6 +85,7 @@ export default defineComponent({
   setup() {
     const {store} = useStore()
     const dynForm = ref<DynamicForm>({} as DynamicForm);
+    const vacancy = ref<any>()
     const pageTitle = ref<string>("");
     const subTitle = ref<string>("");
     const route = useRoute()
@@ -160,6 +163,7 @@ export default defineComponent({
 
         // 4. Get vacancy data
         const response2 = await axios.get<any>(ENV.API + "vacancies/" + vacancyID.value + "/")
+        vacancy.value = response2.data
         if (parseInt(response2.data.applicants.length) < parseInt(response2.data.limit)) {
           date.value = response2.data.date
           time.value = response2.data.date_time_start.slice(-9, -4)
@@ -448,8 +452,8 @@ export default defineComponent({
       subTitleStyle,
       date, time, pageTitle, subTitle, dateAndTime,
       dynForm, modelData,
-      extraData, config,
-      isLoading, arrangeDate, route,
+      extraData, config, vacancy,
+      isLoading, arrangeDate, route, formID,
       submit, onError, onComplete,
       goTo, t,
     }
