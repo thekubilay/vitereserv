@@ -378,7 +378,7 @@ export default defineComponent({
     const vacanciesCheck = (date: string, time: string): Mark => {
       const vacancy = findVacancy(date, time)
       if (vacancy) {
-        const left: number = vacancy.limit - vacancy.applicants.length;
+        const left: number = vacancy.limit - vacancy.applicants_count;
         if (left > Number(vacancy.status_triangle)) {
           return {id: vacancy.id, mark: "circle"}
         } else if (left <= Number(vacancy.status_triangle) && left > 0) {

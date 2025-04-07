@@ -225,27 +225,13 @@ const getParticipantsDivAndAddVacancyInfo = () => {
     } else {
       // Create a p element with the text
       const p = document.createElement("p");
-      p.innerText = `申し込み可能人数：残り${props.vacancy.limit}人`;
+      p.innerText = `申し込み可能人数：残り${props.vacancy.limit - props.vacancy.applicants_count}人`;
       p.style.margin = "35px auto 0 10px";
       p.style.fontSize = "14px";
       // Append it to the element
       element.appendChild(p);
     }
   }
-  // const participants = document.querySelectorAll(".p-inputtext");
-  // // participants.forEach((participant) => {
-  // //   participant.addEventListener("change", (event) => {
-  // //     const target = event.target as HTMLInputElement;
-  // //     const value = target.value;
-  // //     if (value === "other") {
-  // //       // Show the input field for "other" option
-  // //       const otherInput = document.createElement("input");
-  // //       otherInput.type = "text";
-  // //       otherInput.placeholder = "Please specify";
-  // //       participant.parentNode?.appendChild(otherInput);
-  // //     }
-  // //   });
-  // // });
 }
 
 
