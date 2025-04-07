@@ -125,7 +125,7 @@ export function vocabularies() {
                 formErrorBody: "エラーが発生しました。",
                 formRequireError: "ご入力ください。",
                 thanksTitle: "ありがとうございました。",
-                thanksBody1: "オンライン相談の申し込みが<br class='for-sp'>完了しました。",
+                thanksBody1: "お申し込みが完了しました",
                 thanksBody2: "ご予約の日時などをメール送信致しましたので<br class='for-sp'>ご確認ください。",
                 footerPrivacyPolicy: "個人情報保護ポリシー",
                 footerBasicPolicy: "利用規約",
