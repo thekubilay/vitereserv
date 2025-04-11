@@ -225,12 +225,12 @@
     </div>
     <div v-else-if="isRest" class="maintenance template__Wrapper">
       <div class="container">
-<!--        <h2 class="h2">{{ t('roomMaintenanceTitle') }}</h2>-->
-        <div>
-          <section class="message__Wrapper">
-            <h3 class="h3" v-html="t('roomMaintenanceTitle')"></h3>
-          </section>
-        </div>
+        <h2 class="h2">{{ t('roomMaintenanceTitle') }}</h2>
+<!--        <div>-->
+<!--          <section class="message__Wrapper">-->
+<!--            <h3 class="h3" v-html="t('roomMaintenanceTitle')"></h3>-->
+<!--          </section>-->
+<!--        </div>-->
       </div>
     </div>
   </div>
