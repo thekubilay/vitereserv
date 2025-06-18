@@ -225,7 +225,7 @@ const getParticipantsDivAndAddVacancyInfo = () => {
     } else {
       // Create a p element with the text
       const p = document.createElement("p");
-      p.innerText = `申し込み可能人数：残り${props.vacancy.limit - props.vacancy.applicants_count}人`;
+      // p.innerText = `申し込み可能人数：残り${props.vacancy.limit - props.vacancy.applicants_count}人`;
       p.style.margin = "35px auto 0 10px";
       p.style.fontSize = "14px";
       // Append it to the element
