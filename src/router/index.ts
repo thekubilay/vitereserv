@@ -41,7 +41,11 @@ const router = createRouter({
   routes
 })
 
-router.beforeEach((to,from) => {
+router.beforeEach((to, from) => {
+  if (to.fullPath.includes('635834411')) {
+    window.location.href = 'https://reservation.branz-esalon.jp/2855111482';
+    return false;
+  }
   //Check if the room exists or active
   // if(to.params.rid){
   //   axios.request({
